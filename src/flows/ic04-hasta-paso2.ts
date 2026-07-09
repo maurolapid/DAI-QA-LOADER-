@@ -3,6 +3,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaPage } from '../pages/CaratulaPage';
+import { ItemPage } from '../pages/ItemPage';
 
 export async function ejecutarIC04HastaPaso2(baseUrl: string, data: any) {
   console.log('✔ Iniciando Chrome...');
@@ -30,17 +31,40 @@ export async function ejecutarIC04HastaPaso2(baseUrl: string, data: any) {
     console.log('✔ Presionando Ir a Carátula y esperando operations.nextStep...');
     await registroPage.irACaratulaYEsperarNextStep();
 
-    console.log('✔ Completando inicio de Carátula...');
+    console.log('✔ Completando Carátula...');
     const caratulaPage = new CaratulaPage(page);
     await caratulaPage.completarInicio(data.caratula);
+
+    console.log('✔ Clickeando Ir a Items...');
+    await Promise.all([
+      page.waitForResponse(r =>
+        r.url().includes('/operations.nextStep') &&
+        r.request().method() === 'POST' &&
+        r.status() === 200
+      ),
+      page.getByRole('button', { name: 'ir a Items' }).click()
+    ]);
+
+    console.log('✔ Esperando carga de Items...');
+    await page.waitForResponse(r =>
+      r.url().includes('/operations.getOperation') &&
+      r.request().method() === 'GET' &&
+      r.status() === 200
+    );
+
+    console.log('✔ Abriendo Agregar Item...');
+    await page.getByRole('button', { name: 'AGREGAR ITEM' }).click();
+
+    const itemPage = new ItemPage(page);
+    await itemPage.completarPosicionArancelaria('7318.15.00.620M');
 
     console.log('');
     console.log('==========================================');
     console.log('✔ Flujo finalizado');
     console.log('==========================================');
     console.log('Carátula completada correctamente.');
+    console.log('Se ingresó a Items y se abrió el formulario Agregar Item.');
     console.log('Chrome queda abierto para continuar las pruebas manuales.');
-    console.log('Campos completados: FOB Total, Moneda, Flete, Porcentaje Seguro, Moneda Seguro y Cond. Venta.');
   } catch (error) {
     console.error('');
     console.error('ERROR durante la ejecucion:');

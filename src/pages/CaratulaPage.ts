@@ -119,6 +119,23 @@ export class CaratulaPage {
     await this.completarModalInformacionAdicional(data.informacionAdicional);
 
     await this.completarFacturas(data.facturas);
+  } 
+  
+    async irAItems() {
+    await Promise.all([
+      this.page.waitForResponse(r =>
+        r.url().includes('/operations.nextStep') &&
+        r.request().method() === 'POST' &&
+        r.status() === 200
+      ),
+      this.page.getByRole('button', { name: 'ir a Items' }).click()
+    ]);
 
+    await this.page.waitForResponse(r =>
+      r.url().includes('/operations.getOperation') &&
+      r.request().method() === 'GET' &&
+      r.status() === 200
+    );
+  }
 }
-}
+
