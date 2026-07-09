@@ -5,6 +5,12 @@ import { stdin as input, stdout as output } from 'process';
 import { ejecutarIC04HastaPaso2 } from './src/flows/ic04-hasta-paso2';
 
 type Ambiente = { id: string; nombre: string; url: string };
+type PosicionArancelaria = {
+  id: number;
+  codigo: string;
+  descripcion: string;
+  nota?: string;
+};
 
 const root = process.cwd();
 const rl = readline.createInterface({ input, output });
@@ -15,7 +21,7 @@ function readJson<T>(relativePath: string): T {
 
 function banner() {
   console.log('==========================================');
-  console.log('          DAI QA LOADER v1.2.0');
+  console.log('          DAI QA LOADER v1.3.0');
   console.log('==========================================');
   console.log('Carga automatizada de datos de prueba DAI');
   console.log('');
@@ -37,6 +43,8 @@ async function main() {
   banner();
 
   const ambientes = readJson<Ambiente[]>('config/ambientes.json');
+  const posiciones = readJson<PosicionArancelaria[]>('config/posiciones-arancelarias.json');
+
   const ambienteOptions = ambientes.map(a => `${a.nombre} - ${a.url}`).concat(['URL Manual']);
   const ambienteIndex = await askOption('Ambiente', ambienteOptions);
 
@@ -58,10 +66,23 @@ async function main() {
   const escenarioIndex = await askOption('Escenario de prueba', ['Caso Feliz']);
   if (escenarioIndex !== 0) throw new Error('Solo Caso Feliz disponible en V1');
 
+  const posicionIndex = await askOption(
+    'Posicion Arancelaria',
+    posiciones.map(p => `${p.codigo} - ${p.descripcion}${p.nota ? ` (${p.nota})` : ''}`)
+  );
+
+  const posicionSeleccionada = posiciones[posicionIndex];
+
   const facturasIndex = await askOption('Facturas', ['Con facturas', 'Sin facturas']);
 
   const data = readJson<any>('data/IC04/feliz.json');
+
+  data.item = {
+    posicionArancelaria: posicionSeleccionada.codigo
+  };
+
   data.caratula.facturas.presencia = facturasIndex === 0 ? 'Si' : 'No';
+
   const now = new Date();
   const stamp = now.toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
   data.interno = `${data.interno} ${stamp}`;
@@ -74,6 +95,7 @@ async function main() {
   console.log(`Empresa:    ${data.empresaCuit}`);
   console.log(`Subregimen: ${data.subregimen}`);
   console.log(`Escenario:  ${data.nombre}`);
+  console.log(`Pos. Aranc: ${data.item.posicionArancelaria}`);
   console.log(`Interno:    ${data.interno}`);
   console.log(`Referencia: ${data.referencia}`);
   console.log(`Facturas:   ${data.caratula.facturas.presencia === 'Si' ? 'Con facturas' : 'Sin facturas'}`);

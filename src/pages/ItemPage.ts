@@ -17,8 +17,11 @@ export class ItemPage {
 
     await this.posicionArancelariaInput().fill(codigo);
 
-    await expect(
-      this.posicionArancelariaInput()
-    ).toHaveValue(codigo);
+    await this.page
+      .getByText(codigo, { exact: true })
+      .nth(1)
+      .click();
+
+    await expect(this.posicionArancelariaInput()).toHaveValue(codigo);
   }
 }

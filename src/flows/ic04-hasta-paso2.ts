@@ -56,7 +56,7 @@ export async function ejecutarIC04HastaPaso2(baseUrl: string, data: any) {
     await page.getByRole('button', { name: 'AGREGAR ITEM' }).click();
 
     const itemPage = new ItemPage(page);
-    await itemPage.completarPosicionArancelaria('7318.15.00.620M');
+    await itemPage.completarPosicionArancelaria(data.item.posicionArancelaria);
 
     console.log('');
     console.log('==========================================');
