@@ -1,0 +1,17 @@
+{
+  "name": "dai-qa-loader",
+  "version": "1.1.1",
+  "description": "DAI QA Loader - carga automatizada de datos de prueba para DAI",
+  "main": "launcher.ts",
+  "scripts": {
+    "start": "tsx launcher.ts",
+    "install:browsers": "playwright install chromium"
+  },
+  "dependencies": {
+    "@playwright/test": "latest",
+    "tsx": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1"
+  }
+}

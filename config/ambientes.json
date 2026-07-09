@@ -1,0 +1,12 @@
+[
+  {
+    "id": "qa",
+    "nombre": "QA",
+    "url": "http://172.31.103.186:3007/"
+  },
+  {
+    "id": "mockdevnokit",
+    "nombre": "MOCKDEVNOKIT",
+    "url": "http://172.31.103.187:3007/"
+  }
+]

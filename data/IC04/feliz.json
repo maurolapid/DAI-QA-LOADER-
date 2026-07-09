@@ -1,0 +1,29 @@
+{
+  "nombre": "Caso Feliz",
+  "loginMock": "mock_20045302211",
+  "empresaCuit": "30500938125",
+  "aduana": "001",
+  "aduanaOpcion": "- BS.AS.(CAPITAL)",
+  "subregimen": "IC04",
+  "subregimenOpcion": "IC04 - IMPORTACION A CONSUMO",
+  "interno": "Operacion generada via script DAI QA Loader",
+  "referencia": "001",
+  "caratula": {
+    "fobTotal": "10000",
+    "monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
+    "fleteTotal": "2",
+    "porcentajeSeguro": "1",
+    "condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
+    "compraVenta": "SI",
+    "informacionAdicional": {
+      "domicilioEstablecimiento": "Sucre 356",
+      "fechaInicioActividad": "01/01/2000",
+      "fechaEmisionFactura": "07/07/2026",
+      "idTribProveedor": "29712025"
+    },
+    "facturas": {
+      "presencia": "Si",
+      "numeroFactura": "FacturaTestDAILOADER001"
+    }
+  }
+}
