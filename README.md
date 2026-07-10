@@ -21,3 +21,8 @@ Versión con selección de facturas.
 4. Seleccionar IC04.
 5. Seleccionar Caso Feliz.
 6. Seleccionar Con facturas o Sin facturas.
+7. Seleccionar Posicion Arancelaria.
+8. Ingresar sufijos manualmente (SOON)
+9. Preguntas de items.
+10. Ingreso de Documentos de Transporte en el inicio de la tool.
+11. Ingreso de CERTIPAC-ROM en el inicio de la tool.
