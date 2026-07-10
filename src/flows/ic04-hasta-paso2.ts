@@ -56,14 +56,30 @@ export async function ejecutarIC04HastaPaso2(baseUrl: string, data: any) {
     await page.getByRole('button', { name: 'AGREGAR ITEM' }).click();
 
     const itemPage = new ItemPage(page);
+
+    console.log('✔ Completando posición arancelaria...');
     await itemPage.completarPosicionArancelaria(data.item.posicionArancelaria);
+
+    console.log('✔ Completando cabecera IC04...');
+    await itemPage.completarCabeceraIC04();
+
+    console.log('✔ Continuando sin SubItems...');
+    await itemPage.continuarSinSubitems();
+    
+    console.log('✔ Completando Ventajas...');
+    await itemPage.completarVentajasIC04();
+
+    console.log('✔ Completando valor del Item...');
+    await itemPage.completarValorItemIC04();
+
+    console.log('✔ Completando sufijos...');
+    await itemPage.completarSufijos(data.item.posicionArancelaria);
 
     console.log('');
     console.log('==========================================');
     console.log('✔ Flujo finalizado');
     console.log('==========================================');
-    console.log('Carátula completada correctamente.');
-    console.log('Se ingresó a Items y se abrió el formulario Agregar Item.');
+    console.log('Item IC04 iniciado y cabecera completada.');
     console.log('Chrome queda abierto para continuar las pruebas manuales.');
   } catch (error) {
     console.error('');
