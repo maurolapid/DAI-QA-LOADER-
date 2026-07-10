@@ -1,4 +1,4 @@
-# DAI QA Loader v1.1.4
+# DAI QA Loader v1.3.0
 
 Versión con selección de facturas.
 
