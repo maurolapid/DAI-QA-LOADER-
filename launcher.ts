@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import readline from 'readline/promises';
-import { stdin as input, stdout as output } from 'process';
+import fs from 'node:fs';
+import path from 'node:path';
+import readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';;
 import { ejecutarIC04HastaPaso2 } from './src/flows/ic04-hasta-paso2';
 
 type Ambiente = { id: string; nombre: string; url: string };
