@@ -8,5 +8,15 @@
     "id": "mockdevnokit",
     "nombre": "MOCKDEVNOKIT",
     "url": "http://172.31.103.187:3007/"
+  },
+  {
+    "id": "automation",
+    "nombre": "AUTOMATION",
+    "url": "http://172.31.103.195:3007/"
+  },
+   {
+    "id": "prod",
+    "nombre": "prod",
+    "url": "http://172.31.103.120:3007/"
   }
 ]
