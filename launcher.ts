@@ -1,10 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import readline from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';;
+import { stdin as input, stdout as output } from 'node:process';
+
 import { ejecutarIC04HastaPaso2 } from './src/flows/ic04-hasta-paso2';
+import { ejecutarEC01HastaItems } from './src/flows/ec01-hasta-items';
 
 type Ambiente = { id: string; nombre: string; url: string };
+
 type PosicionArancelaria = {
   id: number;
   codigo: string;
@@ -29,12 +32,18 @@ function banner() {
 
 async function askOption(title: string, options: string[]) {
   console.log(title);
-  options.forEach((option, index) => console.log(`  [${index + 1}] ${option}`));
+
+  options.forEach((option, index) =>
+    console.log(`  [${index + 1}] ${option}`)
+  );
+
   const value = await rl.question('\nSeleccione opcion: ');
   const selected = Number(value.trim());
+
   if (!selected || selected < 1 || selected > options.length) {
     throw new Error(`Opcion invalida para ${title}`);
   }
+
   console.log('');
   return selected - 1;
 }
@@ -42,11 +51,20 @@ async function askOption(title: string, options: string[]) {
 async function main() {
   banner();
 
-  const ambientes = readJson<Ambiente[]>('config/ambientes.json');
-  const posiciones = readJson<PosicionArancelaria[]>('config/posiciones-arancelarias.json');
+  const ambientes =
+    readJson<Ambiente[]>('config/ambientes.json');
 
-  const ambienteOptions = ambientes.map(a => `${a.nombre} - ${a.url}`).concat(['URL Manual']);
-  const ambienteIndex = await askOption('Ambiente', ambienteOptions);
+  const posiciones =
+    readJson<PosicionArancelaria[]>(
+      'config/posiciones-arancelarias.json'
+    );
+
+  const ambienteOptions = ambientes
+    .map(a => `${a.nombre} - ${a.url}`)
+    .concat(['URL Manual']);
+
+  const ambienteIndex =
+    await askOption('Ambiente', ambienteOptions);
 
   let ambienteNombre = '';
   let baseUrl = '';
@@ -60,33 +78,71 @@ async function main() {
     baseUrl = ambiente.url;
   }
 
-  const subregimenIndex = await askOption('Subregimen', ['IC04']);
-  if (subregimenIndex !== 0) throw new Error('Solo IC04 disponible en V1');
-
-  const escenarioIndex = await askOption('Escenario de prueba', ['Caso Feliz']);
-  if (escenarioIndex !== 0) throw new Error('Solo Caso Feliz disponible en V1');
-
-  const posicionIndex = await askOption(
-    'Posicion Arancelaria',
-    posiciones.map(p => `${p.codigo} - ${p.descripcion}${p.nota ? ` (${p.nota})` : ''}`)
+  const subregimenIndex = await askOption(
+    'Subregimen',
+    ['IC04', 'EC01']
   );
 
-  const posicionSeleccionada = posiciones[posicionIndex];
+  const subregimen =
+    subregimenIndex === 0 ? 'IC04' : 'EC01';
 
-  const facturasIndex = await askOption('Facturas', ['Con facturas', 'Sin facturas']);
+  const escenarioIndex =
+    await askOption(
+      'Escenario de prueba',
+      ['Caso Feliz']
+    );
 
-  const data = readJson<any>('data/IC04/feliz.json');
+  if (escenarioIndex !== 0) {
+    throw new Error('Solo Caso Feliz disponible.');
+  }
+
+  const posicionIndex =
+    await askOption(
+      'Posicion Arancelaria',
+      posiciones.map(
+        p =>
+          `${p.codigo} - ${p.descripcion}${
+            p.nota ? ` (${p.nota})` : ''
+          }`
+      )
+    );
+
+  const posicionSeleccionada =
+    posiciones[posicionIndex];
+
+  const facturasIndex =
+    await askOption(
+      'Facturas',
+      ['Con facturas', 'Sin facturas']
+    );
+
+  const data =
+    readJson<any>(
+      `data/${subregimen}/feliz.json`
+    );
 
   data.item = {
-    posicionArancelaria: posicionSeleccionada.codigo
+    posicionArancelaria:
+      posicionSeleccionada.codigo
   };
 
-  data.caratula.facturas.presencia = facturasIndex === 0 ? 'Si' : 'No';
+  if (data.caratula.facturas) {
+    data.caratula.facturas.presencia =
+      facturasIndex === 0 ? 'Si' : 'No';
+  }
 
   const now = new Date();
-  const stamp = now.toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
-  data.interno = `${data.interno} ${stamp}`;
-  data.referencia = `QA-${stamp}`;
+  const stamp =
+    now
+      .toISOString()
+      .replace(/[-:TZ.]/g, '')
+      .slice(0, 14);
+
+  data.interno =
+    `${data.interno} ${stamp}`;
+
+  data.referencia =
+    `QA-${stamp}`;
 
   console.log('Resumen de ejecucion');
   console.log(`Ambiente:   ${ambienteNombre}`);
@@ -98,21 +154,44 @@ async function main() {
   console.log(`Pos. Aranc: ${data.item.posicionArancelaria}`);
   console.log(`Interno:    ${data.interno}`);
   console.log(`Referencia: ${data.referencia}`);
-  console.log(`Facturas:   ${data.caratula.facturas.presencia === 'Si' ? 'Con facturas' : 'Sin facturas'}`);
+
+  if (data.caratula.facturas) {
+    console.log(
+      `Facturas:   ${
+        data.caratula.facturas.presencia === 'Si'
+          ? 'Con facturas'
+          : 'Sin facturas'
+      }`
+    );
+  }
+
   console.log('');
 
-  const confirm = await rl.question('Presione ENTER para iniciar o escriba N para cancelar: ');
+  const confirm =
+    await rl.question(
+      'Presione ENTER para iniciar o escriba N para cancelar: '
+    );
+
   if (confirm.trim().toUpperCase() === 'N') {
     console.log('Ejecucion cancelada.');
     return;
   }
 
-  await ejecutarIC04HastaPaso2(baseUrl, data);
+  if (subregimen === 'IC04') {
+    await ejecutarIC04HastaPaso2(baseUrl, data);
+  } else {
+    await ejecutarEC01HastaItems(baseUrl, data);
+  }
 }
 
 main()
-  .catch((error) => {
-    console.error(error instanceof Error ? error.message : error);
+  .catch(error => {
+    console.error(
+      error instanceof Error
+        ? error.message
+        : error
+    );
+
     process.exitCode = 1;
   })
   .finally(() => rl.close());
