@@ -1,0 +1,20 @@
+{
+  "7318.15.00.620M": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CODIGO DE PRODUCTO O",
+      "valor": "codigo de art"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "marca"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "NA00 - Ninguno",
+      "indice": 0
+    }
+  ]
+}

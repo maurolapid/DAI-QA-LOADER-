@@ -5,87 +5,268 @@ import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaPage } from '../pages/CaratulaPage';
 import { ItemPage } from '../pages/ItemPage';
 
-export async function ejecutarIC04HastaPaso2(baseUrl: string, data: any) {
-  console.log('✔ Iniciando Chrome...');
-  const browser = await chromium.launch({ headless: false, args: ['--start-maximized'] });
-  const context = await browser.newContext({ viewport: null });
-  const page = await context.newPage();
+export async function ejecutarIC04HastaPaso2(
+  baseUrl: string,
+  data: any
+) {
+  console.log(
+    '✔ Iniciando Chrome...'
+  );
+
+  const browser =
+    await chromium.launch({
+      headless: false,
+      args: [
+        '--start-maximized'
+      ]
+    });
+
+  const context =
+    await browser.newContext({
+      viewport: null
+    });
+
+  const page =
+    await context.newPage();
 
   try {
-    console.log('✔ Abriendo ambiente...');
-    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
-
-    console.log(`✔ Login mock: ${data.loginMock}`);
-    const loginPage = new LoginPage(page);
-    await loginPage.ingresarConMock(data.loginMock);
-    await loginPage.esperarIngresoAlSistema();
-
-    console.log('✔ Ingresando a Operaciones > Nueva Operación...');
-    const homePage = new HomePage(page);
-    await homePage.irANuevaOperacion();
-
-    console.log('✔ Completando Registro IC04...');
-    const registroPage = new RegistroPage(page);
-    await registroPage.completarRegistroIC04(data);
-
-    console.log('✔ Presionando Ir a Carátula y esperando operations.nextStep...');
-    await registroPage.irACaratulaYEsperarNextStep();
-
-    console.log('✔ Completando Carátula...');
-    const caratulaPage = new CaratulaPage(page);
-    await caratulaPage.completarInicio(data.caratula);
-
-    console.log('✔ Clickeando Ir a Items...');
-    await Promise.all([
-      page.waitForResponse(r =>
-        r.url().includes('/operations.nextStep') &&
-        r.request().method() === 'POST' &&
-        r.status() === 200
-      ),
-      page.getByRole('button', { name: 'ir a Items' }).click()
-    ]);
-
-    console.log('✔ Esperando carga de Items...');
-    await page.waitForResponse(r =>
-      r.url().includes('/operations.getOperation') &&
-      r.request().method() === 'GET' &&
-      r.status() === 200
+    console.log(
+      '✔ Abriendo ambiente...'
     );
 
-    console.log('✔ Abriendo Agregar Item...');
-    await page.getByRole('button', { name: 'AGREGAR ITEM' }).click();
+    await page.goto(baseUrl, {
+      waitUntil:
+        'domcontentloaded'
+    });
 
-    const itemPage = new ItemPage(page);
+    console.log(
+      `✔ Login mock: ${data.loginMock}`
+    );
 
-    console.log('✔ Completando posición arancelaria...');
-    await itemPage.completarPosicionArancelaria(data.item.posicionArancelaria);
+    const loginPage =
+      new LoginPage(page);
 
-    console.log('✔ Completando cabecera IC04...');
-    await itemPage.completarCabeceraIC04();
+    await loginPage.ingresarConMock(
+      data.loginMock
+    );
 
-    console.log('✔ Continuando sin SubItems...');
-    await itemPage.continuarSinSubitems();
-    
-    console.log('✔ Completando Ventajas...');
-    await itemPage.completarVentajasIC04();
+    await loginPage
+      .esperarIngresoAlSistema();
 
-    console.log('✔ Completando valor del Item...');
-    await itemPage.completarValorItemIC04();
+    console.log(
+      '✔ Ingresando a Operaciones > Nueva Operación...'
+    );
 
-    console.log('✔ Completando sufijos...');
-    await itemPage.completarSufijos(data.item.posicionArancelaria);
+    const homePage =
+      new HomePage(page);
+
+    await homePage
+      .irANuevaOperacion();
+
+    console.log(
+      '✔ Completando Registro IC04...'
+    );
+
+    const registroPage =
+      new RegistroPage(page);
+
+    await registroPage
+      .completarRegistroIC04(
+        data
+      );
+
+    console.log(
+      '✔ Presionando Ir a Carátula y esperando operations.nextStep...'
+    );
+
+    await registroPage
+      .irACaratulaYEsperarNextStep();
+
+    console.log(
+      '✔ Completando Carátula...'
+    );
+
+    const caratulaPage =
+      new CaratulaPage(page);
+
+    await caratulaPage
+      .completarInicio(
+        data.caratula
+      );
+
+    console.log(
+      '✔ Clickeando Ir a Items...'
+    );
+
+    await Promise.all([
+      page.waitForResponse(
+        response =>
+          response
+            .url()
+            .includes(
+              '/operations.nextStep'
+            ) &&
+          response
+            .request()
+            .method() ===
+            'POST' &&
+          response.status() ===
+            200
+      ),
+
+      page
+        .getByRole(
+          'button',
+          {
+            name: 'ir a Items'
+          }
+        )
+        .click()
+    ]);
+
+    console.log(
+      '✔ Esperando carga de Items...'
+    );
+
+    await page.waitForResponse(
+      response =>
+        response
+          .url()
+          .includes(
+            '/operations.getOperation'
+          ) &&
+        response
+          .request()
+          .method() ===
+          'GET' &&
+        response.status() ===
+          200
+    );
+
+    console.log(
+      '✔ Abriendo Agregar Item...'
+    );
+
+    await page
+      .getByRole('button', {
+        name: 'AGREGAR ITEM'
+      })
+      .click();
+
+    const itemPage =
+      new ItemPage(page);
+
+    console.log(
+      '✔ Completando posición arancelaria...'
+    );
+
+    await itemPage
+      .completarPosicionArancelaria(
+        data.item
+          .posicionArancelaria
+      );
+
+    console.log(
+      '✔ Completando cabecera IC04...'
+    );
+
+    await itemPage
+      .completarCabeceraIC04();
+
+    console.log(
+      '✔ Continuando sin SubItems...'
+    );
+
+    await itemPage
+      .continuarSinSubitems();
+
+    console.log(
+      '✔ Completando Ventajas...'
+    );
+
+    await itemPage
+      .completarVentajasIC04();
+
+    console.log(
+      '✔ Completando valor del Item...'
+    );
+
+    await itemPage
+      .completarValorItemIC04();
+
+    console.log(
+      '✔ Completando sufijos...'
+    );
+
+    const resultadoSufijos =
+      await itemPage
+        .completarSufijos(
+          data.item
+        );
+
+    if (
+      resultadoSufijos ===
+      'asistido'
+    ) {
+      console.log('');
+      console.log(
+        '=========================================='
+      );
+      console.log(
+        '⚠ MODO ASISTIDO ACTIVADO'
+      );
+      console.log(
+        `Posición: ${data.item.posicionArancelaria}`
+      );
+      console.log(
+        'Complete manualmente los sufijos en Chrome.'
+      );
+      console.log(
+        'La automatización quedó detenida antes de cargar el ítem.'
+      );
+      console.log(
+        'Chrome queda abierto para continuar manualmente.'
+      );
+      console.log(
+        '=========================================='
+      );
+
+      return;
+    }
 
     console.log('');
-    console.log('==========================================');
-    console.log('✔ Flujo finalizado');
-    console.log('==========================================');
-    console.log('Item IC04 iniciado y cabecera completada.');
-    console.log('Chrome queda abierto para continuar las pruebas manuales.');
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      '✔ Flujo finalizado'
+    );
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      'Ítem IC04 cargado correctamente.'
+    );
+    console.log(
+      'Chrome queda abierto para continuar las pruebas manuales.'
+    );
   } catch (error) {
     console.error('');
-    console.error('ERROR durante la ejecucion:');
+    console.error(
+      'ERROR durante la ejecución:'
+    );
     console.error(error);
-    await page.screenshot({ path: `screenshots/error-${Date.now()}.png`, fullPage: true }).catch(() => undefined);
+
+    await page
+      .screenshot({
+        path:
+          `screenshots/error-${Date.now()}.png`,
+        fullPage: true
+      })
+      .catch(
+        () => undefined
+      );
+
     throw error;
   }
 }

@@ -13,12 +13,25 @@
     "monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
     "condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
     "paisProcedenciaOpcion": "- CHINA",
+    "aduanaDestinoOpcion": "- BS.AS.(CAPITAL)",
     "facturas": {
       "presencia": "Si",
       "numeroFactura": ""
     }
   },
   "item": {
-    "posicionArancelaria": ""
+    "posicionArancelaria": "",
+    "tipoOpcion": "N - Normal",
+    "estadoMercaderiaOpcion": "NUEVO SIN USO ARGENTINO",
+    "origenOpcion": "BA - BUENOS AIRES",
+    "paisProcedenciaOpcion": "CHINA",
+    "unidadDeclaradaOpcion": "KILOGRAMO",
+    "totalKiloNeto": "10",
+    "codigoProducto": "codigo de art",
+    "marca": "marca",
+    "sufijoOpcion": "NA00 - Ninguno",
+    "fobTotalDivisa": "10000",
+    "cantidadDeclarada": "10",
+    "cantidadUnidadesEstadisticas": "10"
   }
 }
