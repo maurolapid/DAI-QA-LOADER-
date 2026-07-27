@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
-import { CaratulaPage } from '../pages/CaratulaPage';
+import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 
 export async function ejecutarEC01HastaItems(baseUrl: string, data: any) {
   console.log('✔ Iniciando Chrome...');
@@ -38,11 +38,8 @@ export async function ejecutarEC01HastaItems(baseUrl: string, data: any) {
     await registroPage.irACaratulaYEsperarNextStep();
 
     console.log('✔ Completando Carátula EC01...');
-    const caratulaPage = new CaratulaPage(page);
-    await caratulaPage.completarInicioEC01(data.caratula);
-
-    console.log('✔ Ir a Items...');
-    await caratulaPage.irAItems();
+    const caratulaPage = new CaratulaEC01Page(page);
+    await caratulaPage.completarCaratula(data.caratula);
 
     console.log('');
     console.log('==========================================');

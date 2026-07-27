@@ -19,7 +19,30 @@ const root = process.cwd();
 const rl = readline.createInterface({ input, output });
 
 function readJson<T>(relativePath: string): T {
-  return JSON.parse(fs.readFileSync(path.join(root, relativePath), 'utf-8'));
+  const fullPath = path.join(root, relativePath);
+
+  console.log('');
+  console.log('------------------------------------------');
+  console.log(`Leyendo JSON: ${fullPath}`);
+
+  const content = fs.readFileSync(fullPath, 'utf-8');
+
+  console.log(`Tamaño: ${content.length} bytes`);
+
+  if (content.trim().length === 0) {
+    throw new Error(`El archivo JSON está vacío: ${fullPath}`);
+  }
+
+  try {
+    return JSON.parse(content);
+  } catch (error) {
+    console.error('');
+    console.error(`Error parseando JSON: ${fullPath}`);
+    console.error('Contenido leído:');
+    console.error(content);
+
+    throw error;
+  }
 }
 
 function banner() {

@@ -1,0 +1,24 @@
+{
+  "nombre": "Caso Feliz",
+  "loginMock": "mock_20045302211",
+  "empresaCuit": "30500938125",
+  "aduana": "001",
+  "aduanaOpcion": "- BS.AS.(CAPITAL)",
+  "subregimen": "EC01",
+  "subregimenOpcion": "EC01 - EXPORTACION A CONSUMO",
+  "interno": "Operacion EC01 generada via script DAI QA Loader",
+  "referencia": "EC01-001",
+  "caratula": {
+    "fobTotal": "10000",
+    "monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
+    "condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
+    "paisProcedenciaOpcion": "- CHINA",
+    "facturas": {
+      "presencia": "Si",
+      "numeroFactura": ""
+    }
+  },
+  "item": {
+    "posicionArancelaria": ""
+  }
+}
