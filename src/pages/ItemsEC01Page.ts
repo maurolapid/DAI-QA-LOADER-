@@ -194,6 +194,67 @@ export class ItemsEC01Page {
     );
   }
 
+  async continuarSinSubitems() {
+    await this.page
+      .getByRole('button', {
+        name: 'CONTINUAR'
+      })
+      .click();
+
+    await this.page
+      .getByRole('button', {
+        name: 'NO',
+        exact: true
+      })
+      .waitFor({
+        state: 'visible',
+        timeout: 30000
+      });
+
+    await this.page
+      .getByRole('button', {
+        name: 'NO',
+        exact: true
+      })
+      .click();
+  }
+
+  async completarValores(
+    data: ItemEC01Data
+  ) {
+    await this.fobTotalDivisaInput().fill(
+      data.fobTotalDivisa
+    );
+
+    await expect(
+      this.fobTotalDivisaInput()
+    ).toHaveValue(
+      data.fobTotalDivisa
+    );
+
+    await this.cantidadDeclaradaInput().fill(
+      data.cantidadDeclarada
+    );
+
+    await expect(
+      this.cantidadDeclaradaInput()
+    ).toHaveValue(
+      data.cantidadDeclarada
+    );
+
+    await this
+      .cantidadUnidadesEstadisticasInput()
+      .fill(
+        data.cantidadUnidadesEstadisticas
+      );
+
+    await expect(
+      this.cantidadUnidadesEstadisticasInput()
+    ).toHaveValue(
+      data.cantidadUnidadesEstadisticas
+    );
+  }
+
   async abrirSufijos() {
     const botonAgregarSufijo =
       this.page.getByRole('button', {
@@ -247,7 +308,6 @@ export class ItemsEC01Page {
     );
 
     const indice = sufijo.indice ?? 0;
-
     const combo = combos.nth(indice);
 
     await combo.waitFor({
@@ -274,11 +334,9 @@ export class ItemsEC01Page {
         continue;
       }
 
-      if (sufijo.tipo === 'combo') {
-        await this.completarSufijoCombo(
-          sufijo
-        );
-      }
+      await this.completarSufijoCombo(
+        sufijo
+      );
     }
 
     await this.page
@@ -286,55 +344,6 @@ export class ItemsEC01Page {
         name: 'AGREGAR SUFIJOS'
       })
       .click();
-
-    await this.page
-      .getByRole('button', {
-        name: 'CONTINUAR'
-      })
-      .click();
-
-    await this.page
-      .getByRole('button', {
-        name: 'NO',
-        exact: true
-      })
-      .click();
-  }
-
-  async completarValores(
-    data: ItemEC01Data
-  ) {
-    await this.fobTotalDivisaInput().fill(
-      data.fobTotalDivisa
-    );
-
-    await expect(
-      this.fobTotalDivisaInput()
-    ).toHaveValue(
-      data.fobTotalDivisa
-    );
-
-    await this.cantidadDeclaradaInput().fill(
-      data.cantidadDeclarada
-    );
-
-    await expect(
-      this.cantidadDeclaradaInput()
-    ).toHaveValue(
-      data.cantidadDeclarada
-    );
-
-    await this
-      .cantidadUnidadesEstadisticasInput()
-      .fill(
-        data.cantidadUnidadesEstadisticas
-      );
-
-    await expect(
-      this.cantidadUnidadesEstadisticasInput()
-    ).toHaveValue(
-      data.cantidadUnidadesEstadisticas
-    );
   }
 
   async cargarItem() {
@@ -356,6 +365,13 @@ export class ItemsEC01Page {
 
     await this.completarCabecera(data);
 
+    // Orden real validado por Codegen:
+    // Cabecera → Continuar → Sin SubItems → Valores → Sufijos → Cargar Item
+
+    await this.continuarSinSubitems();
+
+    await this.completarValores(data);
+
     await this.abrirSufijos();
 
     if (data.modoSufijos === 'asistido') {
@@ -372,8 +388,6 @@ export class ItemsEC01Page {
     await this.completarSufijosAutomaticamente(
       data.sufijos
     );
-
-    await this.completarValores(data);
 
     await this.cargarItem();
 
