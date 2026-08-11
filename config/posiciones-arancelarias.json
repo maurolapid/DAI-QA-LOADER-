@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "codigo": "7318.15.00.620M",
+    "descripcion": "De acero aleado, excepto acero inoxidable",
+    "nota": "Pocas preguntas"
+  },
+  {
+    "id": 2,
+    "codigo": "3812.39.29.990C",
+    "descripcion": "Los demás",
+    "nota": "Para cualquier subrégimen"
+  },
+  {
+    "id": 3,
+    "codigo": "3208.10.10.000L",
+    "descripcion": "Pinturas",
+    "nota": "Para cualquier subrégimen"
+  },
+  {
+    "id": 4,
+    "codigo": "3003.10.12.000W",
+    "descripcion": "Amoxicilina o sus sales",
+    "nota": ""
+  },
+  {
+    "id": 5,
+    "codigo": "8703.23.10.190E",
+    "descripcion": "Los demás",
+    "nota": ""
+  }
+]

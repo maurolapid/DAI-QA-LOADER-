@@ -1,0 +1,37 @@
+{
+  "nombre": "Caso Feliz",
+  "loginMock": "mock_20045302211",
+  "empresaCuit": "30500938125",
+  "aduana": "001",
+  "aduanaOpcion": "- BS.AS.(CAPITAL)",
+  "subregimen": "EC01",
+  "subregimenOpcion": "EC01 - EXPORTACION A CONSUMO",
+  "interno": "Operacion EC01 generada via script DAI QA Loader",
+  "referencia": "EC01-001",
+  "caratula": {
+    "fobTotal": "10000",
+    "monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
+    "condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
+    "paisProcedenciaOpcion": "- CHINA",
+    "aduanaDestinoOpcion": "- BS.AS.(CAPITAL)",
+    "facturas": {
+      "presencia": "Si",
+      "numeroFactura": ""
+    }
+  },
+  "item": {
+    "posicionArancelaria": "",
+    "tipoOpcion": "N - Normal",
+    "estadoMercaderiaOpcion": "NUEVO SIN USO ARGENTINO",
+    "origenOpcion": "BA - BUENOS AIRES",
+    "paisProcedenciaOpcion": "CHINA",
+    "unidadDeclaradaOpcion": "KILOGRAMO",
+    "totalKiloNeto": "10",
+    "codigoProducto": "codigo de art",
+    "marca": "marca",
+    "sufijoOpcion": "NA00 - Ninguno",
+    "fobTotalDivisa": "10000",
+    "cantidadDeclarada": "10",
+    "cantidadUnidadesEstadisticas": "10"
+  }
+}
