@@ -4,6 +4,7 @@ import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 import { ItemsEC01Page } from '../pages/ItemsEC01Page';
+import { OficializacionHerreroPage } from '../pages/OficializacionHerreroPage';
 
 export async function ejecutarEC01HastaItems(
   baseUrl: string,
@@ -105,7 +106,7 @@ export async function ejecutarEC01HastaItems(
         'Complete manualmente los sufijos en Chrome.'
       );
       console.log(
-        'La automatización se detuvo antes de continuar con los valores del ítem.'
+        'La automatización se detuvo antes de continuar.'
       );
       console.log(
         'Chrome queda abierto para continuar manualmente.'
@@ -127,9 +128,51 @@ export async function ejecutarEC01HastaItems(
     console.log(
       '=========================================='
     );
+
+    if (
+      data.esOficializacion === true &&
+      data.perfilOficializacion === 'Herrero'
+    ) {
+      console.log('');
+      console.log(
+        '=========================================='
+      );
+      console.log(
+        '✔ Iniciando Oficialización - Herrero'
+      );
+      console.log(
+        '=========================================='
+      );
+
+      const oficializacionPage =
+        new OficializacionHerreroPage(
+          page
+        );
+
+      await oficializacionPage
+        .completarHappyPath();
+
+      console.log('');
+      console.log(
+        '=========================================='
+      );
+      console.log(
+        '✔ Oficialización Herrero completada'
+      );
+      console.log(
+        '=========================================='
+      );
+      console.log(
+        'Presupuesto afectado correctamente.'
+      );
+
+      return;
+    }
+
     console.log(
       'La ejecución quedó esperando las preguntas.'
     );
+
     console.log(
       'Chrome queda abierto para continuar las pruebas manuales.'
     );

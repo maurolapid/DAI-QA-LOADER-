@@ -23,6 +23,10 @@ type ModoSufijos =
   | 'automatico'
   | 'asistido';
 
+type PerfilOficializacion =
+  | 'Herrero'
+  | 'Russo';
+
 type SufijoItem = {
   tipo: 'texto' | 'combo';
   nombreAccesible: string;
@@ -32,6 +36,9 @@ type SufijoItem = {
 
 type SufijosPorPosicion =
   Record<string, SufijoItem[]>;
+
+const POSICION_OFICIALIZACION =
+  '7318.15.00.620M';
 
 const root = process.cwd();
 
@@ -52,6 +59,7 @@ function readJson<T>(
   console.log(
     '------------------------------------------'
   );
+
   console.log(
     `Leyendo JSON: ${fullPath}`
   );
@@ -77,12 +85,15 @@ function readJson<T>(
     return JSON.parse(content);
   } catch (error) {
     console.error('');
+
     console.error(
       `Error parseando JSON: ${fullPath}`
     );
+
     console.error(
       'Contenido leído:'
     );
+
     console.error(content);
 
     throw error;
@@ -93,15 +104,19 @@ function banner() {
   console.log(
     '=========================================='
   );
+
   console.log(
     '          DAI QA LOADER v1.4.0'
   );
+
   console.log(
     '=========================================='
   );
+
   console.log(
     'Carga automatizada de datos de prueba DAI'
   );
+
   console.log('');
 }
 
@@ -145,6 +160,10 @@ async function askOption(
 async function main() {
   banner();
 
+  // ==========================================
+  // CONFIGURACION
+  // ==========================================
+
   const ambientes =
     readJson<Ambiente[]>(
       'config/ambientes.json'
@@ -159,6 +178,10 @@ async function main() {
     readJson<SufijosPorPosicion>(
       'config/sufijos-posiciones.json'
     );
+
+  // ==========================================
+  // AMBIENTE
+  // ==========================================
 
   const ambienteOptions =
     ambientes
@@ -177,6 +200,7 @@ async function main() {
     );
 
   let ambienteNombre = '';
+  let ambienteId = '';
   let baseUrl = '';
 
   if (
@@ -185,6 +209,9 @@ async function main() {
   ) {
     ambienteNombre =
       'URL Manual';
+
+    ambienteId =
+      'manual';
 
     baseUrl =
       await rl.question(
@@ -197,9 +224,54 @@ async function main() {
     ambienteNombre =
       ambiente.nombre;
 
+    ambienteId =
+      ambiente.id;
+
     baseUrl =
       ambiente.url;
   }
+
+  // ==========================================
+  // DETECTAR OFICIALIZACION
+  // ==========================================
+
+  const esAmbienteOficializacion =
+    ambienteId
+      .toLowerCase() ===
+      'oficializacion' ||
+    ambienteNombre
+      .toLowerCase() ===
+      'oficializacion';
+
+  // ==========================================
+  // PERFIL EXCLUSIVO DE OFICIALIZACION
+  // ==========================================
+
+  let perfilOficializacion:
+    PerfilOficializacion | null =
+      null;
+
+  if (
+    esAmbienteOficializacion
+  ) {
+    const perfilIndex =
+      await askOption(
+        'Perfil de oficializacion',
+        [
+          'Herrero',
+          'Russo'
+        ]
+      );
+
+    perfilOficializacion =
+      perfilIndex === 0
+        ? 'Herrero'
+        : 'Russo';
+  }
+
+  // ==========================================
+  // SUBREGIMEN
+  // ==========================================
 
   const subregimenIndex =
     await askOption(
@@ -214,6 +286,10 @@ async function main() {
     subregimenIndex === 0
       ? 'IC04'
       : 'EC01';
+
+  // ==========================================
+  // ESCENARIO
+  // ==========================================
 
   const escenarioIndex =
     await askOption(
@@ -231,21 +307,64 @@ async function main() {
     );
   }
 
-  const posicionIndex =
-    await askOption(
-      'Posicion Arancelaria',
-      posiciones.map(
+  // ==========================================
+  // POSICION ARANCELARIA
+  // ==========================================
+
+  let posicionSeleccionada:
+    PosicionArancelaria;
+
+  if (
+    esAmbienteOficializacion
+  ) {
+    const posicionOficializacion =
+      posiciones.find(
         posicion =>
-          `${posicion.codigo} - ${posicion.descripcion}${
-            posicion.nota
-              ? ` (${posicion.nota})`
-              : ''
-          }`
-      )
+          posicion.codigo ===
+          POSICION_OFICIALIZACION
+      );
+
+    if (
+      !posicionOficializacion
+    ) {
+      throw new Error(
+        `No se encontró la posición ${POSICION_OFICIALIZACION} en config/posiciones-arancelarias.json`
+      );
+    }
+
+    posicionSeleccionada =
+      posicionOficializacion;
+
+    console.log(
+      'Posicion Arancelaria'
     );
 
-  const posicionSeleccionada =
-    posiciones[posicionIndex];
+    console.log(
+      `  [FIJA OFICIALIZACION] ${posicionSeleccionada.codigo} - ${posicionSeleccionada.descripcion}`
+    );
+
+    console.log('');
+  } else {
+    const posicionIndex =
+      await askOption(
+        'Posicion Arancelaria',
+        posiciones.map(
+          posicion =>
+            `${posicion.codigo} - ${posicion.descripcion}${
+              posicion.nota
+                ? ` (${posicion.nota})`
+                : ''
+            }`
+        )
+      );
+
+    posicionSeleccionada =
+      posiciones[posicionIndex];
+  }
+
+  // ==========================================
+  // MODO SUFIJOS
+  // ==========================================
 
   const modoSufijosIndex =
     await askOption(
@@ -294,6 +413,10 @@ async function main() {
     console.log('');
   }
 
+  // ==========================================
+  // FACTURAS
+  // ==========================================
+
   const facturasIndex =
     await askOption(
       'Facturas',
@@ -303,10 +426,48 @@ async function main() {
       ]
     );
 
+  // ==========================================
+  // DATOS DEL ESCENARIO
+  // ==========================================
+
   const data =
     readJson<any>(
       `data/${subregimen}/feliz.json`
     );
+
+  // ==========================================
+  // CONTEXTO DE OFICIALIZACION
+  // ==========================================
+
+  data.esOficializacion =
+    esAmbienteOficializacion;
+
+  data.perfilOficializacion =
+    perfilOficializacion;
+
+  // ==========================================
+  // LOGIN SEGUN PERFIL
+  // ==========================================
+
+  if (
+    perfilOficializacion ===
+    'Herrero'
+  ) {
+    data.loginMock =
+      'mock_20045302211';
+  }
+
+  if (
+    perfilOficializacion ===
+    'Russo'
+  ) {
+    data.loginMock =
+      'mock_20107469681';
+  }
+
+  // ==========================================
+  // ITEM
+  // ==========================================
 
   data.item = {
     ...data.item,
@@ -320,6 +481,10 @@ async function main() {
       sufijosConfigurados
   };
 
+  // ==========================================
+  // FACTURAS
+  // ==========================================
+
   if (
     data.caratula?.facturas
   ) {
@@ -330,6 +495,10 @@ async function main() {
           ? 'Si'
           : 'No';
   }
+
+  // ==========================================
+  // DATOS DINAMICOS
+  // ==========================================
 
   const now =
     new Date();
@@ -352,6 +521,10 @@ async function main() {
   data.referencia =
     `QA-${stamp}`;
 
+  // ==========================================
+  // RESUMEN
+  // ==========================================
+
   console.log(
     'Resumen de ejecucion'
   );
@@ -363,6 +536,14 @@ async function main() {
   console.log(
     `URL:          ${baseUrl}`
   );
+
+  if (
+    perfilOficializacion
+  ) {
+    console.log(
+      `Perfil:       ${perfilOficializacion}`
+    );
+  }
 
   console.log(
     `Login:        ${data.loginMock}`
@@ -383,6 +564,14 @@ async function main() {
   console.log(
     `Pos. Aranc:   ${data.item.posicionArancelaria}`
   );
+
+  if (
+    esAmbienteOficializacion
+  ) {
+    console.log(
+      'Posición fija: SI (Oficializacion)'
+    );
+  }
 
   console.log(
     `Modo sufijos: ${
@@ -425,6 +614,10 @@ async function main() {
 
   console.log('');
 
+  // ==========================================
+  // CONFIRMACION
+  // ==========================================
+
   const confirm =
     await rl.question(
       'Presione ENTER para iniciar o escriba N para cancelar: '
@@ -443,8 +636,13 @@ async function main() {
     return;
   }
 
+  // ==========================================
+  // EJECUCION
+  // ==========================================
+
   if (
-    subregimen === 'IC04'
+    subregimen ===
+    'IC04'
   ) {
     await ejecutarIC04HastaPaso2(
       baseUrl,
