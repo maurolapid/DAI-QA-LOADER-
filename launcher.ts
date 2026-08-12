@@ -38,7 +38,7 @@ type SufijosPorPosicion =
   Record<string, SufijoItem[]>;
 
 const POSICION_OFICIALIZACION =
-  '7318.15.00.620M';
+  '7318.11.00.100F';
 
 const root = process.cwd();
 
@@ -273,19 +273,33 @@ async function main() {
   // SUBREGIMEN
   // ==========================================
 
-  const subregimenIndex =
-    await askOption(
-      'Subregimen',
-      [
-        'IC04',
-        'EC01'
-      ]
+  let subregimen: 'IC04' | 'EC01';
+
+  if (
+    esAmbienteOficializacion
+  ) {
+    subregimen = 'EC01';
+
+    console.log(
+      'Subregimen: EC01 [FIJO OFICIALIZACION]'
     );
 
-  const subregimen =
-    subregimenIndex === 0
-      ? 'IC04'
-      : 'EC01';
+    console.log('');
+  } else {
+    const subregimenIndex =
+      await askOption(
+        'Subregimen',
+        [
+          'IC04',
+          'EC01'
+        ]
+      );
+
+    subregimen =
+      subregimenIndex === 0
+        ? 'IC04'
+        : 'EC01';
+  }
 
   // ==========================================
   // ESCENARIO
@@ -417,14 +431,29 @@ async function main() {
   // FACTURAS
   // ==========================================
 
-  const facturasIndex =
-    await askOption(
-      'Facturas',
-      [
-        'Con facturas',
-        'Sin facturas'
-      ]
+  let facturasIndex: number;
+
+  if (
+    esAmbienteOficializacion
+  ) {
+    // 1 = Sin facturas
+    facturasIndex = 1;
+
+    console.log(
+      'Facturas: Sin facturas [FIJO OFICIALIZACION]'
     );
+
+    console.log('');
+  } else {
+    facturasIndex =
+      await askOption(
+        'Facturas',
+        [
+          'Con facturas',
+          'Sin facturas'
+        ]
+      );
+  }
 
   // ==========================================
   // DATOS DEL ESCENARIO

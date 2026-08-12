@@ -28,5 +28,11 @@
     "codigo": "8703.23.10.190E",
     "descripcion": "Los demás",
     "nota": ""
+  },
+  {
+    "id": 6,
+    "codigo": "7318.11.00.100F",
+    "descripcion": "Posición oficialización Herrero/Russo",
+    "nota": "Oficialización"
   }
 ]

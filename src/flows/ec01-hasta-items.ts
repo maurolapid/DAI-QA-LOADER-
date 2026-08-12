@@ -5,6 +5,7 @@ import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 import { ItemsEC01Page } from '../pages/ItemsEC01Page';
 import { OficializacionHerreroPage } from '../pages/OficializacionHerreroPage';
+import { OficializacionRussoPage } from '../pages/OficializacionRussoPage';
 
 export async function ejecutarEC01HastaItems(
   baseUrl: string,
@@ -91,7 +92,9 @@ export async function ejecutarEC01HastaItems(
         data.item
       );
 
-    if (resultadoItem === 'asistido') {
+    if (
+      resultadoItem === 'asistido'
+    ) {
       console.log('');
       console.log(
         '=========================================='
@@ -104,9 +107,6 @@ export async function ejecutarEC01HastaItems(
       );
       console.log(
         'Complete manualmente los sufijos en Chrome.'
-      );
-      console.log(
-        'La automatización se detuvo antes de continuar.'
       );
       console.log(
         'Chrome queda abierto para continuar manualmente.'
@@ -130,43 +130,81 @@ export async function ejecutarEC01HastaItems(
     );
 
     if (
-      data.esOficializacion === true &&
-      data.perfilOficializacion === 'Herrero'
+      data.esOficializacion === true
     ) {
-      console.log('');
-      console.log(
-        '=========================================='
-      );
-      console.log(
-        '✔ Iniciando Oficialización - Herrero'
-      );
-      console.log(
-        '=========================================='
-      );
-
-      const oficializacionPage =
-        new OficializacionHerreroPage(
-          page
+      if (
+        data.perfilOficializacion ===
+        'Herrero'
+      ) {
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          '✔ Iniciando Oficialización - Herrero'
+        );
+        console.log(
+          '=========================================='
         );
 
-      await oficializacionPage
-        .completarHappyPath();
+        const oficializacionPage =
+          new OficializacionHerreroPage(
+            page
+          );
 
-      console.log('');
-      console.log(
-        '=========================================='
-      );
-      console.log(
-        '✔ Oficialización Herrero completada'
-      );
-      console.log(
-        '=========================================='
-      );
-      console.log(
-        'Presupuesto afectado correctamente.'
-      );
+        await oficializacionPage
+          .completarHappyPath();
 
-      return;
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          '✔ Oficialización Herrero completada'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        return;
+      }
+
+      if (
+        data.perfilOficializacion ===
+        'Russo'
+      ) {
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          '✔ Iniciando Oficialización - Russo'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        const oficializacionPage =
+          new OficializacionRussoPage(
+            page
+          );
+
+        await oficializacionPage
+          .completarHappyPath();
+
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          '✔ Oficialización Russo completada'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        return;
+      }
     }
 
     console.log(

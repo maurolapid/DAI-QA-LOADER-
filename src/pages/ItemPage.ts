@@ -174,11 +174,11 @@ export class ItemPage {
       timeout: 30000
     });
 
-    await fobTotal.fill('10000');
+    await fobTotal.fill('10');
 
     await expect(
       fobTotal
-    ).toHaveValue('10000');
+    ).toHaveValue('10');
   }
 
   async completarValorItemIC04() {

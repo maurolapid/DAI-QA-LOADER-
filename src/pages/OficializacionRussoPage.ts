@@ -1,6 +1,6 @@
 import { OficializacionBasePage } from './OficializacionBasePage';
 
-export class OficializacionHerreroPage
+export class OficializacionRussoPage
   extends OficializacionBasePage {
 
   private async responderPreguntasPostItems() {
@@ -29,8 +29,11 @@ export class OficializacionHerreroPage
     );
 
     await this.seleccionarRadioParcial(
-      'EL PLAZO DE ESPERA PARA EL'
+      'EL PLAZO DE ESPERA PARA EL PAGO DE LOS DERECHOS DE EXPORTACION SERA DE 15 DIAS'
     );
+
+    // Pregunta adicional exclusiva de Russo
+    await this.responderNo();
   }
 
   private async responderPreguntasPresupuesto() {
@@ -51,24 +54,28 @@ export class OficializacionHerreroPage
       '- BANCO DE LA NACION ARGENTINA'
     );
 
+    // Secuencia Russo
     await this.responderNo();
     await this.responderNo();
     await this.responderNo();
     await this.responderNo();
-    await this.responderNo();
-    await this.responderNo();
+
+    await this.responderSi();
 
     console.log(
-      '✔ Herrero - Respuesta texto: TSA'
-    );
-
-    await this.responderTexto('TSA');
-
-    console.log(
-      '✔ Herrero - Respuesta texto: 0'
+      '✔ Russo - Respuesta texto 1: 0'
     );
 
     await this.responderTexto('0');
+
+    console.log(
+      '✔ Russo - Respuesta texto 2: 0'
+    );
+
+    await this.responderTexto('0');
+
+    // Pregunta adicional Russo
+    await this.responderNo();
 
     await this.seleccionarRadioParcial(
       'PSAD02 - BOX CUSTODIA DE'
@@ -77,43 +84,49 @@ export class OficializacionHerreroPage
 
   async completarHappyPath() {
     console.log(
-      '✔ [HERRERO] Respondiendo preguntas posteriores a Items...'
+      '✔ [RUSSO] Respondiendo preguntas posteriores a Items...'
     );
 
     await this.responderPreguntasPostItems();
 
     console.log(
-      '✔ [HERRERO] Avanzando a Certificación PAC/ROM...'
+      '✔ [RUSSO] Avanzando a Certificación PAC/ROM...'
     );
 
     await this.irACertificacionPACROM();
 
     console.log(
-      '✔ [HERRERO] Completando Certificación PAC/ROM...'
+      '✔ [RUSSO] Completando Certificación PAC/ROM...'
     );
 
     await this.completarCertificacionPACROM(
-      'Traispoting'
+      'transformer'
     );
 
     console.log(
-      '✔ [HERRERO] Avanzando a Presupuesto General...'
+      '✔ [RUSSO] Avanzando a Presupuesto General...'
     );
 
     await this.irAPresupuestoGeneral();
 
     console.log(
-      '✔ [HERRERO] Respondiendo preguntas de Presupuesto...'
+      '✔ [RUSSO] Respondiendo preguntas de Presupuesto...'
     );
 
     await this.responderPreguntasPresupuesto();
+
+    console.log(
+      '✔ [RUSSO] Verificando detalle del presupuesto...'
+    );
+
+    await this.verificarDetallePresupuesto();
 
     console.log('');
     console.log(
       '=========================================='
     );
     console.log(
-      '✔ HAPPY PATH HERRERO FINALIZADO'
+      '✔ HAPPY PATH RUSSO FINALIZADO'
     );
     console.log(
       '=========================================='

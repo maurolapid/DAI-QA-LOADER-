@@ -16,5 +16,17 @@
       "valor": "NA00 - Ninguno",
       "indice": 0
     }
+  ],
+  "7318.11.00.100F": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CODIGO DE PRODUCTO O",
+      "valor": "TEST"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "VUCE"
+    }
   ]
 }
