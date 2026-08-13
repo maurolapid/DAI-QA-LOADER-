@@ -100,6 +100,61 @@ function readJson<T>(
   }
 }
 
+
+function obtenerSiguienteNumeroOficializacion(): string {
+  const relativePath =
+    'data/oficializacion-contador.json';
+
+  const fullPath = path.join(
+    root,
+    relativePath
+  );
+
+  let ultimoNumero = 0;
+
+  if (fs.existsSync(fullPath)) {
+    const content = fs.readFileSync(
+      fullPath,
+      'utf-8'
+    );
+
+    if (content.trim().length > 0) {
+      const contador =
+        JSON.parse(content) as {
+          ultimoNumero?: number;
+        };
+
+      ultimoNumero =
+        Number(contador.ultimoNumero) || 0;
+    }
+  }
+
+  const siguienteNumero =
+    ultimoNumero + 1;
+
+  fs.mkdirSync(
+    path.dirname(fullPath),
+    { recursive: true }
+  );
+
+  fs.writeFileSync(
+    fullPath,
+    JSON.stringify(
+      { ultimoNumero: siguienteNumero },
+      null,
+      2
+    ) + '\n',
+    'utf-8'
+  );
+
+  return String(
+    siguienteNumero
+  ).padStart(
+    3,
+    '0'
+  );
+}
+
 function banner() {
   console.log(
     '=========================================='
@@ -544,8 +599,18 @@ async function main() {
         14
       );
 
-  data.interno =
-    `${data.interno} ${stamp}`;
+  if (
+    esAmbienteOficializacion
+  ) {
+    const numeroOficializacion =
+      obtenerSiguienteNumeroOficializacion();
+
+    data.interno =
+      `Operacion para OFICIALIZACION UNICAMENTE numero ${numeroOficializacion}`;
+  } else {
+    data.interno =
+      `${data.interno} ${stamp}`;
+  }
 
   data.referencia =
     `QA-${stamp}`;
