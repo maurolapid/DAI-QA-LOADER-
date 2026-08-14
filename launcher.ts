@@ -27,6 +27,19 @@ type PerfilOficializacion =
   | 'Herrero'
   | 'Russo';
 
+type FlujoPreguntasOficializacion =
+  | 'Herrero'
+  | 'Russo';
+
+type Navegador =
+  | 'chrome'
+  | 'firefox'
+  | 'edge';
+
+type ModoEjecucion =
+  | 'individual'
+  | 'paralelo';
+
 type SufijoItem = {
   tipo: 'texto' | 'combo';
   nombreAccesible: string;
@@ -212,6 +225,31 @@ async function askOption(
   return selected - 1;
 }
 
+
+async function seleccionarNavegador(
+  titulo: string
+): Promise<Navegador> {
+  const navegadorIndex =
+    await askOption(
+      titulo,
+      [
+        'Chrome',
+        'Firefox',
+        'Edge'
+      ]
+    );
+
+  if (navegadorIndex === 0) {
+    return 'chrome';
+  }
+
+  if (navegadorIndex === 1) {
+    return 'firefox';
+  }
+
+  return 'edge';
+}
+
 async function main() {
   banner();
 
@@ -306,6 +344,14 @@ async function main() {
     PerfilOficializacion | null =
       null;
 
+  let flujoPreguntasOficializacion:
+    FlujoPreguntasOficializacion | null =
+      null;
+
+  let empresaCuitOficializacion:
+    string | null =
+      null;
+
   if (
     esAmbienteOficializacion
   ) {
@@ -322,25 +368,457 @@ async function main() {
       perfilIndex === 0
         ? 'Herrero'
         : 'Russo';
+
+    const empresaOficializacionIndex =
+      await askOption(
+        'Empresa para oficializacion',
+        [
+          'Baterias Moura - 30500938125',
+          'Malba Textil - 33710718879'
+        ]
+      );
+
+    empresaCuitOficializacion =
+      empresaOficializacionIndex === 0
+        ? '30500938125'
+        : '33710718879';
+
+    const flujoPreguntasIndex =
+      await askOption(
+        'Flujo de preguntas de oficializacion',
+        [
+          'Herrero',
+          'Russo'
+        ]
+      );
+
+    flujoPreguntasOficializacion =
+      flujoPreguntasIndex === 0
+        ? 'Herrero'
+        : 'Russo';
   }
 
   // ==========================================
-  // SUBREGIMEN
+  // MODO DE EJECUCION
   // ==========================================
 
-  let subregimen: 'IC04' | 'EC01';
+  let modoEjecucion:
+    ModoEjecucion = 'individual';
+
+  if (
+    !esAmbienteOficializacion
+  ) {
+    const modoEjecucionIndex =
+      await askOption(
+        'Modo de ejecucion',
+        [
+          'Individual',
+          'Paralelo IC04 + EC01'
+        ]
+      );
+
+    modoEjecucion =
+      modoEjecucionIndex === 0
+        ? 'individual'
+        : 'paralelo';
+  }
+
+  // ==========================================
+  // OFICIALIZACION
+  // ==========================================
 
   if (
     esAmbienteOficializacion
   ) {
-    subregimen = 'EC01';
+    const subregimen:
+      'EC01' = 'EC01';
 
     console.log(
       'Subregimen: EC01 [FIJO OFICIALIZACION]'
     );
 
     console.log('');
-  } else {
+
+    const escenarioIndex =
+      await askOption(
+        'Escenario de prueba',
+        [
+          'Caso Feliz'
+        ]
+      );
+
+    if (
+      escenarioIndex !== 0
+    ) {
+      throw new Error(
+        'Solo Caso Feliz disponible.'
+      );
+    }
+
+    const posicionOficializacion =
+      posiciones.find(
+        posicion =>
+          posicion.codigo ===
+          POSICION_OFICIALIZACION
+      );
+
+    if (
+      !posicionOficializacion
+    ) {
+      throw new Error(
+        `No se encontró la posición ${POSICION_OFICIALIZACION} en config/posiciones-arancelarias.json`
+      );
+    }
+
+    const posicionSeleccionada =
+      posicionOficializacion;
+
+    console.log(
+      'Posicion Arancelaria'
+    );
+
+    console.log(
+      `  [FIJA OFICIALIZACION] ${posicionSeleccionada.codigo} - ${posicionSeleccionada.descripcion}`
+    );
+
+    console.log('');
+
+    const modoSufijosIndex =
+      await askOption(
+        'Modo de carga de sufijos',
+        [
+          'Automatico',
+          'Asistido'
+        ]
+      );
+
+    const modoSolicitado:
+      ModoSufijos =
+        modoSufijosIndex === 0
+          ? 'automatico'
+          : 'asistido';
+
+    const sufijosConfigurados =
+      sufijosPorPosicion[
+        posicionSeleccionada.codigo
+      ] ?? [];
+
+    const modoSufijos:
+      ModoSufijos =
+        modoSolicitado ===
+          'automatico' &&
+        sufijosConfigurados.length === 0
+          ? 'asistido'
+          : modoSolicitado;
+
+    console.log(
+      'Facturas: Sin facturas [FIJO OFICIALIZACION]'
+    );
+
+    console.log('');
+
+    const data =
+      readJson<any>(
+        `data/${subregimen}/feliz.json`
+      );
+
+    data.esOficializacion =
+      true;
+
+    data.perfilOficializacion =
+      perfilOficializacion;
+
+    data.flujoPreguntasOficializacion =
+      flujoPreguntasOficializacion;
+
+    if (
+      perfilOficializacion ===
+      'Herrero'
+    ) {
+      data.loginMock =
+        'mock_20045302211';
+    }
+
+    if (
+      perfilOficializacion ===
+      'Russo'
+    ) {
+      data.loginMock =
+        'mock_20107469681';
+    }
+
+    if (
+      !empresaCuitOficializacion
+    ) {
+      throw new Error(
+        'No se seleccionó empresa para oficialización.'
+      );
+    }
+
+    data.empresaCuit =
+      empresaCuitOficializacion;
+
+    // ==========================================
+    // DATOS ESPECIFICOS DEL FLUJO RUSSO
+    // ==========================================
+
+    if (
+      flujoPreguntasOficializacion ===
+      'Russo'
+    ) {
+      // REGISTRO
+      data.aduanaOpcion =
+        '- EZEIZA';
+
+      data.subregimenOpcion =
+        'EC01 - EXPORTACION A CONSUMO';
+
+      // CARATULA
+      data.caratula = {
+        ...data.caratula,
+
+        fobTotal:
+          '1',
+
+        monedaOpcion:
+          'DOL - DOLAR ESTADOUNIDENSE',
+
+        condicionVentaOpcion:
+          'FOB - LIBRE PUESTA A BORDO',
+
+        paisProcedenciaOpcion:
+          '- CHINA',
+
+        aduanaDestinoOpcion:
+          '- EZEIZA',
+
+        facturas: {
+          ...data.caratula.facturas,
+          presencia: 'No'
+        }
+      };
+
+      // ITEM
+      data.item = {
+        ...data.item,
+
+        tipoOpcion:
+          'N - Normal',
+
+        estadoMercaderiaOpcion:
+          '- NUEVO SIN USO ARGENTINO',
+
+        origenOpcion:
+          'BA - BUENOS AIRES',
+
+        paisProcedenciaOpcion:
+          '- CHINA',
+
+        unidadDeclaradaOpcion:
+          '- KILOGRAMO',
+
+        totalKiloNeto:
+          '1',
+
+        fobTotalDivisa:
+          '1',
+
+        cantidadDeclarada:
+          '1',
+
+        cantidadUnidadesEstadisticas:
+          '1'
+      };
+    }
+
+    const sufijosFinales =
+      flujoPreguntasOficializacion ===
+      'Russo'
+        ? [
+            {
+              tipo: 'texto' as const,
+              nombreAccesible:
+                'Ingresá MARCA',
+              valor:
+                'marca'
+            },
+            {
+              tipo: 'texto' as const,
+              nombreAccesible:
+                'Ingresá CODIGO DE PRODUCTO O',
+              valor:
+                'codigo'
+            }
+          ]
+        : sufijosConfigurados;
+
+    data.item = {
+      ...data.item,
+
+      posicionArancelaria:
+        posicionSeleccionada.codigo,
+
+      modoSufijos,
+
+      sufijos:
+        sufijosFinales
+    };
+
+    if (
+      data.caratula?.facturas
+    ) {
+      data.caratula
+        .facturas
+        .presencia =
+          'No';
+    }
+
+    const now =
+      new Date();
+
+    const stamp =
+      now
+        .toISOString()
+        .replace(
+          /[-:TZ.]/g,
+          ''
+        )
+        .slice(
+          0,
+          14
+        );
+
+    const numeroOficializacion =
+      obtenerSiguienteNumeroOficializacion();
+
+    data.interno =
+      `Operacion para OFICIALIZACION UNICAMENTE numero ${numeroOficializacion}`;
+
+    data.referencia =
+      `QA-${stamp}`;
+
+    console.log(
+      'Resumen de ejecucion'
+    );
+
+    console.log(
+      `Ambiente:     ${ambienteNombre}`
+    );
+
+    console.log(
+      `URL:          ${baseUrl}`
+    );
+
+    if (
+      perfilOficializacion
+    ) {
+      console.log(
+        `Perfil:       ${perfilOficializacion}`
+      );
+    }
+
+    if (
+      flujoPreguntasOficializacion
+    ) {
+      console.log(
+        `Flujo preg.:   ${flujoPreguntasOficializacion}`
+      );
+    }
+
+    console.log(
+      `Login:        ${data.loginMock}`
+    );
+
+    console.log(
+      `Empresa:      ${
+        data.empresaCuit ===
+        '30500938125'
+          ? 'Baterias Moura - 30500938125'
+          : 'Malba Textil - 33710718879'
+      }`
+    );
+
+    console.log(
+      `Subregimen:   ${data.subregimen}`
+    );
+
+    console.log(
+      `Escenario:    ${data.nombre}`
+    );
+
+    console.log(
+      `Pos. Aranc:   ${data.item.posicionArancelaria}`
+    );
+
+    console.log(
+      'Posición fija: SI (Oficializacion)'
+    );
+
+    console.log(
+      `Modo sufijos: ${
+        data.item
+          .modoSufijos ===
+        'automatico'
+          ? 'Automatico'
+          : 'Asistido'
+      }`
+    );
+
+    console.log(
+      `Sufijos:      ${
+        data.item.sufijos.length
+      } configurados`
+    );
+
+    console.log(
+      `Interno:      ${data.interno}`
+    );
+
+    console.log(
+      `Referencia:   ${data.referencia}`
+    );
+
+    console.log(
+      'Facturas:     Sin facturas'
+    );
+
+    console.log('');
+
+    const confirm =
+      await rl.question(
+        'Presione ENTER para iniciar o escriba N para cancelar: '
+      );
+
+    if (
+      confirm
+        .trim()
+        .toUpperCase() ===
+      'N'
+    ) {
+      console.log(
+        'Ejecucion cancelada.'
+      );
+
+      return;
+    }
+
+    await ejecutarEC01HastaItems(
+      baseUrl,
+      data,
+      'chrome'
+    );
+
+    return;
+  }
+
+  // ==========================================
+  // EJECUCION NORMAL - INDIVIDUAL
+  // ==========================================
+
+  if (
+    modoEjecucion ===
+    'individual'
+  ) {
     const subregimenIndex =
       await askOption(
         'Subregimen',
@@ -350,15 +828,300 @@ async function main() {
         ]
       );
 
-    subregimen =
-      subregimenIndex === 0
-        ? 'IC04'
-        : 'EC01';
+    const subregimen:
+      'IC04' | 'EC01' =
+        subregimenIndex === 0
+          ? 'IC04'
+          : 'EC01';
+
+    const navegador =
+      await seleccionarNavegador(
+        'Navegador'
+      );
+
+    const escenarioIndex =
+      await askOption(
+        'Escenario de prueba',
+        [
+          'Caso Feliz'
+        ]
+      );
+
+    if (
+      escenarioIndex !== 0
+    ) {
+      throw new Error(
+        'Solo Caso Feliz disponible.'
+      );
+    }
+
+    const posicionIndex =
+      await askOption(
+        'Posicion Arancelaria',
+        posiciones.map(
+          posicion =>
+            `${posicion.codigo} - ${posicion.descripcion}${
+              posicion.nota
+                ? ` (${posicion.nota})`
+                : ''
+            }`
+        )
+      );
+
+    const posicionSeleccionada =
+      posiciones[posicionIndex];
+
+    const modoSufijosIndex =
+      await askOption(
+        'Modo de carga de sufijos',
+        [
+          'Automatico',
+          'Asistido'
+        ]
+      );
+
+    const modoSolicitado:
+      ModoSufijos =
+        modoSufijosIndex === 0
+          ? 'automatico'
+          : 'asistido';
+
+    const sufijosConfigurados =
+      sufijosPorPosicion[
+        posicionSeleccionada.codigo
+      ] ?? [];
+
+    const modoSufijos:
+      ModoSufijos =
+        modoSolicitado ===
+          'automatico' &&
+        sufijosConfigurados.length === 0
+          ? 'asistido'
+          : modoSolicitado;
+
+    if (
+      modoSolicitado ===
+        'automatico' &&
+      modoSufijos ===
+        'asistido'
+    ) {
+      console.log('');
+
+      console.warn(
+        `No hay sufijos automáticos configurados para ${posicionSeleccionada.codigo}.`
+      );
+
+      console.warn(
+        'La ejecución continuará en modo asistido.'
+      );
+
+      console.log('');
+    }
+
+    const facturasIndex =
+      await askOption(
+        'Facturas',
+        [
+          'Con facturas',
+          'Sin facturas'
+        ]
+      );
+
+    const data =
+      readJson<any>(
+        `data/${subregimen}/feliz.json`
+      );
+
+    data.esOficializacion =
+      false;
+
+    data.perfilOficializacion =
+      null;
+
+    data.flujoPreguntasOficializacion =
+      null;
+
+    data.item = {
+      ...data.item,
+
+      posicionArancelaria:
+        posicionSeleccionada.codigo,
+
+      modoSufijos,
+
+      sufijos:
+        sufijosConfigurados
+    };
+
+    if (
+      data.caratula?.facturas
+    ) {
+      data.caratula
+        .facturas
+        .presencia =
+          facturasIndex === 0
+            ? 'Si'
+            : 'No';
+    }
+
+    const now =
+      new Date();
+
+    const stamp =
+      now
+        .toISOString()
+        .replace(
+          /[-:TZ.]/g,
+          ''
+        )
+        .slice(
+          0,
+          14
+        );
+
+    data.interno =
+      `${data.interno} ${stamp}`;
+
+    data.referencia =
+      `QA-${stamp}`;
+
+    console.log(
+      'Resumen de ejecucion'
+    );
+
+    console.log(
+      `Ambiente:     ${ambienteNombre}`
+    );
+
+    console.log(
+      `URL:          ${baseUrl}`
+    );
+
+    console.log(
+      `Navegador:    ${navegador}`
+    );
+
+    console.log(
+      `Login:        ${data.loginMock}`
+    );
+
+    console.log(
+      `Empresa:      ${data.empresaCuit}`
+    );
+
+    console.log(
+      `Subregimen:   ${data.subregimen}`
+    );
+
+    console.log(
+      `Escenario:    ${data.nombre}`
+    );
+
+    console.log(
+      `Pos. Aranc:   ${data.item.posicionArancelaria}`
+    );
+
+    console.log(
+      `Modo sufijos: ${
+        data.item
+          .modoSufijos ===
+        'automatico'
+          ? 'Automatico'
+          : 'Asistido'
+      }`
+    );
+
+    console.log(
+      `Sufijos:      ${
+        data.item.sufijos.length
+      } configurados`
+    );
+
+    console.log(
+      `Interno:      ${data.interno}`
+    );
+
+    console.log(
+      `Referencia:   ${data.referencia}`
+    );
+
+    if (
+      data.caratula?.facturas
+    ) {
+      console.log(
+        `Facturas:     ${
+          data.caratula
+            .facturas
+            .presencia ===
+          'Si'
+            ? 'Con facturas'
+            : 'Sin facturas'
+        }`
+      );
+    }
+
+    console.log('');
+
+    const confirm =
+      await rl.question(
+        'Presione ENTER para iniciar o escriba N para cancelar: '
+      );
+
+    if (
+      confirm
+        .trim()
+        .toUpperCase() ===
+      'N'
+    ) {
+      console.log(
+        'Ejecucion cancelada.'
+      );
+
+      return;
+    }
+
+    if (
+      subregimen ===
+      'IC04'
+    ) {
+      await ejecutarIC04HastaPaso2(
+        baseUrl,
+        data,
+        navegador
+      );
+    } else {
+      await ejecutarEC01HastaItems(
+        baseUrl,
+        data,
+        navegador
+      );
+    }
+
+    return;
   }
 
   // ==========================================
-  // ESCENARIO
+  // EJECUCION NORMAL - PARALELO IC04 + EC01
   // ==========================================
+
+  const navegadorIC04 =
+    await seleccionarNavegador(
+      'Navegador para IC04'
+    );
+
+  const navegadorEC01 =
+    await seleccionarNavegador(
+      'Navegador para EC01'
+    );
+
+  if (
+    navegadorIC04 ===
+    navegadorEC01
+  ) {
+    throw new Error(
+      'Para la ejecución paralela seleccione navegadores diferentes.'
+    );
+  }
 
   const escenarioIndex =
     await askOption(
@@ -376,64 +1139,21 @@ async function main() {
     );
   }
 
-  // ==========================================
-  // POSICION ARANCELARIA
-  // ==========================================
-
-  let posicionSeleccionada:
-    PosicionArancelaria;
-
-  if (
-    esAmbienteOficializacion
-  ) {
-    const posicionOficializacion =
-      posiciones.find(
+  const posicionIndex =
+    await askOption(
+      'Posicion Arancelaria',
+      posiciones.map(
         posicion =>
-          posicion.codigo ===
-          POSICION_OFICIALIZACION
-      );
-
-    if (
-      !posicionOficializacion
-    ) {
-      throw new Error(
-        `No se encontró la posición ${POSICION_OFICIALIZACION} en config/posiciones-arancelarias.json`
-      );
-    }
-
-    posicionSeleccionada =
-      posicionOficializacion;
-
-    console.log(
-      'Posicion Arancelaria'
+          `${posicion.codigo} - ${posicion.descripcion}${
+            posicion.nota
+              ? ` (${posicion.nota})`
+              : ''
+          }`
+      )
     );
 
-    console.log(
-      `  [FIJA OFICIALIZACION] ${posicionSeleccionada.codigo} - ${posicionSeleccionada.descripcion}`
-    );
-
-    console.log('');
-  } else {
-    const posicionIndex =
-      await askOption(
-        'Posicion Arancelaria',
-        posiciones.map(
-          posicion =>
-            `${posicion.codigo} - ${posicion.descripcion}${
-              posicion.nota
-                ? ` (${posicion.nota})`
-                : ''
-            }`
-        )
-      );
-
-    posicionSeleccionada =
-      posiciones[posicionIndex];
-  }
-
-  // ==========================================
-  // MODO SUFIJOS
-  // ==========================================
+  const posicionSeleccionada =
+    posiciones[posicionIndex];
 
   const modoSufijosIndex =
     await askOption(
@@ -463,98 +1183,45 @@ async function main() {
         ? 'asistido'
         : modoSolicitado;
 
-  if (
-    modoSolicitado ===
-      'automatico' &&
-    modoSufijos ===
-      'asistido'
-  ) {
-    console.log('');
-
-    console.warn(
-      `No hay sufijos automáticos configurados para ${posicionSeleccionada.codigo}.`
+  const facturasIC04Index =
+    await askOption(
+      'Facturas para IC04',
+      [
+        'Con facturas',
+        'Sin facturas'
+      ]
     );
 
-    console.warn(
-      'La ejecución continuará en modo asistido.'
+  const facturasEC01Index =
+    await askOption(
+      'Facturas para EC01',
+      [
+        'Con facturas',
+        'Sin facturas'
+      ]
     );
 
-    console.log('');
-  }
-
-  // ==========================================
-  // FACTURAS
-  // ==========================================
-
-  let facturasIndex: number;
-
-  if (
-    esAmbienteOficializacion
-  ) {
-    // 1 = Sin facturas
-    facturasIndex = 1;
-
-    console.log(
-      'Facturas: Sin facturas [FIJO OFICIALIZACION]'
-    );
-
-    console.log('');
-  } else {
-    facturasIndex =
-      await askOption(
-        'Facturas',
-        [
-          'Con facturas',
-          'Sin facturas'
-        ]
-      );
-  }
-
-  // ==========================================
-  // DATOS DEL ESCENARIO
-  // ==========================================
-
-  const data =
+  const dataIC04 =
     readJson<any>(
-      `data/${subregimen}/feliz.json`
+      'data/IC04/feliz.json'
     );
 
-  // ==========================================
-  // CONTEXTO DE OFICIALIZACION
-  // ==========================================
+  const dataEC01 =
+    readJson<any>(
+      'data/EC01/feliz.json'
+    );
 
-  data.esOficializacion =
-    esAmbienteOficializacion;
+  dataIC04.esOficializacion =
+    false;
 
-  data.perfilOficializacion =
-    perfilOficializacion;
+  dataIC04.perfilOficializacion =
+    null;
 
-  // ==========================================
-  // LOGIN SEGUN PERFIL
-  // ==========================================
+  dataIC04.flujoPreguntasOficializacion =
+    null;
 
-  if (
-    perfilOficializacion ===
-    'Herrero'
-  ) {
-    data.loginMock =
-      'mock_20045302211';
-  }
-
-  if (
-    perfilOficializacion ===
-    'Russo'
-  ) {
-    data.loginMock =
-      'mock_20107469681';
-  }
-
-  // ==========================================
-  // ITEM
-  // ==========================================
-
-  data.item = {
-    ...data.item,
+  dataIC04.item = {
+    ...dataIC04.item,
 
     posicionArancelaria:
       posicionSeleccionada.codigo,
@@ -565,24 +1232,48 @@ async function main() {
       sufijosConfigurados
   };
 
-  // ==========================================
-  // FACTURAS
-  // ==========================================
-
   if (
-    data.caratula?.facturas
+    dataIC04.caratula?.facturas
   ) {
-    data.caratula
+    dataIC04.caratula
       .facturas
       .presencia =
-        facturasIndex === 0
+        facturasIC04Index === 0
           ? 'Si'
           : 'No';
   }
 
-  // ==========================================
-  // DATOS DINAMICOS
-  // ==========================================
+  dataEC01.esOficializacion =
+    false;
+
+  dataEC01.perfilOficializacion =
+    null;
+
+  dataEC01.flujoPreguntasOficializacion =
+    null;
+
+  dataEC01.item = {
+    ...dataEC01.item,
+
+    posicionArancelaria:
+      posicionSeleccionada.codigo,
+
+    modoSufijos,
+
+    sufijos:
+      sufijosConfigurados
+  };
+
+  if (
+    dataEC01.caratula?.facturas
+  ) {
+    dataEC01.caratula
+      .facturas
+      .presencia =
+        facturasEC01Index === 0
+          ? 'Si'
+          : 'No';
+  }
 
   const now =
     new Date();
@@ -599,122 +1290,62 @@ async function main() {
         14
       );
 
-  if (
-    esAmbienteOficializacion
-  ) {
-    const numeroOficializacion =
-      obtenerSiguienteNumeroOficializacion();
+  dataIC04.interno =
+    `${dataIC04.interno} ${stamp}`;
 
-    data.interno =
-      `Operacion para OFICIALIZACION UNICAMENTE numero ${numeroOficializacion}`;
-  } else {
-    data.interno =
-      `${data.interno} ${stamp}`;
-  }
+  dataIC04.referencia =
+    `QA-IC04-${stamp}`;
 
-  data.referencia =
-    `QA-${stamp}`;
+  dataEC01.interno =
+    `${dataEC01.interno} ${stamp}`;
 
-  // ==========================================
-  // RESUMEN
-  // ==========================================
+  dataEC01.referencia =
+    `QA-EC01-${stamp}`;
 
+  console.log('');
   console.log(
-    'Resumen de ejecucion'
+    '=========================================='
+  );
+  console.log(
+    '       EJECUCION PARALELA'
+  );
+  console.log(
+    '=========================================='
   );
 
   console.log(
-    `Ambiente:     ${ambienteNombre}`
+    `IC04 -> ${navegadorIC04}`
   );
 
   console.log(
-    `URL:          ${baseUrl}`
-  );
-
-  if (
-    perfilOficializacion
-  ) {
-    console.log(
-      `Perfil:       ${perfilOficializacion}`
-    );
-  }
-
-  console.log(
-    `Login:        ${data.loginMock}`
+    `EC01 -> ${navegadorEC01}`
   );
 
   console.log(
-    `Empresa:      ${data.empresaCuit}`
+    `Posicion -> ${posicionSeleccionada.codigo}`
   );
 
   console.log(
-    `Subregimen:   ${data.subregimen}`
-  );
-
-  console.log(
-    `Escenario:    ${data.nombre}`
-  );
-
-  console.log(
-    `Pos. Aranc:   ${data.item.posicionArancelaria}`
-  );
-
-  if (
-    esAmbienteOficializacion
-  ) {
-    console.log(
-      'Posición fija: SI (Oficializacion)'
-    );
-  }
-
-  console.log(
-    `Modo sufijos: ${
-      data.item
-        .modoSufijos ===
-      'automatico'
-        ? 'Automatico'
-        : 'Asistido'
+    `Facturas IC04 -> ${
+      facturasIC04Index === 0
+        ? 'Con facturas'
+        : 'Sin facturas'
     }`
   );
 
   console.log(
-    `Sufijos:      ${
-      data.item.sufijos.length
-    } configurados`
+    `Facturas EC01 -> ${
+      facturasEC01Index === 0
+        ? 'Con facturas'
+        : 'Sin facturas'
+    }`
   );
-
-  console.log(
-    `Interno:      ${data.interno}`
-  );
-
-  console.log(
-    `Referencia:   ${data.referencia}`
-  );
-
-  if (
-    data.caratula?.facturas
-  ) {
-    console.log(
-      `Facturas:     ${
-        data.caratula
-          .facturas
-          .presencia ===
-        'Si'
-          ? 'Con facturas'
-          : 'Sin facturas'
-      }`
-    );
-  }
 
   console.log('');
 
-  // ==========================================
-  // CONFIRMACION
-  // ==========================================
-
   const confirm =
     await rl.question(
-      'Presione ENTER para iniciar o escriba N para cancelar: '
+      'Presione ENTER para iniciar ambos flujos o escriba N para cancelar: '
     );
 
   if (
@@ -730,23 +1361,86 @@ async function main() {
     return;
   }
 
-  // ==========================================
-  // EJECUCION
-  // ==========================================
+  console.log('');
+  console.log(
+    '✔ Iniciando IC04 y EC01 en paralelo...'
+  );
+
+  const resultados =
+    await Promise.allSettled([
+      ejecutarIC04HastaPaso2(
+        baseUrl,
+        dataIC04,
+        navegadorIC04
+      ),
+      ejecutarEC01HastaItems(
+        baseUrl,
+        dataEC01,
+        navegadorEC01
+      )
+    ]);
+
+  const [
+    resultadoIC04,
+    resultadoEC01
+  ] = resultados;
+
+  console.log('');
+  console.log(
+    '=========================================='
+  );
+  console.log(
+    '       RESULTADO PARALELO'
+  );
+  console.log(
+    '=========================================='
+  );
+
+  console.log(
+    `IC04: ${
+      resultadoIC04.status ===
+      'fulfilled'
+        ? 'OK'
+        : 'ERROR'
+    }`
+  );
+
+  console.log(
+    `EC01: ${
+      resultadoEC01.status ===
+      'fulfilled'
+        ? 'OK'
+        : 'ERROR'
+    }`
+  );
 
   if (
-    subregimen ===
-    'IC04'
+    resultadoIC04.status ===
+    'rejected'
   ) {
-    await ejecutarIC04HastaPaso2(
-      baseUrl,
-      data
+    console.error(
+      'Error IC04:',
+      resultadoIC04.reason
     );
-  } else {
-    await ejecutarEC01HastaItems(
-      baseUrl,
-      data
+  }
+
+  if (
+    resultadoEC01.status ===
+    'rejected'
+  ) {
+    console.error(
+      'Error EC01:',
+      resultadoEC01.reason
     );
+  }
+
+  if (
+    resultadoIC04.status ===
+      'rejected' ||
+    resultadoEC01.status ===
+      'rejected'
+  ) {
+    process.exitCode = 1;
   }
 }
 

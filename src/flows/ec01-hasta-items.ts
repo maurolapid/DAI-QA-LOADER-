@@ -1,4 +1,9 @@
-import { chromium } from '@playwright/test';
+import {
+  chromium,
+  firefox
+} from '@playwright/test';
+import type { Browser } from '@playwright/test';
+
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
@@ -7,109 +12,151 @@ import { ItemsEC01Page } from '../pages/ItemsEC01Page';
 import { OficializacionHerreroPage } from '../pages/OficializacionHerreroPage';
 import { OficializacionRussoPage } from '../pages/OficializacionRussoPage';
 
-export async function ejecutarEC01HastaItems(
-  baseUrl: string,
-  data: any
-) {
-  console.log('✔ Iniciando Chrome...');
+export type NavegadorEjecucion =
+  | 'chrome'
+  | 'firefox'
+  | 'edge';
 
-  const browser = await chromium.launch({
+async function iniciarNavegador(
+  navegador: NavegadorEjecucion
+): Promise<Browser> {
+  console.log(
+    `✔ Iniciando navegador: ${navegador}...`
+  );
+
+  if (navegador === 'firefox') {
+    return firefox.launch({
+      headless: false
+    });
+  }
+
+  if (navegador === 'edge') {
+    return chromium.launch({
+      channel: 'msedge',
+      headless: false,
+      args: ['--start-maximized']
+    });
+  }
+
+  return chromium.launch({
+    channel: 'chrome',
     headless: false,
     args: ['--start-maximized']
   });
+}
 
-  const context = await browser.newContext({
-    viewport: null
-  });
+export async function ejecutarEC01HastaItems(
+  baseUrl: string,
+  data: any,
+  navegador:
+    NavegadorEjecucion = 'chrome'
+) {
+  const browser =
+    await iniciarNavegador(
+      navegador
+    );
 
-  const page = await context.newPage();
+  const context =
+    await browser.newContext({
+      viewport: null
+    });
+
+  const page =
+    await context.newPage();
 
   try {
-    console.log('✔ Abriendo ambiente...');
+    console.log(
+      `✔ [EC01/${navegador}] Abriendo ambiente...`
+    );
 
     await page.goto(baseUrl, {
       waitUntil: 'domcontentloaded'
     });
 
     console.log(
-      `✔ Login mock: ${data.loginMock}`
+      `✔ [EC01/${navegador}] Login mock: ${data.loginMock}`
     );
 
-    const loginPage = new LoginPage(page);
+    const loginPage =
+      new LoginPage(page);
 
     await loginPage.ingresarConMock(
       data.loginMock
     );
 
-    await loginPage.esperarIngresoAlSistema();
+    await loginPage
+      .esperarIngresoAlSistema();
 
     console.log(
-      '✔ Ingresando a Operaciones > Nueva Operación...'
+      `✔ [EC01/${navegador}] Ingresando a Operaciones > Nueva Operación...`
     );
 
-    const homePage = new HomePage(page);
+    const homePage =
+      new HomePage(page);
 
-    await homePage.irANuevaOperacion();
+    await homePage
+      .irANuevaOperacion();
 
     console.log(
-      '✔ Completando Registro EC01...'
+      `✔ [EC01/${navegador}] Completando Registro EC01...`
     );
 
     const registroPage =
       new RegistroPage(page);
 
-    await registroPage.completarRegistroEC01(
-      data
-    );
+    await registroPage
+      .completarRegistroEC01(
+        data
+      );
 
     console.log(
-      '✔ Presionando Ir a Carátula...'
+      `✔ [EC01/${navegador}] Presionando Ir a Carátula...`
     );
 
     await registroPage
       .irACaratulaYEsperarNextStep();
 
     console.log(
-      '✔ Completando Carátula EC01...'
+      `✔ [EC01/${navegador}] Completando Carátula EC01...`
     );
 
     const caratulaPage =
       new CaratulaEC01Page(page);
 
-    await caratulaPage.completarCaratula(
-      data.caratula
-    );
+    await caratulaPage
+      .completarCaratula(
+        data.caratula
+      );
 
     console.log(
-      `✔ Cargando posición arancelaria: ${data.item.posicionArancelaria}`
+      `✔ [EC01/${navegador}] Cargando posición arancelaria: ${data.item.posicionArancelaria}`
     );
 
     const itemsPage =
       new ItemsEC01Page(page);
 
     const resultadoItem =
-      await itemsPage.completarItem(
-        data.item
-      );
+      await itemsPage
+        .completarItem(
+          data.item
+        );
 
     if (
-      resultadoItem === 'asistido'
+      resultadoItem ===
+      'asistido'
     ) {
       console.log('');
       console.log(
         '=========================================='
       );
       console.log(
-        '⚠ MODO ASISTIDO ACTIVADO'
+        `⚠ [EC01/${navegador}] MODO ASISTIDO ACTIVADO`
       );
       console.log(
         `Posición: ${data.item.posicionArancelaria}`
       );
       console.log(
-        'Complete manualmente los sufijos en Chrome.'
-      );
-      console.log(
-        'Chrome queda abierto para continuar manualmente.'
+        `Complete manualmente los sufijos en ${navegador}.`
       );
       console.log(
         '=========================================='
@@ -123,7 +170,7 @@ export async function ejecutarEC01HastaItems(
       '=========================================='
     );
     console.log(
-      '✔ Ítem EC01 cargado correctamente'
+      `✔ [EC01/${navegador}] Ítem cargado correctamente`
     );
     console.log(
       '=========================================='
@@ -132,21 +179,28 @@ export async function ejecutarEC01HastaItems(
     if (
       data.esOficializacion === true
     ) {
+      const flujoPreguntas =
+        data.flujoPreguntasOficializacion ??
+        data.perfilOficializacion;
+
+      console.log('');
+      console.log(
+        '=========================================='
+      );
+      console.log(
+        `✔ Perfil de ejecución: ${data.perfilOficializacion}`
+      );
+      console.log(
+        `✔ Flujo de preguntas: ${flujoPreguntas}`
+      );
+      console.log(
+        '=========================================='
+      );
+
       if (
-        data.perfilOficializacion ===
+        flujoPreguntas ===
         'Herrero'
       ) {
-        console.log('');
-        console.log(
-          '=========================================='
-        );
-        console.log(
-          '✔ Iniciando Oficialización - Herrero'
-        );
-        console.log(
-          '=========================================='
-        );
-
         const oficializacionPage =
           new OficializacionHerreroPage(
             page
@@ -160,7 +214,7 @@ export async function ejecutarEC01HastaItems(
           '=========================================='
         );
         console.log(
-          '✔ Oficialización Herrero completada'
+          `✔ Oficialización completada - Perfil ${data.perfilOficializacion} / Preguntas Herrero`
         );
         console.log(
           '=========================================='
@@ -170,20 +224,9 @@ export async function ejecutarEC01HastaItems(
       }
 
       if (
-        data.perfilOficializacion ===
+        flujoPreguntas ===
         'Russo'
       ) {
-        console.log('');
-        console.log(
-          '=========================================='
-        );
-        console.log(
-          '✔ Iniciando Oficialización - Russo'
-        );
-        console.log(
-          '=========================================='
-        );
-
         const oficializacionPage =
           new OficializacionRussoPage(
             page
@@ -197,7 +240,7 @@ export async function ejecutarEC01HastaItems(
           '=========================================='
         );
         console.log(
-          '✔ Oficialización Russo completada'
+          `✔ Oficialización completada - Perfil ${data.perfilOficializacion} / Preguntas Russo`
         );
         console.log(
           '=========================================='
@@ -205,26 +248,30 @@ export async function ejecutarEC01HastaItems(
 
         return;
       }
+
+      throw new Error(
+        `Flujo de preguntas de oficialización inválido: ${flujoPreguntas}`
+      );
     }
 
     console.log(
-      'La ejecución quedó esperando las preguntas.'
+      `[EC01/${navegador}] La ejecución quedó esperando las preguntas.`
     );
 
     console.log(
-      'Chrome queda abierto para continuar las pruebas manuales.'
+      `${navegador} queda abierto para continuar las pruebas manuales.`
     );
   } catch (error) {
     console.error('');
     console.error(
-      'ERROR durante la ejecución:'
+      `ERROR EC01/${navegador}:`
     );
     console.error(error);
 
     await page
       .screenshot({
         path:
-          `screenshots/error-${Date.now()}.png`,
+          `screenshots/error-EC01-${navegador}-${Date.now()}.png`,
         fullPage: true
       })
       .catch(() => undefined);

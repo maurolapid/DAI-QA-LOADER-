@@ -1,25 +1,58 @@
-import { chromium } from '@playwright/test';
+import {
+  chromium,
+  firefox
+} from '@playwright/test';
+import type { Browser } from '@playwright/test';
+
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaPage } from '../pages/CaratulaPage';
 import { ItemPage } from '../pages/ItemPage';
 
-export async function ejecutarIC04HastaPaso2(
-  baseUrl: string,
-  data: any
-) {
+export type NavegadorEjecucion =
+  | 'chrome'
+  | 'firefox'
+  | 'edge';
+
+async function iniciarNavegador(
+  navegador: NavegadorEjecucion
+): Promise<Browser> {
   console.log(
-    '✔ Iniciando Chrome...'
+    `✔ Iniciando navegador: ${navegador}...`
   );
 
-  const browser =
-    await chromium.launch({
-      headless: false,
-      args: [
-        '--start-maximized'
-      ]
+  if (navegador === 'firefox') {
+    return firefox.launch({
+      headless: false
     });
+  }
+
+  if (navegador === 'edge') {
+    return chromium.launch({
+      channel: 'msedge',
+      headless: false,
+      args: ['--start-maximized']
+    });
+  }
+
+  return chromium.launch({
+    channel: 'chrome',
+    headless: false,
+    args: ['--start-maximized']
+  });
+}
+
+export async function ejecutarIC04HastaPaso2(
+  baseUrl: string,
+  data: any,
+  navegador:
+    NavegadorEjecucion = 'chrome'
+) {
+  const browser =
+    await iniciarNavegador(
+      navegador
+    );
 
   const context =
     await browser.newContext({
@@ -31,16 +64,15 @@ export async function ejecutarIC04HastaPaso2(
 
   try {
     console.log(
-      '✔ Abriendo ambiente...'
+      `✔ [IC04/${navegador}] Abriendo ambiente...`
     );
 
     await page.goto(baseUrl, {
-      waitUntil:
-        'domcontentloaded'
+      waitUntil: 'domcontentloaded'
     });
 
     console.log(
-      `✔ Login mock: ${data.loginMock}`
+      `✔ [IC04/${navegador}] Login mock: ${data.loginMock}`
     );
 
     const loginPage =
@@ -54,7 +86,7 @@ export async function ejecutarIC04HastaPaso2(
       .esperarIngresoAlSistema();
 
     console.log(
-      '✔ Ingresando a Operaciones > Nueva Operación...'
+      `✔ [IC04/${navegador}] Ingresando a Operaciones > Nueva Operación...`
     );
 
     const homePage =
@@ -64,7 +96,7 @@ export async function ejecutarIC04HastaPaso2(
       .irANuevaOperacion();
 
     console.log(
-      '✔ Completando Registro IC04...'
+      `✔ [IC04/${navegador}] Completando Registro IC04...`
     );
 
     const registroPage =
@@ -76,14 +108,14 @@ export async function ejecutarIC04HastaPaso2(
       );
 
     console.log(
-      '✔ Presionando Ir a Carátula y esperando operations.nextStep...'
+      `✔ [IC04/${navegador}] Presionando Ir a Carátula...`
     );
 
     await registroPage
       .irACaratulaYEsperarNextStep();
 
     console.log(
-      '✔ Completando Carátula...'
+      `✔ [IC04/${navegador}] Completando Carátula...`
     );
 
     const caratulaPage =
@@ -95,7 +127,7 @@ export async function ejecutarIC04HastaPaso2(
       );
 
     console.log(
-      '✔ Clickeando Ir a Items...'
+      `✔ [IC04/${navegador}] Clickeando Ir a Items...`
     );
 
     await Promise.all([
@@ -110,22 +142,18 @@ export async function ejecutarIC04HastaPaso2(
             .request()
             .method() ===
             'POST' &&
-          response.status() ===
-            200
+          response.status() === 200
       ),
 
       page
-        .getByRole(
-          'button',
-          {
-            name: 'ir a Items'
-          }
-        )
+        .getByRole('button', {
+          name: 'ir a Items'
+        })
         .click()
     ]);
 
     console.log(
-      '✔ Esperando carga de Items...'
+      `✔ [IC04/${navegador}] Esperando carga de Items...`
     );
 
     await page.waitForResponse(
@@ -139,12 +167,11 @@ export async function ejecutarIC04HastaPaso2(
           .request()
           .method() ===
           'GET' &&
-        response.status() ===
-          200
+        response.status() === 200
     );
 
     console.log(
-      '✔ Abriendo Agregar Item...'
+      `✔ [IC04/${navegador}] Abriendo Agregar Item...`
     );
 
     await page
@@ -157,7 +184,7 @@ export async function ejecutarIC04HastaPaso2(
       new ItemPage(page);
 
     console.log(
-      '✔ Completando posición arancelaria...'
+      `✔ [IC04/${navegador}] Completando posición arancelaria...`
     );
 
     await itemPage
@@ -167,35 +194,35 @@ export async function ejecutarIC04HastaPaso2(
       );
 
     console.log(
-      '✔ Completando cabecera IC04...'
+      `✔ [IC04/${navegador}] Completando cabecera IC04...`
     );
 
     await itemPage
       .completarCabeceraIC04();
 
     console.log(
-      '✔ Continuando sin SubItems...'
+      `✔ [IC04/${navegador}] Continuando sin SubItems...`
     );
 
     await itemPage
       .continuarSinSubitems();
 
     console.log(
-      '✔ Completando Ventajas...'
+      `✔ [IC04/${navegador}] Completando Ventajas...`
     );
 
     await itemPage
       .completarVentajasIC04();
 
     console.log(
-      '✔ Completando valor del Item...'
+      `✔ [IC04/${navegador}] Completando valor del Item...`
     );
 
     await itemPage
       .completarValorItemIC04();
 
     console.log(
-      '✔ Completando sufijos...'
+      `✔ [IC04/${navegador}] Completando sufijos...`
     );
 
     const resultadoSufijos =
@@ -213,19 +240,13 @@ export async function ejecutarIC04HastaPaso2(
         '=========================================='
       );
       console.log(
-        '⚠ MODO ASISTIDO ACTIVADO'
+        `⚠ [IC04/${navegador}] MODO ASISTIDO ACTIVADO`
       );
       console.log(
         `Posición: ${data.item.posicionArancelaria}`
       );
       console.log(
-        'Complete manualmente los sufijos en Chrome.'
-      );
-      console.log(
-        'La automatización quedó detenida antes de cargar el ítem.'
-      );
-      console.log(
-        'Chrome queda abierto para continuar manualmente.'
+        `Complete manualmente los sufijos en ${navegador}.`
       );
       console.log(
         '=========================================='
@@ -239,7 +260,7 @@ export async function ejecutarIC04HastaPaso2(
       '=========================================='
     );
     console.log(
-      '✔ Flujo finalizado'
+      `✔ [IC04/${navegador}] Flujo finalizado`
     );
     console.log(
       '=========================================='
@@ -247,20 +268,17 @@ export async function ejecutarIC04HastaPaso2(
     console.log(
       'Ítem IC04 cargado correctamente.'
     );
-    console.log(
-      'Chrome queda abierto para continuar las pruebas manuales.'
-    );
   } catch (error) {
     console.error('');
     console.error(
-      'ERROR durante la ejecución:'
+      `ERROR IC04/${navegador}:`
     );
     console.error(error);
 
     await page
       .screenshot({
         path:
-          `screenshots/error-${Date.now()}.png`,
+          `screenshots/error-IC04-${navegador}-${Date.now()}.png`,
         fullPage: true
       })
       .catch(

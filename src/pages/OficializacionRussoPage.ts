@@ -4,6 +4,10 @@ export class OficializacionRussoPage
   extends OficializacionBasePage {
 
   private async responderPreguntasPostItems() {
+    console.log(
+      '✔ [RUSSO] Pregunta texto: 0'
+    );
+
     await this.responderTexto('0');
 
     await this.responderNo();
@@ -19,26 +23,41 @@ export class OficializacionRussoPage
     await this.responderNo();
     await this.responderNo();
 
+    console.log(
+      '✔ [RUSSO] Pregunta texto: TST'
+    );
+
     await this.responderTexto('TST');
 
     await this.responderSi();
     await this.responderSi();
 
+    console.log(
+      '✔ [RUSSO] Seleccionando CHINA'
+    );
+
     await this.seleccionarRadioExacto(
       'CHINA'
     );
 
-    await this.seleccionarRadioParcial(
-      'EL PLAZO DE ESPERA PARA EL PAGO DE LOS DERECHOS DE EXPORTACION SERA DE 15 DIAS'
+    console.log(
+      '✔ [RUSSO] Seleccionando plazo CONCORDANTE'
     );
 
-    // Pregunta adicional exclusiva de Russo
+    await this.seleccionarRadioParcial(
+      'EL PLAZO DE ESPERA PARA EL PAGO DE LOS DERECHOS DE EXPORTACION SERA CONCORDANTE'
+    );
+
+    console.log(
+      '✔ [RUSSO] Respondiendo pregunta adicional: NO'
+    );
+
     await this.responderNo();
   }
 
   private async responderPreguntasPresupuesto() {
-    await this.seleccionarRadioParcial(
-      'DIGITALIZACION POR PSAD.'
+    console.log(
+      '✔ [RUSSO] Inicio preguntas de Presupuesto'
     );
 
     await this.responderNo();
@@ -54,7 +73,6 @@ export class OficializacionRussoPage
       '- BANCO DE LA NACION ARGENTINA'
     );
 
-    // Secuencia Russo
     await this.responderNo();
     await this.responderNo();
     await this.responderNo();
@@ -63,18 +81,17 @@ export class OficializacionRussoPage
     await this.responderSi();
 
     console.log(
-      '✔ Russo - Respuesta texto 1: 0'
+      '✔ [RUSSO] Respuesta texto Presupuesto: tca'
     );
 
-    await this.responderTexto('0');
+    await this.responderTexto('tca');
 
     console.log(
-      '✔ Russo - Respuesta texto 2: 0'
+      '✔ [RUSSO] Respuesta texto Presupuesto: 0'
     );
 
     await this.responderTexto('0');
 
-    // Pregunta adicional Russo
     await this.responderNo();
 
     await this.seleccionarRadioParcial(
@@ -100,7 +117,7 @@ export class OficializacionRussoPage
     );
 
     await this.completarCertificacionPACROM(
-      'transformer'
+      'Transformer'
     );
 
     console.log(
