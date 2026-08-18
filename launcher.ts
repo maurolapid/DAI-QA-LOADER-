@@ -790,16 +790,20 @@ async function main() {
   }
 
   // ==========================================
-  // DETECTAR OFICIALIZACION
+  // TIPO DE FLUJO
   // ==========================================
 
-  const esAmbienteOficializacion =
-    ambienteId
-      .toLowerCase() ===
-      'oficializacion' ||
-    ambienteNombre
-      .toLowerCase() ===
-      'oficializacion';
+  const tipoFlujoIndex =
+    await askOption(
+      'Tipo de flujo',
+      [
+        'Operaciones',
+        'Oficialización'
+      ]
+    );
+
+  const esOficializacion =
+    tipoFlujoIndex === 1;
 
   // ==========================================
   // PERFIL EXCLUSIVO DE OFICIALIZACION
@@ -818,7 +822,7 @@ async function main() {
       null;
 
   if (
-    esAmbienteOficializacion
+    esOficializacion
   ) {
     const perfilIndex =
       await askOption(
@@ -871,7 +875,7 @@ async function main() {
     ModoEjecucion = 'individual';
 
   if (
-    !esAmbienteOficializacion
+    !esOficializacion
   ) {
     const modoEjecucionIndex =
       await askOption(
@@ -893,7 +897,7 @@ async function main() {
   // ==========================================
 
   if (
-    esAmbienteOficializacion
+    esOficializacion
   ) {
     const subregimen:
       'EC01' = 'EC01';
