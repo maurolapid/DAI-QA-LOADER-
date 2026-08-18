@@ -2,7 +2,10 @@ import {
   chromium,
   firefox
 } from '@playwright/test';
-import type { Browser } from '@playwright/test';
+
+import type {
+  Browser
+} from '@playwright/test';
 
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
@@ -24,24 +27,32 @@ async function iniciarNavegador(
     `✔ Iniciando navegador: ${navegador}...`
   );
 
-  if (navegador === 'firefox') {
+  if (
+    navegador === 'firefox'
+  ) {
     return firefox.launch({
       headless: false
     });
   }
 
-  if (navegador === 'edge') {
+  if (
+    navegador === 'edge'
+  ) {
     return chromium.launch({
       channel: 'msedge',
       headless: false,
-      args: ['--start-maximized']
+      args: [
+        '--start-maximized'
+      ]
     });
   }
 
   return chromium.launch({
     channel: 'chrome',
     headless: false,
-    args: ['--start-maximized']
+    args: [
+      '--start-maximized'
+    ]
   });
 }
 
@@ -70,7 +81,8 @@ export async function ejecutarEC01HastaItems(
     );
 
     await page.goto(baseUrl, {
-      waitUntil: 'domcontentloaded'
+      waitUntil:
+        'domcontentloaded'
     });
 
     console.log(
@@ -128,41 +140,129 @@ export async function ejecutarEC01HastaItems(
         data.caratula
       );
 
-    console.log(
-      `✔ [EC01/${navegador}] Cargando posición arancelaria: ${data.item.posicionArancelaria}`
-    );
-
     const itemsPage =
       new ItemsEC01Page(page);
 
-    const resultadoItem =
-      await itemsPage
-        .completarItem(
-          data.item
-        );
+    // OFICIALIZACION queda intencionalmente en 1 item.
+    const items =
+      data.esOficializacion ===
+      true
+        ? [
+            data.item
+          ]
+        : (
+            Array.isArray(
+              data.items
+            ) &&
+            data.items.length > 0
+              ? data.items
+              : [
+                  data.item
+                ]
+          );
 
-    if (
-      resultadoItem ===
-      'asistido'
+    console.log('');
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      `✔ [EC01/${navegador}] Items a cargar: ${items.length}`
+    );
+    console.log(
+      '=========================================='
+    );
+
+    for (
+      let index = 0;
+      index < items.length;
+      index++
     ) {
+      const item =
+        items[index];
+
+      const numeroItem =
+        index + 1;
+
+      const esPrimerItem =
+        index === 0;
+
+      const esUltimoItem =
+        index ===
+        items.length - 1;
+
       console.log('');
       console.log(
-        '=========================================='
+        '------------------------------------------'
       );
       console.log(
-        `⚠ [EC01/${navegador}] MODO ASISTIDO ACTIVADO`
+        `✔ [EC01/${navegador}] Cargando Item ${numeroItem} de ${items.length}`
       );
       console.log(
-        `Posición: ${data.item.posicionArancelaria}`
+        `Posición: ${item.posicionArancelaria}`
       );
       console.log(
-        `Complete manualmente los sufijos en ${navegador}.`
+        `FOB Item: ${item.fobTotalDivisa}`
       );
       console.log(
-        '=========================================='
+        '------------------------------------------'
       );
 
-      return;
+      const resultadoItem =
+        await itemsPage
+          .completarItem(
+            item,
+            {
+              apertura:
+                esPrimerItem
+                  ? 'primer'
+                  : 'siguiente',
+
+              cargarTodosAlFinal:
+                esUltimoItem
+            }
+          );
+
+      if (
+        resultadoItem ===
+        'asistido'
+      ) {
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          `⚠ [EC01/${navegador}] MODO ASISTIDO ACTIVADO`
+        );
+        console.log(
+          `Item: ${numeroItem} de ${items.length}`
+        );
+        console.log(
+          `Posición: ${item.posicionArancelaria}`
+        );
+        console.log(
+          `Complete manualmente los sufijos en ${navegador}.`
+        );
+        console.log(
+          'La carga automática de los siguientes items se detuvo.'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        return;
+      }
+
+      console.log(
+        `✔ [EC01/${navegador}] Item ${numeroItem} de ${items.length} preparado correctamente`
+      );
+
+      if (
+        esUltimoItem
+      ) {
+        console.log(
+          `✔ [EC01/${navegador}] CARGAR ITEMS ejecutado al finalizar el último item`
+        );
+      }
     }
 
     console.log('');
@@ -170,14 +270,36 @@ export async function ejecutarEC01HastaItems(
       '=========================================='
     );
     console.log(
-      `✔ [EC01/${navegador}] Ítem cargado correctamente`
+      `✔ [EC01/${navegador}] ${items.length} item(s) cargado(s) correctamente`
     );
     console.log(
       '=========================================='
     );
 
+    const sumaFobItems =
+      items.reduce(
+        (
+          total: number,
+          item: any
+        ) =>
+          total +
+          Number(
+            item.fobTotalDivisa
+          ),
+        0
+      );
+
+    console.log(
+      `✔ FOB Carátula: ${data.caratula.fobTotal}`
+    );
+
+    console.log(
+      `✔ FOB acumulado Items: ${sumaFobItems.toFixed(2)}`
+    );
+
     if (
-      data.esOficializacion === true
+      data.esOficializacion ===
+      true
     ) {
       const flujoPreguntas =
         data.flujoPreguntasOficializacion ??
@@ -274,7 +396,9 @@ export async function ejecutarEC01HastaItems(
           `screenshots/error-EC01-${navegador}-${Date.now()}.png`,
         fullPage: true
       })
-      .catch(() => undefined);
+      .catch(
+        () => undefined
+      );
 
     throw error;
   }

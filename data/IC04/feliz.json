@@ -25,5 +25,19 @@
       "presencia": "Si",
       "numeroFactura": "FacturaTestDAILOADER001"
     }
+  },
+  "item": {
+    "posicionArancelaria": "",
+    "tipoOpcion": "N - Normal",
+    "estadoMercaderiaOpcion": "- NUEVO SIN USO IMPORTADO",
+    "origenOpcion": "- CHINA",
+    "paisProcedenciaOpcion": "- CHINA",
+    "unidadDeclaradaOpcion": "- KILOGRAMO",
+    "totalKiloNeto": "10",
+    "fobTotalDivisa": "10",
+    "cantidadDeclarada": "10",
+    "cantidadUnidadesEstadisticas": "10",
+    "modoSufijos": "automatico",
+    "sufijos": []
   }
 }

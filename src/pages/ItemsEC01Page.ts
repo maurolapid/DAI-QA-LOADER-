@@ -1,6 +1,8 @@
 import { Page, expect } from '@playwright/test';
 
-type ModoSufijos = 'automatico' | 'asistido';
+type ModoSufijos =
+  | 'automatico'
+  | 'asistido';
 
 type SufijoTexto = {
   tipo: 'texto';
@@ -15,7 +17,9 @@ type SufijoCombo = {
   indice?: number;
 };
 
-type SufijoItem = SufijoTexto | SufijoCombo;
+type SufijoItem =
+  | SufijoTexto
+  | SufijoCombo;
 
 type ItemEC01Data = {
   posicionArancelaria: string;
@@ -32,6 +36,14 @@ type ItemEC01Data = {
   fobTotalDivisa: string;
   cantidadDeclarada: string;
   cantidadUnidadesEstadisticas: string;
+};
+
+type OpcionesCargaItem = {
+  apertura:
+    | 'primer'
+    | 'siguiente';
+
+  cargarTodosAlFinal: boolean;
 };
 
 export type ResultadoCargaItem =
@@ -101,7 +113,9 @@ export class ItemsEC01Page {
     );
   }
 
-  private async seleccionarOpcion(opcion: string) {
+  private async seleccionarOpcion(
+    opcion: string
+  ) {
     await this.page
       .getByRole('option', {
         name: opcion
@@ -110,11 +124,27 @@ export class ItemsEC01Page {
       .click();
   }
 
-  async abrirNuevoItem() {
+  async abrirNuevoItem(
+    apertura:
+      | 'primer'
+      | 'siguiente'
+  ) {
     const botonAgregarItem =
-      this.page.getByRole('button', {
-        name: 'AGREGAR ITEM'
-      });
+      apertura === 'primer'
+        ? this.page.getByRole(
+            'button',
+            {
+              name: 'AGREGAR ITEM',
+              exact: true
+            }
+          )
+        : this.page.getByRole(
+            'button',
+            {
+              name: 'Agregar item',
+              exact: true
+            }
+          );
 
     await botonAgregarItem.waitFor({
       state: 'visible',
@@ -139,13 +169,24 @@ export class ItemsEC01Page {
       posicionArancelaria
     );
 
-    await this.page
-      .getByText(
+    const coincidencias =
+      this.page.getByText(
         posicionArancelaria,
         {
           exact: true
         }
-      )
+      );
+
+    const cantidad =
+      await coincidencias.count();
+
+    if (cantidad === 0) {
+      throw new Error(
+        `No se encontró la posición arancelaria ${posicionArancelaria}`
+      );
+    }
+
+    await coincidencias
       .last()
       .click();
   }
@@ -201,22 +242,21 @@ export class ItemsEC01Page {
       })
       .click();
 
-    await this.page
-      .getByRole('button', {
-        name: 'NO',
-        exact: true
-      })
-      .waitFor({
-        state: 'visible',
-        timeout: 30000
-      });
+    const botonNo =
+      this.page.getByRole(
+        'button',
+        {
+          name: 'NO',
+          exact: true
+        }
+      );
 
-    await this.page
-      .getByRole('button', {
-        name: 'NO',
-        exact: true
-      })
-      .click();
+    await botonNo.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+    await botonNo.click();
   }
 
   async completarValores(
@@ -257,9 +297,12 @@ export class ItemsEC01Page {
 
   async abrirSufijos() {
     const botonAgregarSufijo =
-      this.page.getByRole('button', {
-        name: 'Agregar sufijo'
-      });
+      this.page.getByRole(
+        'button',
+        {
+          name: 'Agregar sufijo'
+        }
+      );
 
     await botonAgregarSufijo.waitFor({
       state: 'visible',
@@ -272,22 +315,25 @@ export class ItemsEC01Page {
   private async completarSufijoTexto(
     sufijo: SufijoTexto
   ) {
-    const campo = this.page.getByRole(
-      'textbox',
-      {
-        name: new RegExp(
-          sufijo.nombreAccesible,
-          'i'
-        )
-      }
-    );
+    const campo =
+      this.page.getByRole(
+        'textbox',
+        {
+          name: new RegExp(
+            sufijo.nombreAccesible,
+            'i'
+          )
+        }
+      );
 
     await campo.waitFor({
       state: 'visible',
       timeout: 30000
     });
 
-    await campo.fill(sufijo.valor);
+    await campo.fill(
+      sufijo.valor
+    );
 
     await expect(campo).toHaveValue(
       sufijo.valor
@@ -297,36 +343,97 @@ export class ItemsEC01Page {
   private async completarSufijoCombo(
     sufijo: SufijoCombo
   ) {
-    const combos = this.page.getByRole(
-      'combobox',
-      {
-        name: new RegExp(
-          sufijo.nombreAccesible,
-          'i'
-        )
-      }
+    const combos =
+      this.page.getByRole(
+        'combobox',
+        {
+          name: new RegExp(
+            sufijo.nombreAccesible,
+            'i'
+          )
+        }
+      );
+
+    const cantidadCombos =
+      await combos.count();
+
+    if (cantidadCombos === 0) {
+      throw new Error(
+        `No se encontró ningún combo para el sufijo "${sufijo.valor}"`
+      );
+    }
+
+    console.log(
+      `✔ Combos encontrados para "${sufijo.nombreAccesible}": ${cantidadCombos}`
     );
 
-    const indice = sufijo.indice ?? 0;
-    const combo = combos.nth(indice);
+    for (
+      let indice = 0;
+      indice < cantidadCombos;
+      indice++
+    ) {
+      const combo =
+        combos.nth(indice);
 
-    await combo.waitFor({
-      state: 'visible',
-      timeout: 30000
-    });
+      if (
+        !(await combo.isVisible())
+      ) {
+        continue;
+      }
 
-    await combo.click();
+      await combo.click();
 
-    await this.seleccionarOpcion(
-      sufijo.valor
+      const opcion =
+        this.page.getByRole(
+          'option',
+          {
+            name: sufijo.valor,
+            exact: true
+          }
+        );
+
+      const cantidadOpciones =
+        await opcion.count();
+
+      if (
+        cantidadOpciones > 0 &&
+        await opcion
+          .first()
+          .isVisible()
+      ) {
+        await opcion
+          .first()
+          .click();
+
+        console.log(
+          `✔ Sufijo combo seleccionado: ${sufijo.valor}`
+        );
+
+        return;
+      }
+
+      await this.page
+        .keyboard
+        .press('Escape')
+        .catch(
+          () => undefined
+        );
+    }
+
+    throw new Error(
+      `No se pudo seleccionar el sufijo combo "${sufijo.valor}"`
     );
   }
 
   async completarSufijosAutomaticamente(
     sufijos: SufijoItem[]
   ) {
-    for (const sufijo of sufijos) {
-      if (sufijo.tipo === 'texto') {
+    for (
+      const sufijo of sufijos
+    ) {
+      if (
+        sufijo.tipo === 'texto'
+      ) {
         await this.completarSufijoTexto(
           sufijo
         );
@@ -346,50 +453,74 @@ export class ItemsEC01Page {
       .click();
   }
 
-  async cargarItem() {
-    await this.page
-      .getByRole('button', {
-        name: 'CARGAR ITEMS'
-      })
-      .click();
+  async cargarItems() {
+    const botonCargarItems =
+      this.page.getByRole(
+        'button',
+        {
+          name: 'CARGAR ITEMS',
+          exact: true
+        }
+      );
+
+    await botonCargarItems.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+    await botonCargarItems.click();
   }
 
   async completarItem(
-    data: ItemEC01Data
+    data: ItemEC01Data,
+    opciones: OpcionesCargaItem
   ): Promise<ResultadoCargaItem> {
-    await this.abrirNuevoItem();
+    await this.abrirNuevoItem(
+      opciones.apertura
+    );
 
     await this.seleccionarPosicionArancelaria(
       data.posicionArancelaria
     );
 
-    await this.completarCabecera(data);
-
-    // Orden real validado por Codegen:
-    // Cabecera → Continuar → Sin SubItems → Valores → Sufijos → Cargar Item
+    await this.completarCabecera(
+      data
+    );
 
     await this.continuarSinSubitems();
 
-    await this.completarValores(data);
+    await this.completarValores(
+      data
+    );
 
     await this.abrirSufijos();
 
-    if (data.modoSufijos === 'asistido') {
+    if (
+      data.modoSufijos ===
+      'asistido'
+    ) {
       return 'asistido';
     }
 
     if (
-      !Array.isArray(data.sufijos) ||
+      !Array.isArray(
+        data.sufijos
+      ) ||
       data.sufijos.length === 0
     ) {
       return 'asistido';
     }
 
-    await this.completarSufijosAutomaticamente(
-      data.sufijos
-    );
+    await this
+      .completarSufijosAutomaticamente(
+        data.sufijos
+      );
 
-    await this.cargarItem();
+    if (
+      opciones.cargarTodosAlFinal
+    ) {
+      await this.cargarItems();
+    }
 
     return 'completado';
   }

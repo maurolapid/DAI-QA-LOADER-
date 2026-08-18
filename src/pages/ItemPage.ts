@@ -23,6 +23,19 @@ type SufijoItem =
 
 type ItemIC04Data = {
   posicionArancelaria: string;
+
+  tipoOpcion: string;
+  estadoMercaderiaOpcion: string;
+  origenOpcion: string;
+  paisProcedenciaOpcion: string;
+  unidadDeclaradaOpcion: string;
+
+  totalKiloNeto: string;
+
+  fobTotalDivisa: string;
+  cantidadDeclarada: string;
+  cantidadUnidadesEstadisticas: string;
+
   modoSufijos: ModoSufijos;
   sufijos: SufijoItem[];
 };
@@ -51,6 +64,51 @@ export class ItemPage {
       .click();
   }
 
+  async abrirPrimerItem() {
+    const botonAgregarItem =
+      this.page.getByRole('button', {
+        name: 'AGREGAR ITEM',
+        exact: true
+      });
+
+    await botonAgregarItem.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await botonAgregarItem.click();
+  }
+
+  async agregarOtroItem() {
+    const botonAgregarItem =
+      this.page.getByRole('button', {
+        name: 'Agregar item',
+        exact: true
+      });
+
+    await botonAgregarItem.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await botonAgregarItem.click();
+  }
+
+  async cargarTodosLosItems() {
+    const botonCargarItems =
+      this.page.getByRole('button', {
+        name: 'CARGAR ITEMS',
+        exact: true
+      });
+
+    await botonCargarItems.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await botonCargarItems.click();
+  }
+
   async completarPosicionArancelaria(
     codigo: string
   ) {
@@ -64,11 +122,23 @@ export class ItemPage {
 
     await input.fill(codigo);
 
-    await this.page
-      .getByText(codigo, {
-        exact: true
-      })
-      .nth(1)
+    const opcion =
+      this.page.getByText(
+        codigo,
+        {
+          exact: true
+        }
+      );
+
+    await opcion
+      .last()
+      .waitFor({
+        state: 'visible',
+        timeout: 30000
+      });
+
+    await opcion
+      .last()
       .click();
 
     await expect(input).toHaveValue(
@@ -76,7 +146,9 @@ export class ItemPage {
     );
   }
 
-  async completarCabeceraIC04() {
+  async completarCabeceraIC04(
+    data: ItemIC04Data
+  ) {
     await this.page
       .locator(
         '#tipo_paso_items_seccion_cabecera'
@@ -84,7 +156,7 @@ export class ItemPage {
       .click();
 
     await this.seleccionarOpcion(
-      'N - Normal'
+      data.tipoOpcion
     );
 
     await this.page
@@ -94,7 +166,7 @@ export class ItemPage {
       .click();
 
     await this.seleccionarOpcion(
-      '- NUEVO SIN USO IMPORTADO'
+      data.estadoMercaderiaOpcion
     );
 
     await this.page
@@ -104,7 +176,7 @@ export class ItemPage {
       .click();
 
     await this.seleccionarOpcion(
-      '- CHINA'
+      data.origenOpcion
     );
 
     await this.page
@@ -114,7 +186,7 @@ export class ItemPage {
       .click();
 
     await this.seleccionarOpcion(
-      '- CHINA'
+      data.paisProcedenciaOpcion
     );
 
     await this.page
@@ -124,7 +196,7 @@ export class ItemPage {
       .click();
 
     await this.seleccionarOpcion(
-      '- KILOGRAMO'
+      data.unidadDeclaradaOpcion
     );
 
     const totalKiloNeto =
@@ -132,11 +204,15 @@ export class ItemPage {
         '#total_kilo_neto_paso_items_seccion_cabecera'
       );
 
-    await totalKiloNeto.fill('10');
+    await totalKiloNeto.fill(
+      data.totalKiloNeto
+    );
 
     await expect(
       totalKiloNeto
-    ).toHaveValue('10');
+    ).toHaveValue(
+      data.totalKiloNeto
+    );
   }
 
   async continuarSinSubitems() {
@@ -163,7 +239,9 @@ export class ItemPage {
       .click();
   }
 
-  async completarVentajasIC04() {
+  async completarVentajasIC04(
+    data: ItemIC04Data
+  ) {
     const fobTotal =
       this.page.locator(
         '#fob_total_en_divisa_paso_items_seccion_valor_del_item'
@@ -174,26 +252,34 @@ export class ItemPage {
       timeout: 30000
     });
 
-    await fobTotal.fill('10');
+    await fobTotal.fill(
+      data.fobTotalDivisa
+    );
 
     await expect(
       fobTotal
-    ).toHaveValue('10');
+    ).toHaveValue(
+      data.fobTotalDivisa
+    );
   }
 
-  async completarValorItemIC04() {
+  async completarValorItemIC04(
+    data: ItemIC04Data
+  ) {
     const cantidadDeclarada =
       this.page.locator(
         '#cantidad_declarada_paso_items_seccion_valor_del_item'
       );
 
     await cantidadDeclarada.fill(
-      '10'
+      data.cantidadDeclarada
     );
 
     await expect(
       cantidadDeclarada
-    ).toHaveValue('10');
+    ).toHaveValue(
+      data.cantidadDeclarada
+    );
 
     const unidadesEstadisticas =
       this.page.locator(
@@ -201,12 +287,14 @@ export class ItemPage {
       );
 
     await unidadesEstadisticas.fill(
-      '10'
+      data.cantidadUnidadesEstadisticas
     );
 
     await expect(
       unidadesEstadisticas
-    ).toHaveValue('10');
+    ).toHaveValue(
+      data.cantidadUnidadesEstadisticas
+    );
   }
 
   async abrirSufijos() {
@@ -307,12 +395,6 @@ export class ItemPage {
     await this.page
       .getByRole('button', {
         name: 'AGREGAR SUFIJOS'
-      })
-      .click();
-
-    await this.page
-      .getByRole('button', {
-        name: 'CARGAR ITEMS'
       })
       .click();
   }

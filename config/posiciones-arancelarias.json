@@ -20,19 +20,37 @@
   {
     "id": 4,
     "codigo": "3003.10.12.000W",
-    "descripcion": "Amoxicilina o sus sales",
-    "nota": ""
+    "descripcion": "Amoxicilina o sus sales"
   },
   {
     "id": 5,
     "codigo": "8703.23.10.190E",
-    "descripcion": "Los demás",
-    "nota": ""
+    "descripcion": "Los demás"
   },
   {
     "id": 6,
     "codigo": "7318.11.00.100F",
     "descripcion": "Posición oficialización Herrero/Russo",
     "nota": "Oficialización"
+  },
+  {
+    "id": 7,
+    "codigo": "8409.99.99.900C",
+    "descripcion": "Posición adicional configurada"
+  },
+  {
+    "id": 8,
+    "codigo": "8483.10.20.900Z",
+    "descripcion": "Posición adicional configurada"
+  },
+  {
+    "id": 9,
+    "codigo": "3926.90.90.919Z",
+    "descripcion": "Posición adicional configurada"
+  },
+  {
+    "id": 10,
+    "codigo": "8708.29.99.990J",
+    "descripcion": "Posición adicional configurada"
   }
 ]

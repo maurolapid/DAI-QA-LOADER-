@@ -2,7 +2,10 @@ import {
   chromium,
   firefox
 } from '@playwright/test';
-import type { Browser } from '@playwright/test';
+
+import type {
+  Browser
+} from '@playwright/test';
 
 import { LoginPage } from '../pages/LoginPage';
 import { HomePage } from '../pages/HomePage';
@@ -22,24 +25,32 @@ async function iniciarNavegador(
     `✔ Iniciando navegador: ${navegador}...`
   );
 
-  if (navegador === 'firefox') {
+  if (
+    navegador === 'firefox'
+  ) {
     return firefox.launch({
       headless: false
     });
   }
 
-  if (navegador === 'edge') {
+  if (
+    navegador === 'edge'
+  ) {
     return chromium.launch({
       channel: 'msedge',
       headless: false,
-      args: ['--start-maximized']
+      args: [
+        '--start-maximized'
+      ]
     });
   }
 
   return chromium.launch({
     channel: 'chrome',
     headless: false,
-    args: ['--start-maximized']
+    args: [
+      '--start-maximized'
+    ]
   });
 }
 
@@ -68,7 +79,8 @@ export async function ejecutarIC04HastaPaso2(
     );
 
     await page.goto(baseUrl, {
-      waitUntil: 'domcontentloaded'
+      waitUntil:
+        'domcontentloaded'
     });
 
     console.log(
@@ -142,13 +154,17 @@ export async function ejecutarIC04HastaPaso2(
             .request()
             .method() ===
             'POST' &&
-          response.status() === 200
+          response.status() ===
+            200
       ),
 
       page
-        .getByRole('button', {
-          name: 'ir a Items'
-        })
+        .getByRole(
+          'button',
+          {
+            name: 'ir a Items'
+          }
+        )
         .click()
     ]);
 
@@ -167,92 +183,188 @@ export async function ejecutarIC04HastaPaso2(
           .request()
           .method() ===
           'GET' &&
-        response.status() === 200
+        response.status() ===
+          200
     );
-
-    console.log(
-      `✔ [IC04/${navegador}] Abriendo Agregar Item...`
-    );
-
-    await page
-      .getByRole('button', {
-        name: 'AGREGAR ITEM'
-      })
-      .click();
 
     const itemPage =
       new ItemPage(page);
 
+    const items =
+      Array.isArray(
+        data.items
+      ) &&
+      data.items.length > 0
+        ? data.items
+        : [
+            data.item
+          ];
+
+    console.log('');
     console.log(
-      `✔ [IC04/${navegador}] Completando posición arancelaria...`
+      '=========================================='
+    );
+    console.log(
+      `✔ [IC04/${navegador}] Items a cargar: ${items.length}`
+    );
+    console.log(
+      '=========================================='
     );
 
-    await itemPage
-      .completarPosicionArancelaria(
-        data.item
-          .posicionArancelaria
-      );
-
-    console.log(
-      `✔ [IC04/${navegador}] Completando cabecera IC04...`
-    );
-
-    await itemPage
-      .completarCabeceraIC04();
-
-    console.log(
-      `✔ [IC04/${navegador}] Continuando sin SubItems...`
-    );
-
-    await itemPage
-      .continuarSinSubitems();
-
-    console.log(
-      `✔ [IC04/${navegador}] Completando Ventajas...`
-    );
-
-    await itemPage
-      .completarVentajasIC04();
-
-    console.log(
-      `✔ [IC04/${navegador}] Completando valor del Item...`
-    );
-
-    await itemPage
-      .completarValorItemIC04();
-
-    console.log(
-      `✔ [IC04/${navegador}] Completando sufijos...`
-    );
-
-    const resultadoSufijos =
-      await itemPage
-        .completarSufijos(
-          data.item
-        );
-
-    if (
-      resultadoSufijos ===
-      'asistido'
+    for (
+      let index = 0;
+      index < items.length;
+      index++
     ) {
+      const item =
+        items[index];
+
+      const numeroItem =
+        index + 1;
+
+      const esPrimerItem =
+        index === 0;
+
+      const esUltimoItem =
+        index ===
+        items.length - 1;
+
       console.log('');
       console.log(
-        '=========================================='
+        '------------------------------------------'
       );
       console.log(
-        `⚠ [IC04/${navegador}] MODO ASISTIDO ACTIVADO`
+        `✔ [IC04/${navegador}] Cargando Item ${numeroItem} de ${items.length}`
       );
       console.log(
-        `Posición: ${data.item.posicionArancelaria}`
+        `Posición: ${item.posicionArancelaria}`
       );
       console.log(
-        `Complete manualmente los sufijos en ${navegador}.`
+        `FOB Item: ${item.fobTotalDivisa}`
       );
       console.log(
-        '=========================================='
+        '------------------------------------------'
       );
 
-      return;
+      if (
+        esPrimerItem
+      ) {
+        console.log(
+          `✔ [IC04/${navegador}] Abriendo primer Item...`
+        );
+
+        await itemPage
+          .abrirPrimerItem();
+      } else {
+        console.log(
+          `✔ [IC04/${navegador}] Agregando siguiente Item...`
+        );
+
+        await itemPage
+          .agregarOtroItem();
+      }
+
+      console.log(
+        `✔ [IC04/${navegador}] Completando posición arancelaria...`
+      );
+
+      await itemPage
+        .completarPosicionArancelaria(
+          item.posicionArancelaria
+        );
+
+      console.log(
+        `✔ [IC04/${navegador}] Completando cabecera IC04...`
+      );
+
+      await itemPage
+        .completarCabeceraIC04(
+          item
+        );
+
+      console.log(
+        `✔ [IC04/${navegador}] Continuando sin SubItems...`
+      );
+
+      await itemPage
+        .continuarSinSubitems();
+
+      console.log(
+        `✔ [IC04/${navegador}] Completando FOB del Item...`
+      );
+
+      await itemPage
+        .completarVentajasIC04(
+          item
+        );
+
+      console.log(
+        `✔ [IC04/${navegador}] Completando valores del Item...`
+      );
+
+      await itemPage
+        .completarValorItemIC04(
+          item
+        );
+
+      console.log(
+        `✔ [IC04/${navegador}] Completando sufijos...`
+      );
+
+      const resultadoSufijos =
+        await itemPage
+          .completarSufijos(
+            item
+          );
+
+      if (
+        resultadoSufijos ===
+        'asistido'
+      ) {
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          `⚠ [IC04/${navegador}] MODO ASISTIDO ACTIVADO`
+        );
+        console.log(
+          `Item: ${numeroItem} de ${items.length}`
+        );
+        console.log(
+          `Posición: ${item.posicionArancelaria}`
+        );
+        console.log(
+          `Complete manualmente los sufijos en ${navegador}.`
+        );
+        console.log(
+          'La carga automática de los siguientes items se detuvo.'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        return;
+      }
+
+      console.log(
+        `✔ [IC04/${navegador}] Item ${numeroItem} de ${items.length} preparado correctamente`
+      );
+
+      if (
+        esUltimoItem
+      ) {
+        console.log(
+          `✔ [IC04/${navegador}] Todos los items fueron preparados. Presionando CARGAR ITEMS...`
+        );
+
+        await itemPage
+          .cargarTodosLosItems();
+
+        console.log(
+          `✔ [IC04/${navegador}] CARGAR ITEMS ejecutado correctamente`
+        );
+      }
     }
 
     console.log('');
@@ -260,13 +372,35 @@ export async function ejecutarIC04HastaPaso2(
       '=========================================='
     );
     console.log(
-      `✔ [IC04/${navegador}] Flujo finalizado`
+      `✔ [IC04/${navegador}] FLUJO FINALIZADO`
     );
     console.log(
       '=========================================='
     );
+
     console.log(
-      'Ítem IC04 cargado correctamente.'
+      `✔ ${items.length} items IC04 cargados correctamente.`
+    );
+
+    console.log(
+      `✔ FOB Carátula: ${data.caratula.fobTotal}`
+    );
+
+    const sumaFobItems =
+      items.reduce(
+        (
+          total: number,
+          item: any
+        ) =>
+          total +
+          Number(
+            item.fobTotalDivisa
+          ),
+        0
+      );
+
+    console.log(
+      `✔ FOB acumulado Items: ${sumaFobItems.toFixed(2)}`
     );
   } catch (error) {
     console.error('');

@@ -5,6 +5,7 @@ import { stdin as input, stdout as output } from 'node:process';
 
 import { ejecutarIC04HastaPaso2 } from './src/flows/ic04-hasta-paso2';
 import { ejecutarEC01HastaItems } from './src/flows/ec01-hasta-items';
+import { generarItems } from './src/utils/generador-items';
 
 type Ambiente = {
   id: string;
@@ -45,6 +46,7 @@ type SufijoItem = {
   nombreAccesible: string;
   valor: string;
   indice?: number;
+  correlativo?: boolean;
 };
 
 type SufijosPorPosicion =
@@ -174,7 +176,7 @@ function banner() {
   );
 
   console.log(
-    '          DAI QA LOADER v1.4.0'
+    '          DAI QA LOADER v1.5.0'
   );
 
   console.log(
@@ -248,6 +250,469 @@ async function seleccionarNavegador(
   }
 
   return 'edge';
+}
+
+
+const CANTIDADES_ITEMS = [
+  1,
+  5,
+  10,
+  15,
+  20,
+  50,
+  100,
+  200,
+  250
+] as const;
+
+async function seleccionarCantidadItems(
+  titulo: string
+): Promise<number> {
+  const index =
+    await askOption(
+      titulo,
+      CANTIDADES_ITEMS.map(
+        cantidad =>
+          String(cantidad)
+      )
+    );
+
+  return CANTIDADES_ITEMS[index];
+}
+
+async function solicitarFobTotal(
+  titulo: string
+): Promise<string> {
+  const respuesta =
+    await rl.question(
+      `${titulo}: `
+    );
+
+  const normalizado =
+    respuesta
+      .trim()
+      .replace(',', '.');
+
+  const valor =
+    Number(normalizado);
+
+  if (
+    !Number.isFinite(valor) ||
+    valor <= 0
+  ) {
+    throw new Error(
+      `FOB inválido: ${respuesta}. Debe ser un número mayor a 0.`
+    );
+  }
+
+  console.log('');
+
+  return valor.toFixed(2);
+}
+
+async function seleccionarPosicionesParaItems(
+  cantidadItems: number,
+  posiciones: PosicionArancelaria[],
+  titulo: string
+): Promise<PosicionArancelaria[]> {
+  if (
+    posiciones.length === 0
+  ) {
+    throw new Error(
+      'No hay posiciones arancelarias configuradas.'
+    );
+  }
+
+  // Si se ejecuta un único item, se selecciona directamente
+  // una única posición arancelaria y se omite la distribución.
+  if (
+    cantidadItems === 1
+  ) {
+    const posicionIndex =
+      await askOption(
+        'Seleccione la posición arancelaria',
+        posiciones.map(
+          posicion =>
+            `${posicion.codigo} - ${posicion.descripcion}${
+              posicion.nota
+                ? ` (${posicion.nota})`
+                : ''
+            }`
+        )
+      );
+
+    return [
+      posiciones[posicionIndex]
+    ];
+  }
+
+  const tipoDistribucionIndex =
+    await askOption(
+      titulo,
+      [
+        'Misma posición para todos los items',
+        'Utilizar varias posiciones'
+      ]
+    );
+
+  if (
+    tipoDistribucionIndex === 0
+  ) {
+    const posicionIndex =
+      await askOption(
+        'Seleccione la posición arancelaria',
+        posiciones.map(
+          posicion =>
+            `${posicion.codigo} - ${posicion.descripcion}${
+              posicion.nota
+                ? ` (${posicion.nota})`
+                : ''
+            }`
+        )
+      );
+
+    return [
+      posiciones[posicionIndex]
+    ];
+  }
+
+  const maximoPosiciones =
+    Math.min(
+      cantidadItems,
+      posiciones.length
+    );
+
+  if (
+    maximoPosiciones === 1
+  ) {
+    console.log(
+      'Solo hay una posición disponible. Se utilizará para todos los items.'
+    );
+
+    return [
+      posiciones[0]
+    ];
+  }
+
+  const cantidadesDisponibles =
+    Array.from(
+      {
+        length:
+          maximoPosiciones - 1
+      },
+      (_, index) =>
+        index + 2
+    );
+
+  const cantidadIndex =
+    await askOption(
+      'Cantidad de posiciones distintas a utilizar',
+      cantidadesDisponibles.map(
+        cantidad =>
+          String(cantidad)
+      )
+    );
+
+  const cantidadPosiciones =
+    cantidadesDisponibles[
+      cantidadIndex
+    ];
+
+  const seleccionadas:
+    PosicionArancelaria[] = [];
+
+  let disponibles = [
+    ...posiciones
+  ];
+
+  for (
+    let numero = 1;
+    numero <= cantidadPosiciones;
+    numero++
+  ) {
+    const posicionIndex =
+      await askOption(
+        `Seleccione posición ${numero} de ${cantidadPosiciones}`,
+        disponibles.map(
+          posicion =>
+            `${posicion.codigo} - ${posicion.descripcion}${
+              posicion.nota
+                ? ` (${posicion.nota})`
+                : ''
+            }`
+        )
+      );
+
+    const seleccionada =
+      disponibles[
+        posicionIndex
+      ];
+
+    seleccionadas.push(
+      seleccionada
+    );
+
+    disponibles =
+      disponibles.filter(
+        posicion =>
+          posicion.codigo !==
+          seleccionada.codigo
+      );
+  }
+
+  return seleccionadas;
+}
+
+function validarSufijosAutomaticos(
+  posicionesSeleccionadas:
+    PosicionArancelaria[],
+  modoSolicitado:
+    ModoSufijos,
+  sufijosPorPosicion:
+    SufijosPorPosicion
+) {
+  if (
+    modoSolicitado !==
+    'automatico'
+  ) {
+    return;
+  }
+
+  const posicionesSinSufijos =
+    posicionesSeleccionadas.filter(
+      posicion => {
+        const sufijos =
+          sufijosPorPosicion[
+            posicion.codigo
+          ] ?? [];
+
+        return (
+          !Array.isArray(
+            sufijos
+          ) ||
+          sufijos.length === 0
+        );
+      }
+    );
+
+  console.log('');
+  console.log(
+    '=========================================='
+  );
+  console.log(
+    '   VALIDACION DE SUFIJOS AUTOMATICOS'
+  );
+  console.log(
+    '=========================================='
+  );
+
+  for (
+    const posicion of
+    posicionesSeleccionadas
+  ) {
+    const sufijos =
+      sufijosPorPosicion[
+        posicion.codigo
+      ] ?? [];
+
+    console.log(
+      `${posicion.codigo} -> ${
+        sufijos.length > 0
+          ? `OK (${sufijos.length} sufijos)`
+          : 'SIN CONFIGURACION'
+      }`
+    );
+  }
+
+  console.log(
+    '=========================================='
+  );
+  console.log('');
+
+  if (
+    posicionesSinSufijos.length >
+    0
+  ) {
+    const codigos =
+      posicionesSinSufijos
+        .map(
+          posicion =>
+            posicion.codigo
+        )
+        .join(', ');
+
+    throw new Error(
+      `No se puede iniciar en modo Automático. Posiciones sin sufijos configurados: ${codigos}`
+    );
+  }
+}
+
+function construirItemsPlanificados(
+  itemBase: any,
+  cantidadItems: number,
+  posicionesSeleccionadas:
+    PosicionArancelaria[],
+  fobTotal: string,
+  modoSolicitado:
+    ModoSufijos,
+  sufijosPorPosicion:
+    SufijosPorPosicion
+) {
+  const items =
+    generarItems({
+      cantidadItems,
+      posiciones:
+        posicionesSeleccionadas.map(
+          posicion =>
+            posicion.codigo
+        ),
+      fobTotal,
+      itemBase
+    });
+
+  return items.map(
+    item => {
+      const sufijosBase =
+        sufijosPorPosicion[
+          item.posicionArancelaria
+        ] ?? [];
+
+      const correlativo =
+        String(
+          item.numeroItem
+        ).padStart(
+          3,
+          '0'
+        );
+
+      const sufijos =
+        sufijosBase.map(
+          sufijo => {
+            if (
+              sufijo.tipo !==
+              'texto'
+            ) {
+              return {
+                ...sufijo
+              };
+            }
+
+            return {
+              ...sufijo,
+
+              valor:
+                sufijo.correlativo === false
+                ? sufijo.valor
+                : `${sufijo.valor}${correlativo}`
+            };
+          }
+        );
+
+      const modoSufijos:
+        ModoSufijos =
+          modoSolicitado ===
+            'automatico' &&
+          sufijos.length === 0
+            ? 'asistido'
+            : modoSolicitado;
+
+      return {
+        ...item,
+        modoSufijos,
+        sufijos
+      };
+    }
+  );
+}
+
+function mostrarPlanItems(
+  titulo: string,
+  items: any[],
+  fobTotal: string
+) {
+  console.log('');
+  console.log(
+    '=========================================='
+  );
+  console.log(
+    `       PLAN DE ITEMS - ${titulo}`
+  );
+  console.log(
+    '=========================================='
+  );
+
+  console.log(
+    `Cantidad:      ${items.length}`
+  );
+
+  console.log(
+    `FOB Carátula:  ${Number(fobTotal).toFixed(2)}`
+  );
+
+  console.log('');
+
+  items.forEach(
+    (item, index) => {
+      const numero =
+        String(index + 1)
+          .padStart(
+            3,
+            '0'
+          );
+
+      console.log(
+        `${numero} | ${item.posicionArancelaria} | FOB ${item.fobTotalDivisa}`
+      );
+    }
+  );
+
+  const totalItems =
+    items.reduce(
+      (
+        acumulado,
+        item
+      ) =>
+        acumulado +
+        Number(
+          item.fobTotalDivisa
+        ),
+      0
+    );
+
+  const totalEsperado =
+    Number(fobTotal);
+
+  const diferencia =
+    Math.abs(
+      totalItems -
+      totalEsperado
+    );
+
+  console.log('');
+  console.log(
+    '------------------------------------------'
+  );
+
+  console.log(
+    `FOB ITEMS:     ${totalItems.toFixed(2)}`
+  );
+
+  console.log(
+    `FOB CARATULA:  ${totalEsperado.toFixed(2)}`
+  );
+
+  console.log(
+    `VALIDACION:    ${
+      diferencia < 0.001
+        ? 'OK'
+        : 'ERROR'
+    }`
+  );
+
+  console.log(
+    '=========================================='
+  );
+  console.log('');
 }
 
 async function main() {
@@ -855,21 +1320,22 @@ async function main() {
       );
     }
 
-    const posicionIndex =
-      await askOption(
-        'Posicion Arancelaria',
-        posiciones.map(
-          posicion =>
-            `${posicion.codigo} - ${posicion.descripcion}${
-              posicion.nota
-                ? ` (${posicion.nota})`
-                : ''
-            }`
-        )
+    const cantidadItems =
+      await seleccionarCantidadItems(
+        'Cantidad de items'
       );
 
-    const posicionSeleccionada =
-      posiciones[posicionIndex];
+    const fobTotal =
+      await solicitarFobTotal(
+        'Ingrese FOB total de Carátula'
+      );
+
+    const posicionesSeleccionadas =
+      await seleccionarPosicionesParaItems(
+        cantidadItems,
+        posiciones,
+        'Distribución de posiciones arancelarias'
+      );
 
     const modoSufijosIndex =
       await askOption(
@@ -886,37 +1352,11 @@ async function main() {
           ? 'automatico'
           : 'asistido';
 
-    const sufijosConfigurados =
-      sufijosPorPosicion[
-        posicionSeleccionada.codigo
-      ] ?? [];
-
-    const modoSufijos:
-      ModoSufijos =
-        modoSolicitado ===
-          'automatico' &&
-        sufijosConfigurados.length === 0
-          ? 'asistido'
-          : modoSolicitado;
-
-    if (
-      modoSolicitado ===
-        'automatico' &&
-      modoSufijos ===
-        'asistido'
-    ) {
-      console.log('');
-
-      console.warn(
-        `No hay sufijos automáticos configurados para ${posicionSeleccionada.codigo}.`
-      );
-
-      console.warn(
-        'La ejecución continuará en modo asistido.'
-      );
-
-      console.log('');
-    }
+    validarSufijosAutomaticos(
+      posicionesSeleccionadas,
+      modoSolicitado,
+      sufijosPorPosicion
+    );
 
     const facturasIndex =
       await askOption(
@@ -941,16 +1381,59 @@ async function main() {
     data.flujoPreguntasOficializacion =
       null;
 
+    data.caratula.fobTotal =
+      fobTotal;
+
+    data.items =
+      construirItemsPlanificados(
+        data.item,
+        cantidadItems,
+        posicionesSeleccionadas,
+        fobTotal,
+        modoSolicitado,
+        sufijosPorPosicion
+      );
+
+    /*
+     * Compatibilidad temporal:
+     * los flows todavía ejecutan data.item.
+     * En el próximo paso conectaremos data.items
+     * para cargar los N items reales.
+     *
+     * Mientras tanto data.item conserva el FOB
+     * completo para que el flujo de 1 item siga
+     * cerrando con la Carátula.
+     */
+    const primeraPosicion =
+      posicionesSeleccionadas[0];
+
+    const sufijosPrimeraPosicion =
+      sufijosPorPosicion[
+        primeraPosicion.codigo
+      ] ?? [];
+
+    const modoPrimerItem:
+      ModoSufijos =
+        modoSolicitado ===
+          'automatico' &&
+        sufijosPrimeraPosicion.length === 0
+          ? 'asistido'
+          : modoSolicitado;
+
     data.item = {
       ...data.item,
 
       posicionArancelaria:
-        posicionSeleccionada.codigo,
+        primeraPosicion.codigo,
 
-      modoSufijos,
+      fobTotalDivisa:
+        fobTotal,
+
+      modoSufijos:
+        modoPrimerItem,
 
       sufijos:
-        sufijosConfigurados
+        sufijosPrimeraPosicion
     };
 
     if (
@@ -1018,23 +1501,31 @@ async function main() {
     );
 
     console.log(
-      `Pos. Aranc:   ${data.item.posicionArancelaria}`
+      `Items:        ${cantidadItems}`
     );
 
     console.log(
-      `Modo sufijos: ${
-        data.item
-          .modoSufijos ===
-        'automatico'
-          ? 'Automatico'
-          : 'Asistido'
+      `FOB Total:    ${fobTotal}`
+    );
+
+    console.log(
+      `Posiciones:   ${
+        posicionesSeleccionadas
+          .map(
+            posicion =>
+              posicion.codigo
+          )
+          .join(', ')
       }`
     );
 
     console.log(
-      `Sufijos:      ${
-        data.item.sufijos.length
-      } configurados`
+      `Modo sufijos: ${
+        modoSolicitado ===
+        'automatico'
+          ? 'Automatico'
+          : 'Asistido'
+      }`
     );
 
     console.log(
@@ -1060,7 +1551,11 @@ async function main() {
       );
     }
 
-    console.log('');
+    mostrarPlanItems(
+      subregimen,
+      data.items,
+      fobTotal
+    );
 
     const confirm =
       await rl.question(
@@ -1139,49 +1634,105 @@ async function main() {
     );
   }
 
-  const posicionIndex =
-    await askOption(
-      'Posicion Arancelaria',
-      posiciones.map(
-        posicion =>
-          `${posicion.codigo} - ${posicion.descripcion}${
-            posicion.nota
-              ? ` (${posicion.nota})`
-              : ''
-          }`
-      )
+  // ==========================================
+  // PLAN IC04
+  // ==========================================
+
+  console.log('');
+  console.log(
+    '--- Configuración de Items IC04 ---'
+  );
+  console.log('');
+
+  const cantidadItemsIC04 =
+    await seleccionarCantidadItems(
+      'Cantidad de items IC04'
     );
 
-  const posicionSeleccionada =
-    posiciones[posicionIndex];
+  const fobTotalIC04 =
+    await solicitarFobTotal(
+      'Ingrese FOB total de Carátula IC04'
+    );
 
-  const modoSufijosIndex =
+  const posicionesIC04 =
+    await seleccionarPosicionesParaItems(
+      cantidadItemsIC04,
+      posiciones,
+      'Distribución de posiciones IC04'
+    );
+
+  const modoSufijosIC04Index =
     await askOption(
-      'Modo de carga de sufijos',
+      'Modo de carga de sufijos IC04',
       [
         'Automatico',
         'Asistido'
       ]
     );
 
-  const modoSolicitado:
+  const modoSufijosIC04:
     ModoSufijos =
-      modoSufijosIndex === 0
+      modoSufijosIC04Index === 0
         ? 'automatico'
         : 'asistido';
 
-  const sufijosConfigurados =
-    sufijosPorPosicion[
-      posicionSeleccionada.codigo
-    ] ?? [];
+  validarSufijosAutomaticos(
+    posicionesIC04,
+    modoSufijosIC04,
+    sufijosPorPosicion
+  );
 
-  const modoSufijos:
+  // ==========================================
+  // PLAN EC01
+  // ==========================================
+
+  console.log('');
+  console.log(
+    '--- Configuración de Items EC01 ---'
+  );
+  console.log('');
+
+  const cantidadItemsEC01 =
+    await seleccionarCantidadItems(
+      'Cantidad de items EC01'
+    );
+
+  const fobTotalEC01 =
+    await solicitarFobTotal(
+      'Ingrese FOB total de Carátula EC01'
+    );
+
+  const posicionesEC01 =
+    await seleccionarPosicionesParaItems(
+      cantidadItemsEC01,
+      posiciones,
+      'Distribución de posiciones EC01'
+    );
+
+  const modoSufijosEC01Index =
+    await askOption(
+      'Modo de carga de sufijos EC01',
+      [
+        'Automatico',
+        'Asistido'
+      ]
+    );
+
+  const modoSufijosEC01:
     ModoSufijos =
-      modoSolicitado ===
-        'automatico' &&
-      sufijosConfigurados.length === 0
-        ? 'asistido'
-        : modoSolicitado;
+      modoSufijosEC01Index === 0
+        ? 'automatico'
+        : 'asistido';
+
+  validarSufijosAutomaticos(
+    posicionesEC01,
+    modoSufijosEC01,
+    sufijosPorPosicion
+  );
+
+  // ==========================================
+  // FACTURAS INDEPENDIENTES
+  // ==========================================
 
   const facturasIC04Index =
     await askOption(
@@ -1220,16 +1771,45 @@ async function main() {
   dataIC04.flujoPreguntasOficializacion =
     null;
 
+  dataIC04.caratula.fobTotal =
+    fobTotalIC04;
+
+  dataIC04.items =
+    construirItemsPlanificados(
+      dataIC04.item,
+      cantidadItemsIC04,
+      posicionesIC04,
+      fobTotalIC04,
+      modoSufijosIC04,
+      sufijosPorPosicion
+    );
+
+  const primeraPosicionIC04 =
+    posicionesIC04[0];
+
+  const sufijosPrimeraIC04 =
+    sufijosPorPosicion[
+      primeraPosicionIC04.codigo
+    ] ?? [];
+
   dataIC04.item = {
     ...dataIC04.item,
 
     posicionArancelaria:
-      posicionSeleccionada.codigo,
+      primeraPosicionIC04.codigo,
 
-    modoSufijos,
+    fobTotalDivisa:
+      fobTotalIC04,
+
+    modoSufijos:
+      modoSufijosIC04 ===
+        'automatico' &&
+      sufijosPrimeraIC04.length === 0
+        ? 'asistido'
+        : modoSufijosIC04,
 
     sufijos:
-      sufijosConfigurados
+      sufijosPrimeraIC04
   };
 
   if (
@@ -1252,16 +1832,45 @@ async function main() {
   dataEC01.flujoPreguntasOficializacion =
     null;
 
+  dataEC01.caratula.fobTotal =
+    fobTotalEC01;
+
+  dataEC01.items =
+    construirItemsPlanificados(
+      dataEC01.item,
+      cantidadItemsEC01,
+      posicionesEC01,
+      fobTotalEC01,
+      modoSufijosEC01,
+      sufijosPorPosicion
+    );
+
+  const primeraPosicionEC01 =
+    posicionesEC01[0];
+
+  const sufijosPrimeraEC01 =
+    sufijosPorPosicion[
+      primeraPosicionEC01.codigo
+    ] ?? [];
+
   dataEC01.item = {
     ...dataEC01.item,
 
     posicionArancelaria:
-      posicionSeleccionada.codigo,
+      primeraPosicionEC01.codigo,
 
-    modoSufijos,
+    fobTotalDivisa:
+      fobTotalEC01,
+
+    modoSufijos:
+      modoSufijosEC01 ===
+        'automatico' &&
+      sufijosPrimeraEC01.length === 0
+        ? 'asistido'
+        : modoSufijosEC01,
 
     sufijos:
-      sufijosConfigurados
+      sufijosPrimeraEC01
   };
 
   if (
@@ -1322,7 +1931,19 @@ async function main() {
   );
 
   console.log(
-    `Posicion -> ${posicionSeleccionada.codigo}`
+    `Items IC04 -> ${cantidadItemsIC04}`
+  );
+
+  console.log(
+    `FOB IC04 -> ${fobTotalIC04}`
+  );
+
+  console.log(
+    `Items EC01 -> ${cantidadItemsEC01}`
+  );
+
+  console.log(
+    `FOB EC01 -> ${fobTotalEC01}`
   );
 
   console.log(
@@ -1341,7 +1962,17 @@ async function main() {
     }`
   );
 
-  console.log('');
+  mostrarPlanItems(
+    'IC04',
+    dataIC04.items,
+    fobTotalIC04
+  );
+
+  mostrarPlanItems(
+    'EC01',
+    dataEC01.items,
+    fobTotalEC01
+  );
 
   const confirm =
     await rl.question(

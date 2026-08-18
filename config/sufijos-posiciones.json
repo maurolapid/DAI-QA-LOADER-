@@ -17,6 +17,7 @@
       "indice": 0
     }
   ],
+
   "7318.11.00.100F": [
     {
       "tipo": "texto",
@@ -27,6 +28,215 @@
       "tipo": "texto",
       "nombreAccesible": "Ingresá MARCA",
       "valor": "VUCE"
+    }
+  ],
+
+  "3812.39.29.990C": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "Marca"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá PRESENTACION",
+      "valor": "Presentacion"
+    }
+  ],
+
+  "3208.10.10.000L": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "Marca"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CODIGO DE PRODUCTO O",
+      "valor": "Codigo"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá PRESENTACION",
+      "valor": "Presentacion"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "NA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "PA00 - Ninguno"
+    }
+  ],
+
+  "3003.10.12.000W": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá NOMBRE DE LA",
+      "valor": "Especialidad"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "DD/MM/AAAA",
+      "valor": "30/10/2026",
+      "correlativo": false
+    }
+  ],
+
+  "8703.23.10.190E": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá Ingrese la MARCA",
+      "valor": "Marca"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá Ingrese VIN",
+      "valor": "Vin"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "AAAA",
+      "valor": "1982",
+      "correlativo": false
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CILINDRADA EN CM3.",
+      "valor": "500cm3",
+      "correlativo": false
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá POTENCIA EN kW.",
+      "valor": "500w",
+      "correlativo": false
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "CA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "PA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "PB00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "SA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "SB00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "SC00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "SD00 - Ninguno"
+    }
+  ],
+
+  "8409.99.99.900C": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "marca"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MODELO",
+      "valor": "modelo"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "CA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "SA00 - Ninguno"
+    }
+  ],
+
+  "8483.10.20.900Z": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "MARCA"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MODELO",
+      "valor": "MODELO"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CANTIDAD DE LEVAS.",
+      "valor": "16",
+      "correlativo": false
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "CA00 - Ninguno"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "NA00 - Ninguno"
+    }
+  ],
+
+  "3926.90.90.919Z": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá MARCA",
+      "valor": "MARCA"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá CODIGO DE PRODUCTO O",
+      "valor": "CODIGO"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "NA00 - Ninguno"
+    }
+  ],
+
+  "8708.29.99.990J": [
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá Ingrese la MARCA",
+      "valor": "MARCA"
+    },
+    {
+      "tipo": "texto",
+      "nombreAccesible": "Ingresá Ingrese el MODELO",
+      "valor": "MODELO"
+    },
+    {
+      "tipo": "combo",
+      "nombreAccesible": "Seleccionar",
+      "valor": "CA00 - Ninguno"
     }
   ]
 }
