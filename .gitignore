@@ -1,1 +1,5 @@
 ﻿node_modules/
+# Screenshots generados automáticamente durante errores de ejecución
+screenshots/error-*.png
+screenshots/error-IC04-*.png
+screenshots/error-EC01-*.png
