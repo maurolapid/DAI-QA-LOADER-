@@ -157,7 +157,7 @@ export class OficializacionBasePage {
       .getByRole('textbox', {
         name: 'DD/MM/AAAA'
       })
-      .fill('05/09/2026');
+      .fill('18/09/2026');
 
     await this.page
       .getByRole('combobox', {
@@ -175,7 +175,7 @@ export class OficializacionBasePage {
       .getByRole('textbox', {
         name: 'Ingresar nombre del transporte'
       })
-      .fill(nombreTransporte);
+      .fill('avion');
 
     await this.page
       .getByRole('textbox', {

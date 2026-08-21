@@ -4,6 +4,11 @@ import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
 import { ejecutarIC04HastaPaso2 } from './src/flows/ic04-hasta-paso2';
+import {
+  ejecutarIC04PreguntasItem,
+  retomarIC04PreguntasItem
+} from './src/flows/ic04-preguntas-item';
+import { listarOperacionesPendientes } from './src/utils/operaciones-pendientes';
 import { ejecutarEC01HastaItems } from './src/flows/ec01-hasta-items';
 import { generarItems } from './src/utils/generador-items';
 
@@ -54,6 +59,9 @@ type SufijosPorPosicion =
 
 const POSICION_OFICIALIZACION =
   '7318.11.00.100F';
+
+const POSICION_PREGUNTAS_IC04 =
+  '7318.15.00.620M';
 
 const root = process.cwd();
 
@@ -227,6 +235,62 @@ async function askOption(
   return selected - 1;
 }
 
+
+async function solicitarTextoObligatorio(
+  titulo: string
+): Promise<string> {
+  const value =
+    await rl.question(
+      `${titulo}: `
+    );
+
+  const normalizado =
+    value.trim();
+
+  if (
+    !normalizado
+  ) {
+    throw new Error(
+      `${titulo} no puede estar vacío.`
+    );
+  }
+
+  console.log('');
+
+  return normalizado;
+}
+
+function crearInteraccionTransporte() {
+  return {
+    solicitarPuerto:
+      async () =>
+        solicitarTextoObligatorio(
+          'Ingrese puerto/documento de procedencia (ej: USHOU o BRSSZ)'
+        ),
+
+    solicitarDocumento:
+      async () =>
+        solicitarTextoObligatorio(
+          'Ingrese documento de transporte'
+        ),
+
+    decidirTrasRechazo:
+      async () => {
+        const index =
+          await askOption(
+            'Documento rechazado. ¿Qué desea hacer?',
+            [
+              'Reintentar ahora',
+              'Guardar operación para retomar después'
+            ]
+          );
+
+        return index === 0
+          ? 'reintentar' as const
+          : 'guardar' as const;
+      }
+  };
+}
 
 async function seleccionarNavegador(
   titulo: string
@@ -1307,6 +1371,329 @@ async function main() {
       await seleccionarNavegador(
         'Navegador'
       );
+
+    let esIC04PreguntasItem =
+      false;
+
+    if (
+      subregimen ===
+      'IC04'
+    ) {
+      const tipoFlujoIC04Index =
+        await askOption(
+          'Tipo de flujo IC04',
+          [
+            'Operación estándar',
+            'Preguntas Item 7318.15.00.620M'
+          ]
+        );
+
+      esIC04PreguntasItem =
+        tipoFlujoIC04Index === 1;
+    }
+
+    // ==========================================
+    // IC04 - PREGUNTAS DE ITEM
+    // ==========================================
+
+    if (
+      subregimen === 'IC04' &&
+      esIC04PreguntasItem
+    ) {
+      const pendientesAmbiente =
+        listarOperacionesPendientes(
+          baseUrl
+        );
+
+      const opcionesAccion =
+        pendientesAmbiente.length > 0
+          ? [
+              'Crear nueva declaración',
+              `Retomar declaración pendiente (${pendientesAmbiente.length})`
+            ]
+          : [
+              'Crear nueva declaración'
+            ];
+
+      const accionIndex =
+        await askOption(
+          'IC04 Preguntas - Acción',
+          opcionesAccion
+        );
+
+      if (
+        pendientesAmbiente.length > 0 &&
+        accionIndex === 1
+      ) {
+        const pendienteIndex =
+          await askOption(
+            'Seleccione operación pendiente',
+            pendientesAmbiente.map(
+              pendiente =>
+                `${pendiente.ambienteNombre} | ${pendiente.referencia || pendiente.interno} | ${pendiente.operationId} | ${pendiente.etapa}`
+            )
+          );
+
+        const pendiente =
+          pendientesAmbiente[
+            pendienteIndex
+          ];
+
+        console.log(
+          `Retomando operación: ${pendiente.operationId}`
+        );
+
+        console.log('');
+
+        await retomarIC04PreguntasItem(
+          pendiente,
+          navegador,
+          crearInteraccionTransporte()
+        );
+
+        return;
+      }
+
+      const escenarioIndex =
+        await askOption(
+          'Escenario de prueba',
+          [
+            'Caso Feliz'
+          ]
+        );
+
+      if (
+        escenarioIndex !== 0
+      ) {
+        throw new Error(
+          'Solo Caso Feliz disponible.'
+        );
+      }
+
+      const fobTotal =
+        await solicitarFobTotal(
+          'Ingrese FOB total de Carátula'
+        );
+
+      const posicionPreguntas =
+        posiciones.find(
+          posicion =>
+            posicion.codigo ===
+            POSICION_PREGUNTAS_IC04
+        );
+
+      if (
+        !posicionPreguntas
+      ) {
+        throw new Error(
+          `No se encontró la posición fija ${POSICION_PREGUNTAS_IC04} en config/posiciones-arancelarias.json`
+        );
+      }
+
+      console.log(
+        'Posición arancelaria'
+      );
+
+      console.log(
+        `  [FIJA PREGUNTAS IC04] ${posicionPreguntas.codigo} - ${posicionPreguntas.descripcion}`
+      );
+
+      console.log('');
+
+      const modoSufijosIndex =
+        await askOption(
+          'Modo de carga de sufijos',
+          [
+            'Automatico',
+            'Asistido'
+          ]
+        );
+
+      const modoSolicitado:
+        ModoSufijos =
+          modoSufijosIndex === 0
+            ? 'automatico'
+            : 'asistido';
+
+      validarSufijosAutomaticos(
+        [
+          posicionPreguntas
+        ],
+        modoSolicitado,
+        sufijosPorPosicion
+      );
+
+      const facturasIndex =
+        await askOption(
+          'Facturas',
+          [
+            'Con facturas',
+            'Sin facturas'
+          ]
+        );
+
+      const data =
+        readJson<any>(
+          'data/IC04/feliz.json'
+        );
+
+      data.esOficializacion =
+        false;
+
+      data.perfilOficializacion =
+        null;
+
+      data.flujoPreguntasOficializacion =
+        null;
+
+      data.caratula.fobTotal =
+        fobTotal;
+
+      data.items =
+        construirItemsPlanificados(
+          data.item,
+          1,
+          [
+            posicionPreguntas
+          ],
+          fobTotal,
+          modoSolicitado,
+          sufijosPorPosicion
+        );
+
+      data.item =
+        data.items[0];
+
+      if (
+        data.caratula?.facturas
+      ) {
+        data.caratula
+          .facturas
+          .presencia =
+            facturasIndex === 0
+              ? 'Si'
+              : 'No';
+      }
+
+      const now =
+        new Date();
+
+      const stamp =
+        now
+          .toISOString()
+          .replace(
+            /[-:TZ.]/g,
+            ''
+          )
+          .slice(
+            0,
+            14
+          );
+
+      data.interno =
+        `IC04 Preguntas Item ${stamp}`;
+
+      data.referencia =
+        `QA-IC04-PREG-${stamp}`;
+
+      console.log(
+        'Resumen de ejecucion'
+      );
+
+      console.log(
+        `Ambiente:     ${ambienteNombre}`
+      );
+
+      console.log(
+        `URL:          ${baseUrl}`
+      );
+
+      console.log(
+        `Navegador:    ${navegador}`
+      );
+
+      console.log(
+        `Login:        ${data.loginMock}`
+      );
+
+      console.log(
+        `Empresa:      ${data.empresaCuit}`
+      );
+
+      console.log(
+        'Subregimen:   IC04'
+      );
+
+      console.log(
+        'Flujo:        Preguntas de Item'
+      );
+
+      console.log(
+        'Items:        1 [FIJO]'
+      );
+
+      console.log(
+        `FOB Total:    ${fobTotal}`
+      );
+
+      console.log(
+        `Posición:     ${POSICION_PREGUNTAS_IC04} [FIJA]`
+      );
+
+      console.log(
+        `Modo sufijos: ${
+          modoSolicitado ===
+          'automatico'
+            ? 'Automatico'
+            : 'Asistido'
+        }`
+      );
+
+      console.log(
+        `Facturas:     ${
+          facturasIndex === 0
+            ? 'Con facturas'
+            : 'Sin facturas'
+        }`
+      );
+
+      mostrarPlanItems(
+        'IC04 PREGUNTAS',
+        data.items,
+        fobTotal
+      );
+
+      const confirm =
+        await rl.question(
+          'Presione ENTER para iniciar o escriba N para cancelar: '
+        );
+
+      if (
+        confirm
+          .trim()
+          .toUpperCase() ===
+        'N'
+      ) {
+        console.log(
+          'Ejecucion cancelada.'
+        );
+
+        return;
+      }
+
+      await ejecutarIC04PreguntasItem(
+        baseUrl,
+        data,
+        navegador,
+        {
+          ambienteNombre,
+          interaccionTransporte:
+            crearInteraccionTransporte()
+        }
+      );
+
+      return;
+    }
 
     const escenarioIndex =
       await askOption(
