@@ -8,22 +8,37 @@ export class OficializacionBasePage {
       name: 'Ingresá tu respuesta'
     });
 
+    console.log(
+      '✔ Esperando disponibilidad de pregunta de texto...'
+    );
+
     await input.waitFor({
       state: 'visible',
-      timeout: 30000
+      timeout: 120000
     });
+
+    console.log(
+      '✔ Pregunta de texto disponible.'
+    );
 
     await input.fill(valor);
 
-    await expect(input).toHaveValue(valor);
+    await expect(input).toHaveValue(
+      valor,
+      {
+        timeout: 30000
+      }
+    );
 
     const guardarButton =
       this.page.getByRole('button', {
         name: 'GUARDAR RESPUESTA'
       });
 
-    await expect(guardarButton).toBeEnabled({
-      timeout: 30000
+    await expect(
+      guardarButton
+    ).toBeEnabled({
+      timeout: 60000
     });
 
     console.log(
@@ -56,12 +71,13 @@ export class OficializacionBasePage {
           return valorActual !== valor;
         },
         {
-          timeout: 30000,
+          timeout: 120000,
           intervals: [
             200,
             300,
             500,
-            1000
+            1000,
+            2000
           ]
         }
       )
@@ -73,40 +89,82 @@ export class OficializacionBasePage {
   }
 
   protected async responderSi() {
-    await this.page
-      .getByRole('button', {
+    const boton =
+      this.page.getByRole('button', {
         name: 'SÍ',
         exact: true
-      })
-      .click();
+      });
+
+    await boton.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      boton
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await boton.click();
   }
 
   protected async responderNo() {
-    await this.page
-      .getByRole('button', {
+    const boton =
+      this.page.getByRole('button', {
         name: 'NO',
         exact: true
-      })
-      .click();
+      });
+
+    await boton.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      boton
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await boton.click();
   }
 
   protected async confirmarSeleccion() {
-    await this.page
-      .getByRole('button', {
+    const boton =
+      this.page.getByRole('button', {
         name: 'Confirmar selección'
-      })
-      .click();
+      });
+
+    await boton.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      boton
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await boton.click();
   }
 
   protected async seleccionarRadioExacto(
     nombre: string
   ) {
-    await this.page
-      .getByRole('radio', {
+    const radio =
+      this.page.getByRole('radio', {
         name: nombre,
         exact: true
-      })
-      .check();
+      });
+
+    await radio.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await radio.check();
 
     await this.confirmarSeleccion();
   }
@@ -114,26 +172,45 @@ export class OficializacionBasePage {
   protected async seleccionarRadioParcial(
     nombre: string
   ) {
-    await this.page
-      .getByRole('radio', {
-        name: nombre
-      })
-      .first()
-      .check();
+    const radio =
+      this.page
+        .getByRole('radio', {
+          name: nombre
+        })
+        .first();
+
+    await radio.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await radio.check();
 
     await this.confirmarSeleccion();
   }
 
   protected async irACertificacionPACROM() {
-    await this.page
-      .getByRole('button', {
+    const boton =
+      this.page.getByRole('button', {
         name: 'ir a Certificación PAC/ROM'
-      })
-      .click();
+      });
+
+    await boton.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      boton
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await boton.click();
   }
 
   protected async completarCertificacionPACROM(
-    nombreTransporte: string
+    _nombreTransporte: string
   ) {
     await this.page
       .getByRole('textbox', {
@@ -227,24 +304,54 @@ export class OficializacionBasePage {
   }
 
   protected async irAPresupuestoGeneral() {
-    await this.page
-      .getByRole('button', {
+    const boton =
+      this.page.getByRole('button', {
         name: 'ir a Presupuesto General'
-      })
-      .click();
+      });
+
+    await boton.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      boton
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await boton.click();
   }
 
   protected async verificarDetallePresupuesto() {
-    await this.page
-      .getByRole('button', {
+    const verDetalle =
+      this.page.getByRole('button', {
         name: 'VER TODO EL DETALLE'
-      })
-      .click();
+      });
 
-    await this.page
-      .getByRole('button', {
+    await verDetalle.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      verDetalle
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await verDetalle.click();
+
+    const cerrar =
+      this.page.getByRole('button', {
         name: 'Cerrar'
-      })
-      .click();
+      });
+
+    await cerrar.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await cerrar.click();
   }
 }

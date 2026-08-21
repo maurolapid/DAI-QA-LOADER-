@@ -42,6 +42,17 @@ type Navegador =
   | 'firefox'
   | 'edge';
 
+type NavegadorOficializacion =
+  | Navegador
+  | 'webkit'
+  | 'brave'
+  | 'opera';
+
+type NavegadorOficializacionDisponible = {
+  id: NavegadorOficializacion;
+  nombre: string;
+};
+
 type ModoEjecucion =
   | 'individual'
   | 'paralelo';
@@ -314,6 +325,139 @@ async function seleccionarNavegador(
   }
 
   return 'edge';
+}
+
+
+function obtenerNavegadoresOficializacionDisponibles():
+  NavegadorOficializacionDisponible[] {
+  const disponibles:
+    NavegadorOficializacionDisponible[] = [
+      {
+        id: 'chrome',
+        nombre: 'Chrome'
+      },
+      {
+        id: 'firefox',
+        nombre: 'Firefox'
+      },
+      {
+        id: 'edge',
+        nombre: 'Edge'
+      },
+      {
+        id: 'webkit',
+        nombre: 'WebKit (motor Safari)'
+      }
+    ];
+
+  const bravePaths = [
+    path.join(
+      process.env.ProgramFiles ?? '',
+      'BraveSoftware',
+      'Brave-Browser',
+      'Application',
+      'brave.exe'
+    ),
+    path.join(
+      process.env.LOCALAPPDATA ?? '',
+      'BraveSoftware',
+      'Brave-Browser',
+      'Application',
+      'brave.exe'
+    )
+  ];
+
+  if (
+    bravePaths.some(
+      bravePath =>
+        bravePath &&
+        fs.existsSync(bravePath)
+    )
+  ) {
+    disponibles.push({
+      id: 'brave',
+      nombre: 'Brave'
+    });
+  }
+
+  const operaPaths = [
+    path.join(
+      process.env.ProgramFiles ?? '',
+      'Opera',
+      'opera.exe'
+    ),
+    path.join(
+      process.env.LOCALAPPDATA ?? '',
+      'Programs',
+      'Opera',
+      'opera.exe'
+    ),
+    path.join(
+      process.env.LOCALAPPDATA ?? '',
+      'Programs',
+      'Opera GX',
+      'opera.exe'
+    )
+  ];
+
+  if (
+    operaPaths.some(
+      operaPath =>
+        operaPath &&
+        fs.existsSync(operaPath)
+    )
+  ) {
+    disponibles.push({
+      id: 'opera',
+      nombre: 'Opera'
+    });
+  }
+
+  return disponibles;
+}
+
+async function seleccionarNavegadorOficializacion(
+  titulo: string,
+  disponibles:
+    NavegadorOficializacionDisponible[]
+): Promise<NavegadorOficializacion> {
+  if (
+    disponibles.length === 0
+  ) {
+    throw new Error(
+      'No hay navegadores disponibles para Oficialización.'
+    );
+  }
+
+  const index =
+    await askOption(
+      titulo,
+      disponibles.map(
+        navegador =>
+          navegador.nombre
+      )
+    );
+
+  return disponibles[index].id;
+}
+
+function nombreNavegadorOficializacion(
+  navegador: NavegadorOficializacion
+): string {
+  const nombres:
+    Record<
+      NavegadorOficializacion,
+      string
+    > = {
+      chrome: 'Chrome',
+      firefox: 'Firefox',
+      edge: 'Edge',
+      webkit: 'WebKit',
+      brave: 'Brave',
+      opera: 'Opera'
+    };
+
+  return nombres[navegador];
 }
 
 
@@ -779,6 +923,283 @@ function mostrarPlanItems(
   console.log('');
 }
 
+
+type ConfiguracionOficializacion = {
+  numero: number;
+  navegador: NavegadorOficializacion;
+  perfil: PerfilOficializacion;
+  empresaCuit: string;
+  flujoPreguntas:
+    FlujoPreguntasOficializacion;
+  data: any;
+};
+
+function crearStamp(): string {
+  return new Date()
+    .toISOString()
+    .replace(
+      /[-:TZ.]/g,
+      ''
+    )
+    .slice(
+      0,
+      14
+    );
+}
+
+function prepararDataOficializacion(
+  perfil:
+    PerfilOficializacion,
+  empresaCuit: string,
+  flujoPreguntas:
+    FlujoPreguntasOficializacion,
+  posicionSeleccionada:
+    PosicionArancelaria,
+  modoSufijos:
+    ModoSufijos,
+  sufijosConfigurados:
+    SufijoItem[]
+) {
+  const data =
+    readJson<any>(
+      'data/EC01/feliz.json'
+    );
+
+  data.esOficializacion =
+    true;
+
+  data.perfilOficializacion =
+    perfil;
+
+  data.flujoPreguntasOficializacion =
+    flujoPreguntas;
+
+  data.loginMock =
+    perfil === 'Herrero'
+      ? 'mock_20045302211'
+      : 'mock_20107469681';
+
+  data.empresaCuit =
+    empresaCuit;
+
+  if (
+    flujoPreguntas ===
+    'Russo'
+  ) {
+    data.aduanaOpcion =
+      '- EZEIZA';
+
+    data.subregimenOpcion =
+      'EC01 - EXPORTACION A CONSUMO';
+
+    data.caratula = {
+      ...data.caratula,
+
+      fobTotal:
+        '1',
+
+      monedaOpcion:
+        'DOL - DOLAR ESTADOUNIDENSE',
+
+      condicionVentaOpcion:
+        'FOB - LIBRE PUESTA A BORDO',
+
+      paisProcedenciaOpcion:
+        '- CHINA',
+
+      aduanaDestinoOpcion:
+        '- EZEIZA',
+
+      facturas: {
+        ...data.caratula.facturas,
+        presencia: 'No'
+      }
+    };
+
+    data.item = {
+      ...data.item,
+
+      tipoOpcion:
+        'N - Normal',
+
+      estadoMercaderiaOpcion:
+        '- NUEVO SIN USO ARGENTINO',
+
+      origenOpcion:
+        'BA - BUENOS AIRES',
+
+      paisProcedenciaOpcion:
+        '- CHINA',
+
+      unidadDeclaradaOpcion:
+        '- KILOGRAMO',
+
+      totalKiloNeto:
+        '1',
+
+      fobTotalDivisa:
+        '1',
+
+      cantidadDeclarada:
+        '1',
+
+      cantidadUnidadesEstadisticas:
+        '1'
+    };
+  }
+
+  const sufijosFinales =
+    flujoPreguntas ===
+      'Russo'
+      ? [
+          {
+            tipo:
+              'texto' as const,
+            nombreAccesible:
+              'Ingresá MARCA',
+            valor:
+              'marca'
+          },
+          {
+            tipo:
+              'texto' as const,
+            nombreAccesible:
+              'Ingresá CODIGO DE PRODUCTO O',
+            valor:
+              'codigo'
+          }
+        ]
+      : sufijosConfigurados;
+
+  data.item = {
+    ...data.item,
+
+    posicionArancelaria:
+      posicionSeleccionada.codigo,
+
+    modoSufijos,
+
+    sufijos:
+      sufijosFinales
+  };
+
+  if (
+    data.caratula?.facturas
+  ) {
+    data.caratula
+      .facturas
+      .presencia =
+        'No';
+  }
+
+  const numeroOficializacion =
+    obtenerSiguienteNumeroOficializacion();
+
+  const stamp =
+    crearStamp();
+
+  data.interno =
+    `Operacion para OFICIALIZACION UNICAMENTE numero ${numeroOficializacion}`;
+
+  data.referencia =
+    `QA-${stamp}-${numeroOficializacion}`;
+
+  return data;
+}
+
+async function configurarUnaOficializacion(
+  numero: number,
+  navegadoresDisponibles:
+    NavegadorOficializacionDisponible[],
+  posicionSeleccionada:
+    PosicionArancelaria,
+  modoSufijos:
+    ModoSufijos,
+  sufijosConfigurados:
+    SufijoItem[]
+): Promise<ConfiguracionOficializacion> {
+  console.log('');
+  console.log(
+    '=========================================='
+  );
+  console.log(
+    `       OFICIALIZACION ${numero}`
+  );
+  console.log(
+    '=========================================='
+  );
+  console.log('');
+
+  const navegador =
+    await seleccionarNavegadorOficializacion(
+      `Navegador para Oficialización ${numero}`,
+      navegadoresDisponibles
+    );
+
+  const perfilIndex =
+    await askOption(
+      `Perfil Oficialización ${numero}`,
+      [
+        'Herrero',
+        'Russo'
+      ]
+    );
+
+  const perfil:
+    PerfilOficializacion =
+      perfilIndex === 0
+        ? 'Herrero'
+        : 'Russo';
+
+  const empresaIndex =
+    await askOption(
+      `Empresa Oficialización ${numero}`,
+      [
+        'Baterias Moura - 30500938125',
+        'Malba Textil - 33710718879'
+      ]
+    );
+
+  const empresaCuit =
+    empresaIndex === 0
+      ? '30500938125'
+      : '33710718879';
+
+  const flujoIndex =
+    await askOption(
+      `Flujo de preguntas Oficialización ${numero}`,
+      [
+        'Herrero',
+        'Russo'
+      ]
+    );
+
+  const flujoPreguntas:
+    FlujoPreguntasOficializacion =
+      flujoIndex === 0
+        ? 'Herrero'
+        : 'Russo';
+
+  const data =
+    prepararDataOficializacion(
+      perfil,
+      empresaCuit,
+      flujoPreguntas,
+      posicionSeleccionada,
+      modoSufijos,
+      sufijosConfigurados
+    );
+
+  return {
+    numero,
+    navegador,
+    perfil,
+    empresaCuit,
+    flujoPreguntas,
+    data
+  };
+}
+
 async function main() {
   banner();
 
@@ -870,68 +1291,6 @@ async function main() {
     tipoFlujoIndex === 1;
 
   // ==========================================
-  // PERFIL EXCLUSIVO DE OFICIALIZACION
-  // ==========================================
-
-  let perfilOficializacion:
-    PerfilOficializacion | null =
-      null;
-
-  let flujoPreguntasOficializacion:
-    FlujoPreguntasOficializacion | null =
-      null;
-
-  let empresaCuitOficializacion:
-    string | null =
-      null;
-
-  if (
-    esOficializacion
-  ) {
-    const perfilIndex =
-      await askOption(
-        'Perfil de oficializacion',
-        [
-          'Herrero',
-          'Russo'
-        ]
-      );
-
-    perfilOficializacion =
-      perfilIndex === 0
-        ? 'Herrero'
-        : 'Russo';
-
-    const empresaOficializacionIndex =
-      await askOption(
-        'Empresa para oficializacion',
-        [
-          'Baterias Moura - 30500938125',
-          'Malba Textil - 33710718879'
-        ]
-      );
-
-    empresaCuitOficializacion =
-      empresaOficializacionIndex === 0
-        ? '30500938125'
-        : '33710718879';
-
-    const flujoPreguntasIndex =
-      await askOption(
-        'Flujo de preguntas de oficializacion',
-        [
-          'Herrero',
-          'Russo'
-        ]
-      );
-
-    flujoPreguntasOficializacion =
-      flujoPreguntasIndex === 0
-        ? 'Herrero'
-        : 'Russo';
-  }
-
-  // ==========================================
   // MODO DE EJECUCION
   // ==========================================
 
@@ -963,30 +1322,20 @@ async function main() {
   if (
     esOficializacion
   ) {
-    const subregimen:
-      'EC01' = 'EC01';
-
     console.log(
       'Subregimen: EC01 [FIJO OFICIALIZACION]'
     );
 
     console.log('');
 
-    const escenarioIndex =
+    const modoOficializacionIndex =
       await askOption(
-        'Escenario de prueba',
+        'Oficialización - Modo de ejecución',
         [
-          'Caso Feliz'
+          'Individual',
+          'Paralelo'
         ]
       );
-
-    if (
-      escenarioIndex !== 0
-    ) {
-      throw new Error(
-        'Solo Caso Feliz disponible.'
-      );
-    }
 
     const posicionOficializacion =
       posiciones.find(
@@ -1003,15 +1352,12 @@ async function main() {
       );
     }
 
-    const posicionSeleccionada =
-      posicionOficializacion;
-
     console.log(
       'Posicion Arancelaria'
     );
 
     console.log(
-      `  [FIJA OFICIALIZACION] ${posicionSeleccionada.codigo} - ${posicionSeleccionada.descripcion}`
+      `  [FIJA OFICIALIZACION] ${posicionOficializacion.codigo} - ${posicionOficializacion.descripcion}`
     );
 
     console.log('');
@@ -1033,7 +1379,7 @@ async function main() {
 
     const sufijosConfigurados =
       sufijosPorPosicion[
-        posicionSeleccionada.codigo
+        posicionOficializacion.codigo
       ] ?? [];
 
     const modoSufijos:
@@ -1050,276 +1396,205 @@ async function main() {
 
     console.log('');
 
-    const data =
-      readJson<any>(
-        `data/${subregimen}/feliz.json`
-      );
+    const navegadoresDisponibles =
+      obtenerNavegadoresOficializacionDisponibles();
 
-    data.esOficializacion =
-      true;
+    console.log(
+      'Navegadores disponibles para Oficialización:'
+    );
 
-    data.perfilOficializacion =
-      perfilOficializacion;
-
-    data.flujoPreguntasOficializacion =
-      flujoPreguntasOficializacion;
-
-    if (
-      perfilOficializacion ===
-      'Herrero'
-    ) {
-      data.loginMock =
-        'mock_20045302211';
-    }
-
-    if (
-      perfilOficializacion ===
-      'Russo'
-    ) {
-      data.loginMock =
-        'mock_20107469681';
-    }
-
-    if (
-      !empresaCuitOficializacion
-    ) {
-      throw new Error(
-        'No se seleccionó empresa para oficialización.'
-      );
-    }
-
-    data.empresaCuit =
-      empresaCuitOficializacion;
-
-    // ==========================================
-    // DATOS ESPECIFICOS DEL FLUJO RUSSO
-    // ==========================================
-
-    if (
-      flujoPreguntasOficializacion ===
-      'Russo'
-    ) {
-      // REGISTRO
-      data.aduanaOpcion =
-        '- EZEIZA';
-
-      data.subregimenOpcion =
-        'EC01 - EXPORTACION A CONSUMO';
-
-      // CARATULA
-      data.caratula = {
-        ...data.caratula,
-
-        fobTotal:
-          '1',
-
-        monedaOpcion:
-          'DOL - DOLAR ESTADOUNIDENSE',
-
-        condicionVentaOpcion:
-          'FOB - LIBRE PUESTA A BORDO',
-
-        paisProcedenciaOpcion:
-          '- CHINA',
-
-        aduanaDestinoOpcion:
-          '- EZEIZA',
-
-        facturas: {
-          ...data.caratula.facturas,
-          presencia: 'No'
-        }
-      };
-
-      // ITEM
-      data.item = {
-        ...data.item,
-
-        tipoOpcion:
-          'N - Normal',
-
-        estadoMercaderiaOpcion:
-          '- NUEVO SIN USO ARGENTINO',
-
-        origenOpcion:
-          'BA - BUENOS AIRES',
-
-        paisProcedenciaOpcion:
-          '- CHINA',
-
-        unidadDeclaradaOpcion:
-          '- KILOGRAMO',
-
-        totalKiloNeto:
-          '1',
-
-        fobTotalDivisa:
-          '1',
-
-        cantidadDeclarada:
-          '1',
-
-        cantidadUnidadesEstadisticas:
-          '1'
-      };
-    }
-
-    const sufijosFinales =
-      flujoPreguntasOficializacion ===
-      'Russo'
-        ? [
-            {
-              tipo: 'texto' as const,
-              nombreAccesible:
-                'Ingresá MARCA',
-              valor:
-                'marca'
-            },
-            {
-              tipo: 'texto' as const,
-              nombreAccesible:
-                'Ingresá CODIGO DE PRODUCTO O',
-              valor:
-                'codigo'
-            }
-          ]
-        : sufijosConfigurados;
-
-    data.item = {
-      ...data.item,
-
-      posicionArancelaria:
-        posicionSeleccionada.codigo,
-
-      modoSufijos,
-
-      sufijos:
-        sufijosFinales
-    };
-
-    if (
-      data.caratula?.facturas
-    ) {
-      data.caratula
-        .facturas
-        .presencia =
-          'No';
-    }
-
-    const now =
-      new Date();
-
-    const stamp =
-      now
-        .toISOString()
-        .replace(
-          /[-:TZ.]/g,
-          ''
+    navegadoresDisponibles.forEach(
+      navegador =>
+        console.log(
+          `  - ${navegador.nombre}`
         )
-        .slice(
-          0,
-          14
-        );
-
-    const numeroOficializacion =
-      obtenerSiguienteNumeroOficializacion();
-
-    data.interno =
-      `Operacion para OFICIALIZACION UNICAMENTE numero ${numeroOficializacion}`;
-
-    data.referencia =
-      `QA-${stamp}`;
-
-    console.log(
-      'Resumen de ejecucion'
-    );
-
-    console.log(
-      `Ambiente:     ${ambienteNombre}`
-    );
-
-    console.log(
-      `URL:          ${baseUrl}`
-    );
-
-    if (
-      perfilOficializacion
-    ) {
-      console.log(
-        `Perfil:       ${perfilOficializacion}`
-      );
-    }
-
-    if (
-      flujoPreguntasOficializacion
-    ) {
-      console.log(
-        `Flujo preg.:   ${flujoPreguntasOficializacion}`
-      );
-    }
-
-    console.log(
-      `Login:        ${data.loginMock}`
-    );
-
-    console.log(
-      `Empresa:      ${
-        data.empresaCuit ===
-        '30500938125'
-          ? 'Baterias Moura - 30500938125'
-          : 'Malba Textil - 33710718879'
-      }`
-    );
-
-    console.log(
-      `Subregimen:   ${data.subregimen}`
-    );
-
-    console.log(
-      `Escenario:    ${data.nombre}`
-    );
-
-    console.log(
-      `Pos. Aranc:   ${data.item.posicionArancelaria}`
-    );
-
-    console.log(
-      'Posición fija: SI (Oficializacion)'
-    );
-
-    console.log(
-      `Modo sufijos: ${
-        data.item
-          .modoSufijos ===
-        'automatico'
-          ? 'Automatico'
-          : 'Asistido'
-      }`
-    );
-
-    console.log(
-      `Sufijos:      ${
-        data.item.sufijos.length
-      } configurados`
-    );
-
-    console.log(
-      `Interno:      ${data.interno}`
-    );
-
-    console.log(
-      `Referencia:   ${data.referencia}`
-    );
-
-    console.log(
-      'Facturas:     Sin facturas'
     );
 
     console.log('');
 
+    // ------------------------------------------
+    // OFICIALIZACION INDIVIDUAL
+    // ------------------------------------------
+
+    if (
+      modoOficializacionIndex === 0
+    ) {
+      const config =
+        await configurarUnaOficializacion(
+          1,
+          navegadoresDisponibles,
+          posicionOficializacion,
+          modoSufijos,
+          sufijosConfigurados
+        );
+
+      console.log('');
+      console.log(
+        'Resumen de ejecucion'
+      );
+      console.log(
+        `Ambiente:     ${ambienteNombre}`
+      );
+      console.log(
+        `URL:          ${baseUrl}`
+      );
+      console.log(
+        `Navegador:    ${nombreNavegadorOficializacion(config.navegador)}`
+      );
+      console.log(
+        `Perfil:       ${config.perfil}`
+      );
+      console.log(
+        `Flujo preg.:  ${config.flujoPreguntas}`
+      );
+      console.log(
+        `Empresa:      ${
+          config.empresaCuit ===
+          '30500938125'
+            ? 'Baterias Moura - 30500938125'
+            : 'Malba Textil - 33710718879'
+        }`
+      );
+      console.log(
+        `Interno:      ${config.data.interno}`
+      );
+      console.log(
+        `Referencia:   ${config.data.referencia}`
+      );
+      console.log('');
+
+      const confirm =
+        await rl.question(
+          'Presione ENTER para iniciar o escriba N para cancelar: '
+        );
+
+      if (
+        confirm
+          .trim()
+          .toUpperCase() ===
+        'N'
+      ) {
+        console.log(
+          'Ejecucion cancelada.'
+        );
+
+        return;
+      }
+
+      await ejecutarEC01HastaItems(
+        baseUrl,
+        config.data,
+        config.navegador
+      );
+
+      return;
+    }
+
+    // ------------------------------------------
+    // OFICIALIZACION PARALELA
+    // ------------------------------------------
+
+    if (
+      navegadoresDisponibles.length < 2
+    ) {
+      throw new Error(
+        'Se requieren al menos 2 navegadores disponibles para ejecutar Oficialización en paralelo.'
+      );
+    }
+
+    const cantidades =
+      Array.from(
+        {
+          length:
+            navegadoresDisponibles.length - 1
+        },
+        (
+          _,
+          index
+        ) =>
+          index + 2
+      );
+
+    const cantidadIndex =
+      await askOption(
+        'Cantidad de oficializaciones paralelas',
+        cantidades.map(
+          cantidad =>
+            String(cantidad)
+        )
+      );
+
+    const cantidad =
+      cantidades[
+        cantidadIndex
+      ];
+
+    const configuraciones:
+      ConfiguracionOficializacion[] =
+        [];
+
+    let navegadoresRestantes = [
+      ...navegadoresDisponibles
+    ];
+
+    for (
+      let numero = 1;
+      numero <= cantidad;
+      numero++
+    ) {
+      const config =
+        await configurarUnaOficializacion(
+          numero,
+          navegadoresRestantes,
+          posicionOficializacion,
+          modoSufijos,
+          sufijosConfigurados
+        );
+
+      configuraciones.push(
+        config
+      );
+
+      navegadoresRestantes =
+        navegadoresRestantes.filter(
+          navegador =>
+            navegador.id !==
+            config.navegador
+        );
+    }
+
+    console.log('');
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      '    PLAN OFICIALIZACION PARALELA'
+    );
+    console.log(
+      '=========================================='
+    );
+
+    configuraciones.forEach(
+      config => {
+        console.log(
+          `${String(config.numero).padStart(2, '0')} | ${nombreNavegadorOficializacion(config.navegador)} | Perfil ${config.perfil} | ${
+            config.empresaCuit ===
+            '30500938125'
+              ? 'Moura'
+              : 'Malba'
+          } | Preguntas ${config.flujoPreguntas} | ${config.data.interno}`
+        );
+      }
+    );
+
+    console.log(
+      '=========================================='
+    );
+    console.log('');
+
     const confirm =
       await rl.question(
-        'Presione ENTER para iniciar o escriba N para cancelar: '
+        `Presione ENTER para iniciar ${cantidad} oficializaciones o escriba N para cancelar: `
       );
 
     if (
@@ -1335,11 +1610,91 @@ async function main() {
       return;
     }
 
-    await ejecutarEC01HastaItems(
-      baseUrl,
-      data,
-      'chrome'
+    console.log(
+      `✔ Iniciando ${cantidad} oficializaciones en paralelo...`
     );
+
+    const resultados =
+      await Promise.allSettled(
+        configuraciones.map(
+          config =>
+            ejecutarEC01HastaItems(
+              baseUrl,
+              config.data,
+              config.navegador
+            )
+        )
+      );
+
+    console.log('');
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      ' RESULTADO OFICIALIZACION PARALELA'
+    );
+    console.log(
+      '=========================================='
+    );
+
+    let exitosas = 0;
+    let fallidas = 0;
+
+    resultados.forEach(
+      (
+        resultado,
+        index
+      ) => {
+        const config =
+          configuraciones[index];
+
+        const ok =
+          resultado.status ===
+          'fulfilled';
+
+        if (ok) {
+          exitosas++;
+        } else {
+          fallidas++;
+        }
+
+        console.log(
+          `${String(config.numero).padStart(2, '0')} | ${nombreNavegadorOficializacion(config.navegador).padEnd(7)} | ${config.perfil.padEnd(7)} | ${config.flujoPreguntas.padEnd(7)} | ${ok ? 'OK' : 'ERROR'}`
+        );
+
+        if (
+          resultado.status ===
+          'rejected'
+        ) {
+          console.error(
+            `   Error:`,
+            resultado.reason
+          );
+        }
+      }
+    );
+
+    console.log(
+      '------------------------------------------'
+    );
+    console.log(
+      `TOTAL: ${resultados.length}`
+    );
+    console.log(
+      `OK:    ${exitosas}`
+    );
+    console.log(
+      `ERROR: ${fallidas}`
+    );
+    console.log(
+      '=========================================='
+    );
+
+    if (
+      fallidas > 0
+    ) {
+      process.exitCode = 1;
+    }
 
     return;
   }

@@ -1,6 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import {
   chromium,
-  firefox
+  firefox,
+  webkit
 } from '@playwright/test';
 
 import type {
@@ -18,7 +22,81 @@ import { OficializacionRussoPage } from '../pages/OficializacionRussoPage';
 export type NavegadorEjecucion =
   | 'chrome'
   | 'firefox'
-  | 'edge';
+  | 'edge'
+  | 'webkit'
+  | 'brave'
+  | 'opera';
+
+function buscarEjecutable(
+  candidatos: string[],
+  navegador: string
+): string {
+  const encontrado =
+    candidatos.find(
+      candidato =>
+        candidato &&
+        fs.existsSync(
+          candidato
+        )
+    );
+
+  if (
+    !encontrado
+  ) {
+    throw new Error(
+      `No se encontró el ejecutable de ${navegador} en esta PC.`
+    );
+  }
+
+  return encontrado;
+}
+
+function obtenerBravePath(): string {
+  return buscarEjecutable(
+    [
+      path.join(
+        process.env.ProgramFiles ?? '',
+        'BraveSoftware',
+        'Brave-Browser',
+        'Application',
+        'brave.exe'
+      ),
+      path.join(
+        process.env.LOCALAPPDATA ?? '',
+        'BraveSoftware',
+        'Brave-Browser',
+        'Application',
+        'brave.exe'
+      )
+    ],
+    'Brave'
+  );
+}
+
+function obtenerOperaPath(): string {
+  return buscarEjecutable(
+    [
+      path.join(
+        process.env.ProgramFiles ?? '',
+        'Opera',
+        'opera.exe'
+      ),
+      path.join(
+        process.env.LOCALAPPDATA ?? '',
+        'Programs',
+        'Opera',
+        'opera.exe'
+      ),
+      path.join(
+        process.env.LOCALAPPDATA ?? '',
+        'Programs',
+        'Opera GX',
+        'opera.exe'
+      )
+    ],
+    'Opera'
+  );
+}
 
 async function iniciarNavegador(
   navegador: NavegadorEjecucion
@@ -36,10 +114,44 @@ async function iniciarNavegador(
   }
 
   if (
+    navegador === 'webkit'
+  ) {
+    return webkit.launch({
+      headless: false
+    });
+  }
+
+  if (
     navegador === 'edge'
   ) {
     return chromium.launch({
       channel: 'msedge',
+      headless: false,
+      args: [
+        '--start-maximized'
+      ]
+    });
+  }
+
+  if (
+    navegador === 'brave'
+  ) {
+    return chromium.launch({
+      executablePath:
+        obtenerBravePath(),
+      headless: false,
+      args: [
+        '--start-maximized'
+      ]
+    });
+  }
+
+  if (
+    navegador === 'opera'
+  ) {
+    return chromium.launch({
+      executablePath:
+        obtenerOperaPath(),
       headless: false,
       args: [
         '--start-maximized'
