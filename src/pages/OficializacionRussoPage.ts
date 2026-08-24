@@ -69,8 +69,12 @@ export class OficializacionRussoPage
     await this.responderSi();
     await this.responderSi();
 
+    console.log(
+      '✔ [RUSSO] Seleccionando Banco Galicia'
+    );
+
     await this.seleccionarRadioParcial(
-      '- BANCO DE LA NACION ARGENTINA'
+      '007 - BANCO DE GALICIA Y BUENOS AIRES S.A.'
     );
 
     await this.responderNo();
@@ -94,8 +98,12 @@ export class OficializacionRussoPage
 
     await this.responderNo();
 
+    console.log(
+      '✔ [RUSSO] Seleccionando PSAD04 - DOCUMENTOS ADUANEROS S.A.'
+    );
+
     await this.seleccionarRadioParcial(
-      'PSAD02 - BOX CUSTODIA DE'
+      'PSAD04-DOCUMENTOS ADUANEROS S.A.'
     );
   }
 

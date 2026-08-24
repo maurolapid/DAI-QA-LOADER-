@@ -1256,10 +1256,19 @@ async function main() {
     ambienteId =
       'manual';
 
+    const urlManual =
+      (
+        await rl.question(
+          'Ingrese URL manual: '
+        )
+      ).trim();
+
     baseUrl =
-      await rl.question(
-        'Ingrese URL manual: '
-      );
+      /^https?:\/\//i.test(
+        urlManual
+      )
+        ? urlManual
+        : `http://${urlManual}`;
   } else {
     const ambiente =
       ambientes[ambienteIndex];
