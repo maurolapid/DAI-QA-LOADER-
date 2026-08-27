@@ -1,11 +1,11 @@
 import { Page } from '@playwright/test';
 
-export function obtenerFechaMas20Dias(): string {
+export function obtenerFechaMas30Dias(): string {
   const fecha =
     new Date();
 
   fecha.setDate(
-    fecha.getDate() + 20
+    fecha.getDate() + 30
   );
 
   const dia =
@@ -131,11 +131,11 @@ export class PreguntasPresupuestoIC04Page {
       await this.responderNo();
     }
 
-    const fechaMas20 =
-      obtenerFechaMas20Dias();
+    const fechaMas30 =
+      obtenerFechaMas30Dias();
 
     console.log(
-      `✔ [IC04/Presupuesto] Fecha automática (+20 días): ${fechaMas20}`
+      `✔ [IC04/Presupuesto] Fecha automática (+30 días): ${fechaMas30}`
     );
 
     const campoFecha =
@@ -152,7 +152,7 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await campoFecha.fill(
-      fechaMas20
+      fechaMas30
     );
 
     const guardar =
