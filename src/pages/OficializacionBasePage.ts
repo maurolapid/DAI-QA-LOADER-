@@ -230,11 +230,45 @@ export class OficializacionBasePage {
       })
       .click();
 
+    // Venc. Embarque = fecha actual + 30 días
+    const fechaVencimiento =
+      new Date();
+
+    fechaVencimiento.setDate(
+      fechaVencimiento.getDate() + 30
+    );
+
+    const dia =
+      String(
+        fechaVencimiento.getDate()
+      ).padStart(
+        2,
+        '0'
+      );
+
+    const mes =
+      String(
+        fechaVencimiento.getMonth() + 1
+      ).padStart(
+        2,
+        '0'
+      );
+
+    const anio =
+      fechaVencimiento.getFullYear();
+
+    const vencimientoEmbarque =
+      `${dia}/${mes}/${anio}`;
+
+    console.log(
+      `✔ Venc. Embarque automático (+30 días): ${vencimientoEmbarque}`
+    );
+
     await this.page
       .getByRole('textbox', {
         name: 'DD/MM/AAAA'
       })
-      .fill('18/09/2026');
+      .fill(vencimientoEmbarque);
 
     await this.page
       .getByRole('combobox', {
