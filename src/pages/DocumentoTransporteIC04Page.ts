@@ -31,30 +31,32 @@ export class DocumentoTransporteIC04Page {
     const documentoNormalizado =
       documento.trim();
 
-    if (
-      !puertoNormalizado
-    ) {
+    if (!puertoNormalizado) {
       throw new Error(
         'El puerto/documento de procedencia no puede estar vacío.'
       );
     }
 
-    if (
-      !documentoNormalizado
-    ) {
+    if (!documentoNormalizado) {
       throw new Error(
         'El documento de transporte no puede estar vacío.'
       );
     }
 
+    /*
+     * CAMPO 1
+     * Puerto / documento de procedencia
+     */
     const campoPuerto =
-      this.page.getByRole(
-        'textbox',
-        {
-          name:
-            /Ingresar documento de/i
-        }
-      ).first();
+      this.page
+        .getByRole(
+          'textbox',
+          {
+            name:
+              /Ingresar documento de/i
+          }
+        )
+        .first();
 
     await campoPuerto.waitFor({
       state: 'visible',
@@ -66,14 +68,16 @@ export class DocumentoTransporteIC04Page {
     );
 
     const opcionPuerto =
-      this.page.getByText(
-        new RegExp(
-          `^${escaparRegex(
-            puertoNormalizado
-          )}\\s*-`,
-          'i'
+      this.page
+        .getByText(
+          new RegExp(
+            `^${escaparRegex(
+              puertoNormalizado
+            )}\\s*-`,
+            'i'
+          )
         )
-      ).first();
+        .first();
 
     await opcionPuerto.waitFor({
       state: 'visible',
@@ -82,45 +86,118 @@ export class DocumentoTransporteIC04Page {
 
     await opcionPuerto.click();
 
+    console.log(
+      `✔ Puerto/procedencia seleccionado: ${puertoNormalizado}`
+    );
+
+    /*
+     * CAMPO 2
+     * Documento de transporte
+     *
+     * Existen dos textboxes cuyo accessible name
+     * comienza con "Ingresar documento de".
+     *
+     * El segundo corresponde al documento.
+     */
     const campoDocumento =
-      this.page.getByLabel(
-        'Ingresar documento de'
-      );
+      this.page
+        .getByRole(
+          'textbox',
+          {
+            name:
+              /Ingresar documento de/i
+          }
+        )
+        .nth(1);
 
     await campoDocumento.waitFor({
       state: 'visible',
-      timeout: 30000
+      timeout: 60000
     });
 
     await campoDocumento.fill(
       documentoNormalizado
     );
 
-    const combo =
-      this.page.getByRole(
-        'combobox',
-        {
-          name:
-            /Seleccione una opción/i
-        }
+    console.log(
+      `✔ Documento de transporte ingresado: ${documentoNormalizado}`
+    );
+
+    /*
+     * PRESENCIA DEL DOCUMENTO DE TRANSPORTE
+     *
+     * El componente es un MUI Select:
+     *
+     * <div
+     *   role="combobox"
+     *   aria-haspopup="listbox"
+     * >
+     *
+     * No posee un accessible name útil,
+     * por eso NO lo buscamos por texto.
+     *
+     * Tomamos el último combobox visible de esta
+     * pantalla, que corresponde a Presencia del
+     * Documento de Transporte.
+     */
+    const comboPresenciaDocumento =
+      this.page
+        .locator(
+          'div[role="combobox"][aria-haspopup="listbox"]:visible'
+        )
+        .last();
+
+    await comboPresenciaDocumento.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await expect(
+      comboPresenciaDocumento
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await comboPresenciaDocumento.click();
+
+    console.log(
+      '✔ Selector de presencia de documento abierto.'
+    );
+
+    /*
+     * HTML real:
+     *
+     * SI
+     * <li
+     *   role="option"
+     *   data-value="SI"
+     * >
+     *   Si
+     * </li>
+     *
+     * NO
+     * <li
+     *   role="option"
+     *   data-value="NO"
+     * >
+     *   No
+     * </li>
+     */
+    const opcionSi =
+      this.page.locator(
+        'li[role="option"][data-value="SI"]'
       );
 
-    await combo.waitFor({
+    await opcionSi.waitFor({
       state: 'visible',
       timeout: 30000
     });
 
-    await combo.click();
+    await opcionSi.click();
 
-    await this.page
-      .getByRole(
-        'option',
-        {
-          name: 'Si',
-          exact: true
-        }
-      )
-      .click();
+    console.log(
+      '✔ Presencia del documento de transporte: SI'
+    );
   }
 
   async presentar(): Promise<
@@ -139,6 +216,16 @@ export class DocumentoTransporteIC04Page {
       state: 'visible',
       timeout: 30000
     });
+
+    await expect(
+      botonPresentar
+    ).toBeEnabled({
+      timeout: 30000
+    });
+
+    console.log(
+      '✔ Presentando documento de transporte...'
+    );
 
     await botonPresentar.click();
 
@@ -161,14 +248,18 @@ export class DocumentoTransporteIC04Page {
       );
 
     /*
-     * IMPORTANTE:
-     * El botón "ir a Presupuesto General" ya existe en pantalla
-     * mientras el documento se está validando, pero permanece disabled.
+     * VALIDACIÓN RPA
      *
-     * Por eso NO alcanza con esperar que esté visible.
-     * Sólo consideramos el documento aceptado cuando el botón queda ENABLED.
+     * El botón "ir a Presupuesto General"
+     * ya existe mientras el documento está
+     * siendo validado, pero permanece disabled.
      *
-     * En paralelo esperamos el mensaje real de rechazo del RPA.
+     * DOCUMENTO ACEPTADO:
+     * "ir a Presupuesto General" queda ENABLED.
+     *
+     * DOCUMENTO RECHAZADO:
+     * aparece:
+     * "Error en campo Bultos / Nro."
      */
     const resultado =
       await Promise.race<
@@ -180,7 +271,8 @@ export class DocumentoTransporteIC04Page {
             timeout: 60000
           })
           .then(
-            () => 'rechazado' as const
+            () =>
+              'rechazado' as const
           ),
 
         expect(
@@ -190,7 +282,8 @@ export class DocumentoTransporteIC04Page {
             timeout: 60000
           })
           .then(
-            () => 'aceptado' as const
+            () =>
+              'aceptado' as const
           )
       ]);
 
@@ -218,10 +311,13 @@ export class DocumentoTransporteIC04Page {
       await aceptar.click();
 
       /*
-       * Esperamos que el formulario vuelva a quedar disponible
-       * antes de devolver "rechazado" al flow.
-       * Esto permite que el siguiente intento pueda volver a
-       * escribir puerto y documento sin carreras de UI.
+       * Esperamos que el formulario vuelva
+       * a estar disponible.
+       *
+       * Así el launcher puede permitir:
+       *
+       * - Reintentar
+       * - Guardar operación pendiente
        */
       await this.page
         .getByRole(
@@ -236,9 +332,15 @@ export class DocumentoTransporteIC04Page {
           state: 'visible',
           timeout: 30000
         });
+
+      return 'rechazado';
     }
 
-    return resultado;
+    console.log(
+      '✔ Documento de transporte aceptado.'
+    );
+
+    return 'aceptado';
   }
 
   async irAPresupuestoGeneral() {
@@ -262,6 +364,10 @@ export class DocumentoTransporteIC04Page {
     ).toBeEnabled({
       timeout: 60000
     });
+
+    console.log(
+      '✔ Navegando a Presupuesto General...'
+    );
 
     await boton.click();
   }
