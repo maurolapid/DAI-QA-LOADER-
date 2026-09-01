@@ -45,7 +45,7 @@ export class OficializacionBasePage {
       `✔ Enviando respuesta de texto: ${valor}`
     );
 
-    await guardarButton.click();
+    await guardarButton.click({ timeout: 120000 });
 
     await expect
       .poll(
@@ -106,7 +106,7 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({ timeout: 120000 });
   }
 
   protected async responderNo() {
@@ -127,7 +127,7 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({ timeout: 120000 });
   }
 
   protected async confirmarSeleccion() {
@@ -147,7 +147,7 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({ timeout: 120000 });
   }
 
   protected async seleccionarRadioExacto(
@@ -164,7 +164,7 @@ export class OficializacionBasePage {
       timeout: 120000
     });
 
-    await radio.check();
+    await radio.check({ timeout: 120000 });
 
     await this.confirmarSeleccion();
   }
@@ -184,21 +184,178 @@ export class OficializacionBasePage {
       timeout: 120000
     });
 
-    await radio.check();
+    await radio.check({ timeout: 120000 });
 
     await this.confirmarSeleccion();
   }
 
-  protected async irACertificacionPACROM() {
-    const boton =
+  private async esperarYCerrarModalMensajesItemsSiAparece() {
+    const botonEntendido =
       this.page.getByRole('button', {
-        name: 'ir a Certificación PAC/ROM'
+        name: 'Entendido',
+        exact: true
       });
 
-    await boton.waitFor({
-      state: 'visible',
-      timeout: 120000
-    });
+    const botonNuevo =
+      this.page.getByRole('button', {
+        name: 'Ir a Certificado PAC/ROM',
+        exact: true
+      });
+
+    const botonAnterior =
+      this.page.getByRole('button', {
+        name: 'ir a Certificación PAC/ROM',
+        exact: true
+      });
+
+    console.log(
+      '✔ Esperando modal de mensajes o botón de Certificado PAC/ROM...'
+    );
+
+    const estado = await expect
+      .poll(
+        async () => {
+          if (
+            await botonEntendido
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'modal';
+          }
+
+          if (
+            await botonNuevo
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'nuevo';
+          }
+
+          if (
+            await botonAnterior
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'anterior';
+          }
+
+          return 'esperando';
+        },
+        {
+          timeout: 120000,
+          intervals: [
+            300,
+            500,
+            1000,
+            2000
+          ]
+        }
+      )
+      .not.toBe('esperando')
+      .then(async () => {
+        if (
+          await botonEntendido
+            .isVisible()
+            .catch(() => false)
+        ) {
+          return 'modal' as const;
+        }
+
+        if (
+          await botonNuevo
+            .isVisible()
+            .catch(() => false)
+        ) {
+          return 'nuevo' as const;
+        }
+
+        return 'anterior' as const;
+      });
+
+    if (estado === 'modal') {
+      console.log(
+        '✔ Modal "Revisá los mensajes del ítem" detectado.'
+      );
+
+      await expect(
+        botonEntendido
+      ).toBeEnabled({
+        timeout: 30000
+      });
+
+      await botonEntendido.click({ timeout: 120000 });
+
+      await botonEntendido
+        .waitFor({
+          state: 'hidden',
+          timeout: 30000
+        })
+        .catch(() => {});
+
+      console.log(
+        '✔ Modal de mensajes de Items cerrado.'
+      );
+    }
+  }
+
+  protected async irACertificacionPACROM() {
+    await this.esperarYCerrarModalMensajesItemsSiAparece();
+
+    const botonNuevo =
+      this.page.getByRole('button', {
+        name: 'Ir a Certificado PAC/ROM',
+        exact: true
+      });
+
+    const botonAnterior =
+      this.page.getByRole('button', {
+        name: 'ir a Certificación PAC/ROM',
+        exact: true
+      });
+
+    const boton = await expect
+      .poll(
+        async () => {
+          if (
+            await botonNuevo
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'nuevo';
+          }
+
+          if (
+            await botonAnterior
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'anterior';
+          }
+
+          return 'esperando';
+        },
+        {
+          timeout: 120000,
+          intervals: [
+            300,
+            500,
+            1000,
+            2000
+          ]
+        }
+      )
+      .not.toBe('esperando')
+      .then(async () => {
+        if (
+          await botonNuevo
+            .isVisible()
+            .catch(() => false)
+        ) {
+          return botonNuevo;
+        }
+
+        return botonAnterior;
+      });
 
     await expect(
       boton
@@ -206,29 +363,64 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await boton.click();
+    console.log(
+      '✔ Avanzando a Certificado PAC/ROM...'
+    );
+
+    await boton.click({ timeout: 120000 });
   }
 
   protected async completarCertificacionPACROM(
     _nombreTransporte: string
   ) {
-    await this.page
-      .getByRole('textbox', {
+    const campoMarcas =
+      this.page.getByRole('textbox', {
         name: 'Ingresar marcas'
-      })
-      .fill('SM');
+      });
 
-    await this.page
-      .getByRole('combobox', {
-        name: 'Via'
-      })
-      .click();
+    console.log(
+      '✔ Esperando formulario de Certificación PAC/ROM...'
+    );
+
+    await campoMarcas.waitFor({
+      state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(
+      campoMarcas
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await campoMarcas.fill('SM');
+
+    console.log(
+      '✔ Formulario de Certificación PAC/ROM disponible.'
+    );
+
+    const comboVia =
+      this.page
+        .getByText('Via', {
+          exact: true
+        })
+        .locator(
+          'xpath=following::div[@role="combobox"][1]'
+        );
+
+    await comboVia.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await comboVia.click({ timeout: 120000 });
 
     await this.page
       .getByRole('option', {
-        name: '- AVION'
+        name: '2 - AVION',
+        exact: true
       })
-      .click();
+      .click({ timeout: 120000 });
 
     // Venc. Embarque = fecha actual + 30 días
     const fechaVencimiento =
@@ -270,17 +462,28 @@ export class OficializacionBasePage {
       })
       .fill(vencimientoEmbarque);
 
-    await this.page
-      .getByRole('combobox', {
-        name: 'Bandera'
-      })
-      .click();
+    const comboBandera =
+      this.page
+        .getByText('Bandera', {
+          exact: true
+        })
+        .locator(
+          'xpath=following::div[@role="combobox"][1]'
+        );
+
+    await comboBandera.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await comboBandera.click({ timeout: 120000 });
 
     await this.page
       .getByRole('option', {
-        name: '- INDET.(CONTINENTE)'
+        name: '998 - INDET.(CONTINENTE)',
+        exact: true
       })
-      .click();
+      .click({ timeout: 120000 });
 
     await this.page
       .getByRole('textbox', {
@@ -300,40 +503,62 @@ export class OficializacionBasePage {
       })
       .fill('1');
 
-    await this.page
-      .getByRole('combobox', {
-        name: 'Embalaje Codigo'
-      })
-      .click();
+    const comboEmbalajeCodigo =
+      this.page
+        .getByText('Embalaje Codigo', {
+          exact: true
+        })
+        .locator(
+          'xpath=following::div[@role="combobox"][1]'
+        );
+
+    await comboEmbalajeCodigo.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await comboEmbalajeCodigo.click({ timeout: 120000 });
 
     await this.page
       .getByRole('option', {
-        name: '- BULTOS'
+        name: '99 - BULTOS',
+        exact: true
       })
-      .click();
+      .click({ timeout: 120000 });
 
     await this.page
-      .getByRole('spinbutton', {
-        name: 'Ingresar la cantidad'
-      })
+      .locator(
+        'input[name="cant_a_despachar_paso_bultos"]'
+      )
       .fill('1');
 
-    await this.page
-      .getByRole('combobox', {
-        name: 'Embalaje tipo'
-      })
-      .click();
+    const comboEmbalajeTipo =
+      this.page
+        .getByText('Embalaje tipo', {
+          exact: true
+        })
+        .locator(
+          'xpath=following::div[@role="combobox"][1]'
+        );
+
+    await comboEmbalajeTipo.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await comboEmbalajeTipo.click({ timeout: 120000 });
 
     await this.page
       .getByRole('option', {
-        name: 'N - No Retornable'
+        name: 'N - No Retornable',
+        exact: true
       })
-      .click();
+      .click({ timeout: 120000 });
 
     await this.page
-      .getByRole('textbox', {
-        name: 'Ingresar el peso'
-      })
+      .locator(
+        'input[name="peso_kgr_paso_bultos"]'
+      )
       .fill('10');
   }
 
@@ -354,7 +579,7 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({ timeout: 120000 });
   }
 
   protected async verificarDetallePresupuesto() {
@@ -374,7 +599,7 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await verDetalle.click();
+    await verDetalle.click({ timeout: 120000 });
 
     const cerrar =
       this.page.getByRole('button', {
@@ -386,6 +611,6 @@ export class OficializacionBasePage {
       timeout: 60000
     });
 
-    await cerrar.click();
+    await cerrar.click({ timeout: 120000 });
   }
 }

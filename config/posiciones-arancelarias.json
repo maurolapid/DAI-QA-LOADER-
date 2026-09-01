@@ -52,5 +52,165 @@
     "id": 10,
     "codigo": "8708.29.99.990J",
     "descripcion": "Posición adicional configurada"
+  },
+  {
+    "id": 11,
+    "codigo": "3002.12.11.000U",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 12,
+    "codigo": "3006.50.00.200U",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 13,
+    "codigo": "3208.20.19.100Z",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 14,
+    "codigo": "3208.20.20.100Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 15,
+    "codigo": "3208.90.10.900Y",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 16,
+    "codigo": "3402.50.00.100Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 17,
+    "codigo": "3901.40.00.000K",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 18,
+    "codigo": "3907.30.22.000R",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 19,
+    "codigo": "3917.32.10.100R",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 20,
+    "codigo": "3917.32.29.100V",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 21,
+    "codigo": "3917.32.40.000Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 22,
+    "codigo": "3917.32.90.100V",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 23,
+    "codigo": "3917.32.90.990T",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 24,
+    "codigo": "3917.39.00.100Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 25,
+    "codigo": "3917.40.90.910G",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 26,
+    "codigo": "3919.10.20.900E",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 27,
+    "codigo": "3919.10.90.990C",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 28,
+    "codigo": "3919.90.20.110C",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 29,
+    "codigo": "3919.90.20.910W",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 30,
+    "codigo": "3919.90.90.112A",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 31,
+    "codigo": "3919.90.90.291E",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 32,
+    "codigo": "3920.10.99.999V",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 33,
+    "codigo": "3920.20.90.999Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 34,
+    "codigo": "3923.30.90.990Q",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 35,
+    "codigo": "3923.50.00.130T",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 36,
+    "codigo": "3926.30.00.900D",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 37,
+    "codigo": "3926.90.10.000Z",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 38,
+    "codigo": "3926.90.90.220V",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 39,
+    "codigo": "3926.90.90.290T",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 40,
+    "codigo": "8483.10.19.000J",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 41,
+    "codigo": "8484.90.00.000M",
+    "descripcion": "Posición relevada para automatización"
+  },
+  {
+    "id": 42,
+    "codigo": "8512.90.00.100T",
+    "descripcion": "Posición relevada para automatización"
   }
 ]

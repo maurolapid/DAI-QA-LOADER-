@@ -523,149 +523,133 @@ async function seleccionarPosicionesParaItems(
   posiciones: PosicionArancelaria[],
   titulo: string
 ): Promise<PosicionArancelaria[]> {
-  if (
-    posiciones.length === 0
-  ) {
+  if (posiciones.length === 0) {
     throw new Error(
       'No hay posiciones arancelarias configuradas.'
     );
   }
 
-  // Si se ejecuta un único item, se selecciona directamente
-  // una única posición arancelaria y se omite la distribución.
-  if (
-    cantidadItems === 1
-  ) {
-    const posicionIndex =
-      await askOption(
-        'Seleccione la posición arancelaria',
-        posiciones.map(
-          posicion =>
-            `${posicion.codigo} - ${posicion.descripcion}${
-              posicion.nota
-                ? ` (${posicion.nota})`
-                : ''
-            }`
-        )
-      );
-
-    return [
-      posiciones[posicionIndex]
-    ];
-  }
-
-  const tipoDistribucionIndex =
-    await askOption(
-      titulo,
-      [
-        'Misma posición para todos los items',
-        'Utilizar varias posiciones'
-      ]
+  if (cantidadItems === 1) {
+    const posicionIndex = await askOption(
+      'Seleccione la posición arancelaria',
+      posiciones.map(
+        posicion =>
+          `${posicion.codigo} - ${posicion.descripcion}${
+            posicion.nota ? ` (${posicion.nota})` : ''
+          }`
+      )
     );
 
-  if (
-    tipoDistribucionIndex === 0
-  ) {
-    const posicionIndex =
-      await askOption(
-        'Seleccione la posición arancelaria',
-        posiciones.map(
-          posicion =>
-            `${posicion.codigo} - ${posicion.descripcion}${
-              posicion.nota
-                ? ` (${posicion.nota})`
-                : ''
-            }`
-        )
-      );
-
-    return [
-      posiciones[posicionIndex]
-    ];
+    return [posiciones[posicionIndex]];
   }
 
-  const maximoPosiciones =
-    Math.min(
-      cantidadItems,
-      posiciones.length
+  const tipoDistribucionIndex = await askOption(
+    titulo,
+    [
+      'Misma posición para todos los items',
+      'Seleccionar posiciones manualmente',
+      'Seleccionar todas las posiciones automáticamente',
+      'Selección automática según cantidad de items'
+    ]
+  );
+
+  if (tipoDistribucionIndex === 0) {
+    const posicionIndex = await askOption(
+      'Seleccione la posición arancelaria',
+      posiciones.map(
+        posicion =>
+          `${posicion.codigo} - ${posicion.descripcion}${
+            posicion.nota ? ` (${posicion.nota})` : ''
+          }`
+      )
     );
 
-  if (
-    maximoPosiciones === 1
-  ) {
+    return [posiciones[posicionIndex]];
+  }
+
+  const maximoPosiciones = Math.min(
+    cantidadItems,
+    posiciones.length
+  );
+
+  if (maximoPosiciones === 1) {
     console.log(
       'Solo hay una posición disponible. Se utilizará para todos los items.'
     );
 
-    return [
-      posiciones[0]
-    ];
+    return [posiciones[0]];
   }
 
-  const cantidadesDisponibles =
-    Array.from(
-      {
-        length:
-          maximoPosiciones - 1
-      },
-      (_, index) =>
-        index + 2
+  if (tipoDistribucionIndex === 2) {
+    const seleccionadas = posiciones.slice(
+      0,
+      maximoPosiciones
     );
 
-  const cantidadIndex =
-    await askOption(
-      'Cantidad de posiciones distintas a utilizar',
-      cantidadesDisponibles.map(
-        cantidad =>
-          String(cantidad)
-      )
+    console.log(
+      `Selección automática: ${seleccionadas.length} posiciones.`
     );
+    console.log('');
+
+    return seleccionadas;
+  }
+
+  if (tipoDistribucionIndex === 3) {
+    const seleccionadas = posiciones.slice(
+      0,
+      maximoPosiciones
+    );
+
+    console.log(
+      `Selección automática según items: ${seleccionadas.length} posiciones para ${cantidadItems} items.`
+    );
+    console.log('');
+
+    return seleccionadas;
+  }
+
+  const cantidadesDisponibles = Array.from(
+    { length: maximoPosiciones - 1 },
+    (_, index) => index + 2
+  );
+
+  const cantidadIndex = await askOption(
+    'Cantidad de posiciones distintas a utilizar',
+    cantidadesDisponibles.map(
+      cantidad => String(cantidad)
+    )
+  );
 
   const cantidadPosiciones =
-    cantidadesDisponibles[
-      cantidadIndex
-    ];
+    cantidadesDisponibles[cantidadIndex];
 
-  const seleccionadas:
-    PosicionArancelaria[] = [];
-
-  let disponibles = [
-    ...posiciones
-  ];
+  const seleccionadas: PosicionArancelaria[] = [];
+  let disponibles = [...posiciones];
 
   for (
     let numero = 1;
     numero <= cantidadPosiciones;
     numero++
   ) {
-    const posicionIndex =
-      await askOption(
-        `Seleccione posición ${numero} de ${cantidadPosiciones}`,
-        disponibles.map(
-          posicion =>
-            `${posicion.codigo} - ${posicion.descripcion}${
-              posicion.nota
-                ? ` (${posicion.nota})`
-                : ''
-            }`
-        )
-      );
-
-    const seleccionada =
-      disponibles[
-        posicionIndex
-      ];
-
-    seleccionadas.push(
-      seleccionada
+    const posicionIndex = await askOption(
+      `Seleccione posición ${numero} de ${cantidadPosiciones}`,
+      disponibles.map(
+        posicion =>
+          `${posicion.codigo} - ${posicion.descripcion}${
+            posicion.nota ? ` (${posicion.nota})` : ''
+          }`
+      )
     );
 
-    disponibles =
-      disponibles.filter(
-        posicion =>
-          posicion.codigo !==
-          seleccionada.codigo
-      );
+    const seleccionada =
+      disponibles[posicionIndex];
+
+    seleccionadas.push(seleccionada);
+
+    disponibles = disponibles.filter(
+      posicion =>
+        posicion.codigo !== seleccionada.codigo
+    );
   }
 
   return seleccionadas;
@@ -1748,7 +1732,7 @@ async function main() {
           'Tipo de flujo IC04',
           [
             'Operación estándar',
-            'Preguntas Item 7318.15.00.620M'
+            'IC04 completo hasta Presupuesto (7318.15.00.620M)'
           ]
         );
 

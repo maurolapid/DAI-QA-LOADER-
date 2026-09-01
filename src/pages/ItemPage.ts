@@ -49,64 +49,146 @@ export class ItemPage {
 
   private posicionArancelariaInput() {
     return this.page.getByRole('textbox', {
-      name: 'Posición arancelaria'
+      name: 'Ej: 0000.00.00.000A'
     });
   }
 
   private async seleccionarOpcion(
     opcion: string
   ) {
-    await this.page
-      .getByRole('option', {
+    const locator =
+      this.page.getByRole('option', {
         name: opcion
-      })
-      .first()
-      .click();
+      }).first();
+
+    await locator.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+    await locator.click();
   }
 
   async abrirPrimerItem() {
-    const botonAgregarItem =
+    const candidatos = [
       this.page.getByRole('button', {
-        name: 'AGREGAR ITEM',
-        exact: true
-      });
+        name: /^Agregar ítem$/i
+      }),
+      this.page.getByRole('button', {
+        name: /^Agregar item$/i
+      })
+    ];
+
+    let botonAgregarItem = candidatos[0];
+
+    for (const candidato of candidatos) {
+      if (
+        await candidato
+          .first()
+          .isVisible()
+          .catch(() => false)
+      ) {
+        botonAgregarItem =
+          candidato.first();
+        break;
+      }
+    }
 
     await botonAgregarItem.waitFor({
       state: 'visible',
       timeout: 60000
+    });
+
+    await expect(
+      botonAgregarItem
+    ).toBeEnabled({
+      timeout: 30000
     });
 
     await botonAgregarItem.click();
   }
 
   async agregarOtroItem() {
-    const botonAgregarItem =
+    const candidatos = [
       this.page.getByRole('button', {
-        name: 'Agregar item',
-        exact: true
-      });
+        name: /^\+ Agregar item$/i
+      }),
+      this.page.getByRole('button', {
+        name: /^\+ Agregar ítem$/i
+      }),
+      this.page.getByRole('button', {
+        name: /^Agregar item$/i
+      })
+    ];
+
+    let botonAgregarItem = candidatos[0];
+
+    for (const candidato of candidatos) {
+      if (
+        await candidato
+          .first()
+          .isVisible()
+          .catch(() => false)
+      ) {
+        botonAgregarItem =
+          candidato.first();
+        break;
+      }
+    }
 
     await botonAgregarItem.waitFor({
       state: 'visible',
       timeout: 60000
     });
 
+    await expect(
+      botonAgregarItem
+    ).toBeEnabled({
+      timeout: 30000
+    });
+
     await botonAgregarItem.click();
   }
 
   async cargarTodosLosItems() {
-    const botonCargarItems =
+    const candidatos = [
+      this.page.getByRole('button', {
+        name: 'Validar items',
+        exact: true
+      }),
       this.page.getByRole('button', {
         name: 'CARGAR ITEMS',
         exact: true
-      });
+      })
+    ];
 
-    await botonCargarItems.waitFor({
+    let botonFinal = candidatos[0];
+
+    for (const candidato of candidatos) {
+      if (
+        await candidato
+          .first()
+          .isVisible()
+          .catch(() => false)
+      ) {
+        botonFinal =
+          candidato.first();
+        break;
+      }
+    }
+
+    await botonFinal.waitFor({
       state: 'visible',
       timeout: 60000
     });
 
-    await botonCargarItems.click();
+    await expect(
+      botonFinal
+    ).toBeEnabled({
+      timeout: 30000
+    });
+
+    await botonFinal.click();
   }
 
   async completarPosicionArancelaria(
@@ -150,18 +232,16 @@ export class ItemPage {
     data: ItemIC04Data
   ) {
     await this.page
-      .locator(
-        '#tipo_paso_items_seccion_cabecera'
-      )
-      .click();
-
-    await this.seleccionarOpcion(
-      data.tipoOpcion
-    );
+      .getByRole('radio', {
+        name: data.tipoOpcion,
+        exact: true
+      })
+      .check();
 
     await this.page
-      .locator(
-        '#estmercad_paso_items_seccion_cabecera'
+      .getByText(
+        'Seleccioná el estado de',
+        { exact: false }
       )
       .click();
 
@@ -173,6 +253,10 @@ export class ItemPage {
       .locator(
         '#origen_paisprov_paso_items_seccion_cabecera'
       )
+      .getByText(
+        'Seleccioná el país',
+        { exact: false }
+      )
       .click();
 
     await this.seleccionarOpcion(
@@ -183,6 +267,10 @@ export class ItemPage {
       .locator(
         '#pais_procdestino_paso_items_seccion_cabecera'
       )
+      .getByText(
+        'Seleccioná el país',
+        { exact: false }
+      )
       .click();
 
     await this.seleccionarOpcion(
@@ -190,9 +278,10 @@ export class ItemPage {
     );
 
     await this.page
-      .locator(
-        '#unidad_declarada_paso_items_seccion_cabecera'
-      )
+      .getByRole('combobox', {
+        name: 'Seleccioná una opción',
+        exact: true
+      })
       .click();
 
     await this.seleccionarOpcion(
@@ -200,9 +289,17 @@ export class ItemPage {
     );
 
     const totalKiloNeto =
-      this.page.locator(
-        '#total_kilo_neto_paso_items_seccion_cabecera'
+      this.page.getByRole(
+        'textbox',
+        {
+          name: 'Ej: 5000,0000'
+        }
       );
+
+    await totalKiloNeto.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
 
     await totalKiloNeto.fill(
       data.totalKiloNeto
@@ -216,26 +313,62 @@ export class ItemPage {
   }
 
   async continuarSinSubitems() {
-    await this.page
-      .getByRole('button', {
-        name: 'CONTINUAR'
-      })
-      .click();
+    const seccionValor =
+      this.page.getByText(
+        'Valor del item',
+        { exact: false }
+      ).first();
 
-    await this.page
-      .getByText(
-        '¿Desea agregar subitems?'
+    await seccionValor.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+    const botonVerMasCercano =
+      seccionValor
+        .locator('xpath=..')
+        .getByRole('button', {
+          name: /Ver más/i
+        });
+
+    if (
+      await botonVerMasCercano.count() > 0 &&
+      await botonVerMasCercano
+        .first()
+        .isVisible()
+        .catch(() => false)
+    ) {
+      await botonVerMasCercano
+        .first()
+        .click();
+
+      return;
+    }
+
+    const botonesVerMas =
+      this.page.getByRole(
+        'button',
+        {
+          name: /Ver más/i
+        }
+      );
+
+    const cantidad =
+      await botonesVerMas.count();
+
+    if (cantidad === 0) {
+      throw new Error(
+        'No se encontró el botón para desplegar "Valor del item".'
+      );
+    }
+
+    await botonesVerMas
+      .nth(
+        Math.min(
+          2,
+          cantidad - 1
+        )
       )
-      .waitFor({
-        state: 'visible',
-        timeout: 30000
-      });
-
-    await this.page
-      .getByRole('button', {
-        name: 'NO',
-        exact: true
-      })
       .click();
   }
 
@@ -271,6 +404,11 @@ export class ItemPage {
         '#cantidad_declarada_paso_items_seccion_valor_del_item'
       );
 
+    await cantidadDeclarada.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
     await cantidadDeclarada.fill(
       data.cantidadDeclarada
     );
@@ -282,9 +420,17 @@ export class ItemPage {
     );
 
     const unidadesEstadisticas =
-      this.page.locator(
-        '#cantunidades_estadisticas_paso_items_seccion_valor_del_item'
+      this.page.getByRole(
+        'textbox',
+        {
+          name: 'Seleccioná una opción de'
+        }
       );
+
+    await unidadesEstadisticas.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
 
     await unidadesEstadisticas.fill(
       data.cantidadUnidadesEstadisticas
@@ -353,21 +499,108 @@ export class ItemPage {
         }
       );
 
-    const indice =
-      sufijo.indice ?? 0;
+    const cantidadCombos =
+      await combos.count();
 
-    const combo =
-      combos.nth(indice);
+    if (cantidadCombos === 0) {
+      throw new Error(
+        `No se encontró ningún combo para el sufijo "${sufijo.valor}"`
+      );
+    }
 
-    await combo.waitFor({
-      state: 'visible',
-      timeout: 30000
-    });
+    console.log(
+      `✔ Combos encontrados para "${sufijo.nombreAccesible}": ${cantidadCombos}`
+    );
 
-    await combo.click();
+    if (
+      sufijo.indice !== undefined
+    ) {
+      const combo =
+        combos.nth(sufijo.indice);
 
-    await this.seleccionarOpcion(
-      sufijo.valor
+      await combo.waitFor({
+        state: 'visible',
+        timeout: 30000
+      });
+
+      await combo.click();
+
+      const opcion =
+        this.page.getByRole(
+          'option',
+          {
+            name: sufijo.valor,
+            exact: true
+          }
+        ).first();
+
+      await opcion.waitFor({
+        state: 'visible',
+        timeout: 30000
+      });
+
+      await opcion.click();
+
+      console.log(
+        `✔ Sufijo combo seleccionado: ${sufijo.valor}`
+      );
+
+      return;
+    }
+
+    for (
+      let indice = 0;
+      indice < cantidadCombos;
+      indice++
+    ) {
+      const combo =
+        combos.nth(indice);
+
+      if (
+        !(await combo
+          .isVisible()
+          .catch(() => false))
+      ) {
+        continue;
+      }
+
+      await combo.click();
+
+      const opcion =
+        this.page.getByRole(
+          'option',
+          {
+            name: sufijo.valor,
+            exact: true
+          }
+        );
+
+      if (
+        await opcion.count() > 0 &&
+        await opcion
+          .first()
+          .isVisible()
+          .catch(() => false)
+      ) {
+        await opcion
+          .first()
+          .click();
+
+        console.log(
+          `✔ Sufijo combo seleccionado: ${sufijo.valor}`
+        );
+
+        return;
+      }
+
+      await this.page
+        .keyboard
+        .press('Escape')
+        .catch(() => undefined);
+    }
+
+    throw new Error(
+      `No se pudo seleccionar el sufijo combo "${sufijo.valor}"`
     );
   }
 

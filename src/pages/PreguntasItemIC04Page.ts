@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class PreguntasItemIC04Page {
   constructor(private page: Page) {}
@@ -15,10 +15,16 @@ export class PreguntasItemIC04Page {
 
     await boton.waitFor({
       state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(boton).toBeEnabled({
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({
+      timeout: 120000
+    });
   }
 
   private async responderBoton(
@@ -35,10 +41,100 @@ export class PreguntasItemIC04Page {
 
     await boton.waitFor({
       state: 'visible',
+      timeout: 120000
+    });
+
+    await expect(boton).toBeEnabled({
       timeout: 60000
     });
 
-    await boton.click();
+    await boton.click({
+      timeout: 120000
+    });
+  }
+
+  private async irACertificacionPACROM() {
+    const botonNuevo =
+      this.page.getByRole(
+        'button',
+        {
+          name: 'Ir a Certificado PAC/ROM',
+          exact: true
+        }
+      );
+
+    const botonAnterior =
+      this.page.getByRole(
+        'button',
+        {
+          name: 'ir a Certificación PAC/ROM',
+          exact: true
+        }
+      );
+
+    console.log(
+      '✔ [IC04/Preguntas] Esperando botón de Certificado PAC/ROM...'
+    );
+
+    const tipoBoton =
+      await expect
+        .poll(
+          async () => {
+            if (
+              await botonNuevo
+                .isVisible()
+                .catch(() => false)
+            ) {
+              return 'nuevo';
+            }
+
+            if (
+              await botonAnterior
+                .isVisible()
+                .catch(() => false)
+            ) {
+              return 'anterior';
+            }
+
+            return 'esperando';
+          },
+          {
+            timeout: 120000,
+            intervals: [
+              300,
+              500,
+              1000,
+              2000
+            ]
+          }
+        )
+        .not.toBe('esperando')
+        .then(async () => {
+          if (
+            await botonNuevo
+              .isVisible()
+              .catch(() => false)
+          ) {
+            return 'nuevo' as const;
+          }
+
+          return 'anterior' as const;
+        });
+
+    const botonCertificacion =
+      tipoBoton === 'nuevo'
+        ? botonNuevo
+        : botonAnterior;
+
+    await expect(
+      botonCertificacion
+    ).toBeEnabled({
+      timeout: 60000
+    });
+
+    await botonCertificacion.click({
+      timeout: 120000
+    });
   }
 
   async responderPreguntas73181500620M() {
@@ -60,10 +156,12 @@ export class PreguntasItemIC04Page {
 
     await importacionDestinada.waitFor({
       state: 'visible',
-      timeout: 60000
+      timeout: 120000
     });
 
-    await importacionDestinada.check();
+    await importacionDestinada.check({
+      timeout: 120000
+    });
 
     await this.confirmarSeleccion();
 
@@ -79,10 +177,12 @@ export class PreguntasItemIC04Page {
 
     await giroDivisas.waitFor({
       state: 'visible',
-      timeout: 60000
+      timeout: 120000
     });
 
-    await giroDivisas.check();
+    await giroDivisas.check({
+      timeout: 120000
+    });
 
     await this.confirmarSeleccion();
 
@@ -103,32 +203,19 @@ export class PreguntasItemIC04Page {
 
     await opcionChad.waitFor({
       state: 'visible',
-      timeout: 60000
+      timeout: 120000
     });
 
-    await opcionChad.check();
+    await opcionChad.check({
+      timeout: 120000
+    });
 
     await this.confirmarSeleccion();
 
     // Confirmación adicional previa al siguiente paso
     await this.confirmarSeleccion();
 
-    const botonCertificacion =
-      this.page.getByRole(
-        'button',
-        {
-          name:
-            'ir a Certificación PAC/ROM',
-          exact: true
-        }
-      );
-
-    await botonCertificacion.waitFor({
-      state: 'visible',
-      timeout: 60000
-    });
-
-    await botonCertificacion.click();
+    await this.irACertificacionPACROM();
 
     console.log(
       '✔ [IC04/Preguntas] Preguntas completadas.'

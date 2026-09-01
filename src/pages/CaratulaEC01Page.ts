@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
 
 type CaratulaEC01Data = {
   fobTotal: string;
@@ -21,30 +21,127 @@ export class CaratulaEC01Page {
     });
   }
 
-  private monedaFOBCombo() {
-    return this.page
-      .getByRole('combobox', {
-        name: 'Seleccionar tipo de divisa'
-      })
+  private async primerLocatorVisible(
+    locators: Locator[],
+    nombre: string
+  ): Promise<Locator> {
+    for (const locator of locators) {
+      if (await locator.count() === 0) {
+        continue;
+      }
+
+      const candidato = locator.first();
+
+      if (await candidato.isVisible().catch(() => false)) {
+        return candidato;
+      }
+    }
+
+    throw new Error(
+      `No se encontró un locator visible para "${nombre}".`
+    );
+  }
+
+  private comboboxPorTextoCercano(texto: RegExp) {
+    const etiqueta = this.page
+      .getByText(texto, { exact: true })
+      .first();
+
+    return etiqueta
+      .locator('xpath=..')
+      .getByRole('combobox')
       .first();
   }
 
-  private condicionVentaCombo() {
-    return this.page.getByRole('combobox', {
-      name: 'Seleccionar condición de venta'
-    });
+  private async monedaFOBCombo() {
+    return this.primerLocatorVisible(
+      [
+        this.page
+          .getByRole('combobox', {
+            name: 'Seleccionar tipo de divisa'
+          })
+          .first(),
+
+        this.page
+          .getByRole('combobox', {
+            name: /^Moneda$/i
+          })
+          .first(),
+
+        this.comboboxPorTextoCercano(/^Moneda$/i),
+
+        this.page
+          .locator('div[role="combobox"][aria-haspopup="listbox"]:visible')
+          .first()
+      ],
+      'Moneda FOB'
+    );
   }
 
-  private destinoCombo() {
-    return this.page.getByRole('combobox', {
-      name: 'Seleccionar destino'
-    });
+  private async condicionVentaCombo() {
+    return this.primerLocatorVisible(
+      [
+        this.page.getByRole('combobox', {
+          name: 'Seleccionar condición de venta'
+        }),
+
+        this.page.getByRole('combobox', {
+          name: /Cond\.?Venta/i
+        }),
+
+        this.comboboxPorTextoCercano(/^Cond\.Venta$/i),
+
+        this.page
+          .getByText(/^Cond\.Venta$/i, { exact: true })
+          .locator('xpath=..')
+          .getByRole('combobox')
+      ],
+      'Condición de venta'
+    );
   }
 
-  private aduanaDestinoCombo() {
-    return this.page.getByRole('combobox', {
-      name: 'Aduana Dest./Sal.'
-    });
+  private async destinoCombo() {
+    return this.primerLocatorVisible(
+      [
+        this.page.getByRole('combobox', {
+          name: 'Seleccionar destino'
+        }),
+
+        this.page.getByRole('combobox', {
+          name: /País Proc\.\/Dest\./i
+        }),
+
+        this.comboboxPorTextoCercano(/^País Proc\.\/Dest\.$/i),
+
+        this.page
+          .getByText(/^País Proc\.\/Dest\.$/i, { exact: true })
+          .locator('xpath=..')
+          .getByRole('combobox')
+      ],
+      'País Proc./Dest.'
+    );
+  }
+
+  private async aduanaDestinoCombo() {
+    return this.primerLocatorVisible(
+      [
+        this.page.getByRole('combobox', {
+          name: 'Aduana Dest./Sal.'
+        }),
+
+        this.page.getByRole('combobox', {
+          name: /Aduana Dest\.\/Sal\./i
+        }),
+
+        this.comboboxPorTextoCercano(/^Aduana Dest\.\/Sal\.$/i),
+
+        this.page
+          .getByText(/^Aduana Dest\.\/Sal\.$/i, { exact: true })
+          .locator('xpath=..')
+          .getByRole('combobox')
+      ],
+      'Aduana Dest./Sal.'
+    );
   }
 
   private presenciaFacturasCombo() {
@@ -52,13 +149,19 @@ export class CaratulaEC01Page {
   }
 
   private async seleccionarOpcion(opcion: string) {
-    await this.page
-     .getByRole('option', {
-       name: opcion
-    })
-    .first()
-    .click();
- }
+    const opcionLocator = this.page
+      .getByRole('option', {
+        name: opcion
+      })
+      .first();
+
+    await opcionLocator.waitFor({
+      state: 'visible',
+      timeout: 30000
+    });
+
+    await opcionLocator.click();
+  }
 
   async completarFOB(fob: string) {
     const campoFOB = this.fobTotalInput();
@@ -73,22 +176,30 @@ export class CaratulaEC01Page {
   }
 
   async seleccionarMonedaFOB(moneda: string) {
-    await this.monedaFOBCombo().click();
+    const combo = await this.monedaFOBCombo();
+
+    await combo.click();
     await this.seleccionarOpcion(moneda);
   }
 
   async seleccionarCondicionVenta(condicion: string) {
-    await this.condicionVentaCombo().click();
+    const combo = await this.condicionVentaCombo();
+
+    await combo.click();
     await this.seleccionarOpcion(condicion);
   }
 
   async seleccionarDestino(destino: string) {
-    await this.destinoCombo().click();
+    const combo = await this.destinoCombo();
+
+    await combo.click();
     await this.seleccionarOpcion(destino);
   }
 
   async seleccionarAduanaDestino(aduana: string) {
-    await this.aduanaDestinoCombo().click();
+    const combo = await this.aduanaDestinoCombo();
+
+    await combo.click();
     await this.seleccionarOpcion(aduana);
   }
 
@@ -130,11 +241,15 @@ export class CaratulaEC01Page {
       })
       .click();
 
-    await this.page.waitForLoadState('networkidle').catch(() => undefined);
+    await this.page
+      .waitForLoadState('networkidle')
+      .catch(() => undefined);
   }
 
   async completarCaratula(data: CaratulaEC01Data) {
-    await this.completarFOB(data.fobTotal);
+    await this.completarFOB(
+      data.fobTotal
+    );
 
     await this.seleccionarMonedaFOB(
       data.monedaOpcion
