@@ -418,29 +418,6 @@ export class ItemPage {
     ).toHaveValue(
       data.cantidadDeclarada
     );
-
-    const unidadesEstadisticas =
-      this.page.getByRole(
-        'textbox',
-        {
-          name: 'Seleccioná una opción de'
-        }
-      );
-
-    await unidadesEstadisticas.waitFor({
-      state: 'visible',
-      timeout: 30000
-    });
-
-    await unidadesEstadisticas.fill(
-      data.cantidadUnidadesEstadisticas
-    );
-
-    await expect(
-      unidadesEstadisticas
-    ).toHaveValue(
-      data.cantidadUnidadesEstadisticas
-    );
   }
 
   async abrirSufijos() {

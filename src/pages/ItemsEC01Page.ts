@@ -107,14 +107,6 @@ export class ItemsEC01Page {
     );
   }
 
-  private cantidadUnidadesEstadisticasInput() {
-    return this.page.getByRole(
-      'textbox',
-      {
-        name: 'Seleccioná una opción de'
-      }
-    );
-  }
 
   private async seleccionarOpcion(
     opcion: string
@@ -445,18 +437,6 @@ export class ItemsEC01Page {
       this.cantidadDeclaradaInput()
     ).toHaveValue(
       data.cantidadDeclarada
-    );
-
-    await this
-      .cantidadUnidadesEstadisticasInput()
-      .fill(
-        data.cantidadUnidadesEstadisticas
-      );
-
-    await expect(
-      this.cantidadUnidadesEstadisticasInput()
-    ).toHaveValue(
-      data.cantidadUnidadesEstadisticas
     );
   }
 
