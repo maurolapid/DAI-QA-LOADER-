@@ -5,9 +5,9 @@
     "url": "http://172.31.103.186:3007/"
   },
   {
-    "id": "mockdevnokit",
-    "nombre": "MOCKDEVNOKIT",
-    "url": "http://172.31.103.187:3007/"
+    "id": "QA MAURO 208",
+    "nombre": "ambiente 208 regresion",
+    "url": "http://172.31.103.208:3007/"
   },
   {
     "id": "automation",
