@@ -5,29 +5,11 @@ import {
 
 export function obtenerFechaMas30Dias(): string {
   const fecha = new Date();
+  fecha.setDate(fecha.getDate() + 30);
 
-  fecha.setDate(
-    fecha.getDate() + 30
-  );
-
-  const dia =
-    String(
-      fecha.getDate()
-    ).padStart(
-      2,
-      '0'
-    );
-
-  const mes =
-    String(
-      fecha.getMonth() + 1
-    ).padStart(
-      2,
-      '0'
-    );
-
-  const anio =
-    fecha.getFullYear();
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const anio = fecha.getFullYear();
 
   return `${dia}/${mes}/${anio}`;
 }
@@ -36,23 +18,17 @@ export class PreguntasPresupuestoIC04Page {
   constructor(private page: Page) {}
 
   private async confirmarSeleccion() {
-    const boton =
-      this.page.getByRole(
-        'button',
-        {
-          name: 'Confirmar selección',
-          exact: true
-        }
-      );
+    const boton = this.page.getByRole('button', {
+      name: 'Confirmar selección',
+      exact: true
+    });
 
     await boton.waitFor({
       state: 'visible',
       timeout: 60000
     });
 
-    await expect(
-      boton
-    ).toBeEnabled({
+    await expect(boton).toBeEnabled({
       timeout: 60000
     });
 
@@ -60,23 +36,17 @@ export class PreguntasPresupuestoIC04Page {
   }
 
   private async responderNo() {
-    const boton =
-      this.page.getByRole(
-        'button',
-        {
-          name: 'NO',
-          exact: true
-        }
-      ).first();
+    const boton = this.page.getByRole('button', {
+      name: 'NO',
+      exact: true
+    }).first();
 
     await boton.waitFor({
       state: 'visible',
       timeout: 60000
     });
 
-    await expect(
-      boton
-    ).toBeEnabled({
+    await expect(boton).toBeEnabled({
       timeout: 60000
     });
 
@@ -95,31 +65,18 @@ export class PreguntasPresupuestoIC04Page {
         `✔ [IC04/Presupuesto] Esperando pregunta NO ${index}/${maximo} o campo de fecha...`
       );
 
-      const botonNo =
-        this.page.getByRole(
-          'button',
-          {
-            name: 'NO',
-            exact: true
-          }
-        ).first();
+      const botonNo = this.page.getByRole('button', {
+        name: 'NO',
+        exact: true
+      }).first();
 
-      const campoFecha =
-        this.page.getByRole(
-          'textbox',
-          {
-            name: 'DD/MM/AAAA'
-          }
-        ).first();
+      const campoFecha = this.page.getByRole('textbox', {
+        name: 'DD/MM/AAAA'
+      }).first();
 
-      const inicio =
-        Date.now();
-
-      const timeout =
-        60000;
-
-      let respondioNo =
-        false;
+      const inicio = Date.now();
+      const timeout = 60000;
+      let respondioNo = false;
 
       while (
         Date.now() - inicio <
@@ -128,13 +85,9 @@ export class PreguntasPresupuestoIC04Page {
         const fechaVisible =
           await campoFecha
             .isVisible()
-            .catch(
-              () => false
-            );
+            .catch(() => false);
 
-        if (
-          fechaVisible
-        ) {
+        if (fechaVisible) {
           console.log(
             `✔ [IC04/Presupuesto] Campo de fecha detectado después de ${index - 1} respuestas NO.`
           );
@@ -145,13 +98,9 @@ export class PreguntasPresupuestoIC04Page {
         const noVisible =
           await botonNo
             .isVisible()
-            .catch(
-              () => false
-            );
+            .catch(() => false);
 
-        if (
-          noVisible
-        ) {
+        if (noVisible) {
           await expect(
             botonNo
           ).toBeEnabled({
@@ -164,9 +113,7 @@ export class PreguntasPresupuestoIC04Page {
             `✔ [IC04/Presupuesto] Respuesta NO ${index} completada.`
           );
 
-          respondioNo =
-            true;
-
+          respondioNo = true;
           break;
         }
 
@@ -175,27 +122,16 @@ export class PreguntasPresupuestoIC04Page {
         );
       }
 
-      if (
-        !respondioNo
-      ) {
+      if (!respondioNo) {
         throw new Error(
           `[IC04/Presupuesto] No apareció ni el botón NO ni el campo DD/MM/AAAA en la pregunta ${index}.`
         );
       }
     }
 
-    /*
-     * Si llegamos al máximo configurado,
-     * esperamos explícitamente que aparezca
-     * el campo de fecha.
-     */
-    const campoFecha =
-      this.page.getByRole(
-        'textbox',
-        {
-          name: 'DD/MM/AAAA'
-        }
-      ).first();
+    const campoFecha = this.page.getByRole('textbox', {
+      name: 'DD/MM/AAAA'
+    }).first();
 
     await campoFecha.waitFor({
       state: 'visible',
@@ -215,14 +151,9 @@ export class PreguntasPresupuestoIC04Page {
     /*
      * 1 - Tipo de mercadería
      */
-    const mercaderias =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /MERCADERIAS QUE NO SE/i
-        }
-      );
+    const mercaderias = this.page.getByRole('radio', {
+      name: /MERCADERIAS QUE NO SE/i
+    });
 
     await mercaderias.waitFor({
       state: 'visible',
@@ -230,7 +161,6 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await mercaderias.check();
-
     await this.confirmarSeleccion();
 
     console.log(
@@ -240,14 +170,9 @@ export class PreguntasPresupuestoIC04Page {
     /*
      * 2 - Giro de divisas
      */
-    const giroDivisas =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /Importacion con giro de divisas.*PAGO DIFERIDO.*Divisas compradas en MLC/i
-        }
-      );
+    const giroDivisas = this.page.getByRole('radio', {
+      name: /Importacion con giro de divisas.*PAGO DIFERIDO.*Divisas compradas en MLC/i
+    });
 
     await giroDivisas.waitFor({
       state: 'visible',
@@ -255,7 +180,6 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await giroDivisas.check();
-
     await this.confirmarSeleccion();
 
     console.log(
@@ -265,14 +189,9 @@ export class PreguntasPresupuestoIC04Page {
     /*
      * 3 - Digitalización
      */
-    const digitalizacion =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /DIGITALIZACION POR PSAD/i
-        }
-      );
+    const digitalizacion = this.page.getByRole('radio', {
+      name: /DIGITALIZACION POR PSAD/i
+    });
 
     await digitalizacion.waitFor({
       state: 'visible',
@@ -280,7 +199,6 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await digitalizacion.check();
-
     await this.confirmarSeleccion();
 
     console.log(
@@ -290,14 +208,9 @@ export class PreguntasPresupuestoIC04Page {
     /*
      * 4 - Banco
      */
-    const banco =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /BANCO DE LA NACION ARGENTINA/i
-        }
-      );
+    const banco = this.page.getByRole('radio', {
+      name: /BANCO DE LA NACION ARGENTINA/i
+    });
 
     await banco.waitFor({
       state: 'visible',
@@ -305,7 +218,6 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await banco.check();
-
     await this.confirmarSeleccion();
 
     console.log(
@@ -314,16 +226,14 @@ export class PreguntasPresupuestoIC04Page {
 
     /*
      * Preguntas NO previas a la fecha.
-     *
-     * La cantidad puede variar según
-     * las respuestas/reglas del backend.
      */
     await this.responderNosHastaFecha(
       6
     );
 
     /*
-     * Fecha automática +30 días
+     * Fecha automática +30 días.
+     * Se mantiene intacta.
      */
     const fechaMas30 =
       obtenerFechaMas30Dias();
@@ -332,13 +242,9 @@ export class PreguntasPresupuestoIC04Page {
       `✔ [IC04/Presupuesto] Fecha automática (+30 días): ${fechaMas30}`
     );
 
-    const campoFecha =
-      this.page.getByRole(
-        'textbox',
-        {
-          name: 'DD/MM/AAAA'
-        }
-      ).first();
+    const campoFecha = this.page.getByRole('textbox', {
+      name: 'DD/MM/AAAA'
+    }).first();
 
     await campoFecha.waitFor({
       state: 'visible',
@@ -349,14 +255,10 @@ export class PreguntasPresupuestoIC04Page {
       fechaMas30
     );
 
-    const guardar =
-      this.page.getByRole(
-        'button',
-        {
-          name: 'GUARDAR RESPUESTA',
-          exact: true
-        }
-      );
+    const guardar = this.page.getByRole('button', {
+      name: 'GUARDAR RESPUESTA',
+      exact: true
+    });
 
     await guardar.waitFor({
       state: 'visible',
@@ -376,28 +278,36 @@ export class PreguntasPresupuestoIC04Page {
     );
 
     /*
-     * Pregunta posterior a la fecha.
+     * Pregunta Zona Franca posterior a la fecha.
+     *
+     * Primero verificamos que sea exactamente la pregunta esperada.
+     * Luego respondemos NO una única vez.
      */
+    const preguntaZonaFranca = this.page.getByText(
+      /Su mercadería procede de una zona franca que no se encuentre en el Territorio de soberanía Nacional/i
+    ).first();
+
+    await preguntaZonaFranca.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    console.log(
+      '✔ [IC04/Presupuesto] Pregunta Zona Franca detectada.'
+    );
+
     await this.responderNo();
 
     console.log(
-      '✔ [IC04/Presupuesto] Pregunta posterior a fecha respondida: NO.'
+      '✔ [IC04/Presupuesto] Zona Franca respondida: NO.'
     );
 
     /*
      * Selección PSAD.
-     *
-     * El HTML confirma que PSAD02 es
-     * un radio button real.
      */
-    const psad02 =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /PSAD02 - BOX CUSTODIA DE ARCHIVOS S\.A\./i
-        }
-      );
+    const psad02 = this.page.getByRole('radio', {
+      name: /PSAD02 - BOX CUSTODIA DE ARCHIVOS S\.A\./i
+    });
 
     await psad02.waitFor({
       state: 'visible',
@@ -417,16 +327,11 @@ export class PreguntasPresupuestoIC04Page {
     );
 
     /*
-     * Presentación de documentación
+     * Presentación de documentación.
      */
-    const noDeboPresentar =
-      this.page.getByRole(
-        'radio',
-        {
-          name:
-            /No debo presentar la/i
-        }
-      );
+    const noDeboPresentar = this.page.getByRole('radio', {
+      name: /No debo presentar la/i
+    });
 
     await noDeboPresentar.waitFor({
       state: 'visible',
@@ -434,7 +339,6 @@ export class PreguntasPresupuestoIC04Page {
     });
 
     await noDeboPresentar.check();
-
     await this.confirmarSeleccion();
 
     console.log(

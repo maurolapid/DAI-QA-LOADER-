@@ -13,7 +13,7 @@ import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaPage } from '../pages/CaratulaPage';
 import { ItemPage } from '../pages/ItemPage';
-import { PreguntasItemIC04Page } from '../pages/PreguntasItemIC04Page';
+import { AprendizajeManual } from '../learning/aprendizaje-manual';
 import { DocumentoTransporteIC04Page } from '../pages/DocumentoTransporteIC04Page';
 import { PreguntasPresupuestoIC04Page } from '../pages/PreguntasPresupuestoIC04Page';
 import {
@@ -526,13 +526,89 @@ export async function ejecutarIC04PreguntasItem(
       `✔ [IC04-PREGUNTAS/${navegador}] CARGAR ITEMS ejecutado correctamente`
     );
 
-    const preguntasPage =
-      new PreguntasItemIC04Page(
-        page
+    console.log('');
+    console.log('==========================================');
+    console.log('       LEARNING ENGINE - MODO APRENDIZAJE');
+    console.log('==========================================');
+    console.log(
+      'El Loader reutilizará conocimiento conocido y aprenderá respuestas desconocidas.'
+    );
+    console.log(
+      'Las respuestas desconocidas se capturan de forma explícita y se guardan en conocimiento.'
+    );
+    console.log(
+      'El conocimiento aprendido se persiste en JSON.'
+    );
+    console.log('==========================================');
+
+    const aprendizajeManual =
+      new AprendizajeManual(page);
+
+    const resultadoAprendizaje =
+      await aprendizajeManual
+        .capturarRecorridoManual({
+          subregimen: 'IC04',
+          posicionArancelaria:
+            POSICION_PREGUNTAS_IC04,
+          etapa: 'PREGUNTAS_ITEM',
+          numeroItem: 1,
+        });
+
+    console.log('');
+    console.log('==========================================');
+    console.log('       RESULTADO MODO APRENDIZAJE');
+    console.log('==========================================');
+    console.log(
+      `Preguntas capturadas: ${resultadoAprendizaje.pasos.length}`
+    );
+    console.log('');
+
+    resultadoAprendizaje
+      .pasos
+      .forEach(
+        paso => {
+          console.log(
+            `Pregunta ${paso.numero}: ${paso.pregunta.texto}`
+          );
+          console.log(
+            `Respuesta: ${paso.respuestaSeleccionada}`
+          );
+          console.log('');
+        }
       );
 
-    await preguntasPage
-      .responderPreguntas73181500620M();
+    console.log(
+      'Recorrido de preguntas procesado correctamente.'
+    );
+    console.log(
+      'El Learning Engine continúa con el flujo IC04.'
+    );
+    console.log('==========================================');
+
+    console.log('');
+    console.log(
+      `✔ [IC04-PREGUNTAS/${navegador}] Preguntas de arancel finalizadas. Continuando a Certificado PAC/ROM...`
+    );
+
+    const botonCertificadoPacRom =
+      page.getByRole(
+        'button',
+        {
+          name:
+            /ir a Certificado PAC\/ROM/i
+        }
+      );
+
+    await botonCertificadoPacRom.waitFor({
+      state: 'visible',
+      timeout: 60000
+    });
+
+    await botonCertificadoPacRom.click();
+
+    console.log(
+      `✔ [IC04-PREGUNTAS/${navegador}] Ir a Certificado PAC/ROM ejecutado correctamente.`
+    );
 
     const pendienteBase = {
       operationId,

@@ -267,6 +267,18 @@ Cuando el recorrido llega a Documento de Transporte, el Loader solicita:
 
 Si DAI rechaza el documento, el usuario puede reintentar o guardar la operación para retomarla posteriormente.
 
+## Documentos a presentar
+
+Cuando EC01 muestra el modal **Documentos a presentar**, el Loader:
+
+- Detecta todos los documentos solicitados dinámicamente.
+- Muestra código, descripción, entrega y presencia.
+- Solicita por consola una referencia no vacía para cada documento.
+- Verifica el valor realmente ingresado en DAI.
+- Continúa únicamente cuando el botón correspondiente queda habilitado.
+
+La implementación se encuentra en **src/pages/DocumentoAPresentarPage.ts**.
+
 ## Oficialización
 
 Se mantienen los perfiles:
@@ -345,6 +357,7 @@ Pruebas recomendadas según el alcance:
 - Oficialización Herrero/Russo.
 - Learning Engine conocido.
 - Learning Engine con pregunta nueva.
+- Modal Documentos a presentar en EC01.
 - Camino Sin Documentos.
 - Camino Con Documentos.
 - Transición por PAC/ROM, Bultos o Documento de Transporte.
