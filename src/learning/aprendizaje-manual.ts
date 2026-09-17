@@ -697,9 +697,26 @@ export class AprendizajeManual {
             paso.respuestaSeleccionada
           );
 
-        if (aprendida !== ejecutada) {
+        const respuestaDinamica =
+          this.esRespuestaDinamicaFecha(
+            paso.pregunta
+          );
+
+        if (
+          !respuestaDinamica &&
+          aprendida !== ejecutada
+        ) {
           throw new Error(
             `Learning Engine: CONFLICTO durante la auditoría final. Para "${paso.pregunta.texto}" la base contiene "${resultado.registro.respuesta.valor}" y el recorrido validado por DAI contiene "${paso.respuestaSeleccionada}". No se modificó la base de conocimiento.`
+          );
+        }
+
+        if (
+          respuestaDinamica &&
+          aprendida !== ejecutada
+        ) {
+          console.log(
+            `[Conocimiento] FEMB-ORIGEN validada como fecha dinámica. Valor histórico: "${resultado.registro.respuesta.valor}". Valor calculado para esta ejecución: "${paso.respuestaSeleccionada}".`
           );
         }
       } else {
@@ -757,12 +774,28 @@ export class AprendizajeManual {
           respuestaSeleccionada
         );
 
+      const respuestaDinamica =
+        this.esRespuestaDinamicaFecha(
+          preguntaActual
+        );
+
       if (
+        !respuestaDinamica &&
         respuestaAprendida !==
         respuestaActual
       ) {
         throw new Error(
           `Learning Engine: CONFLICTO DE CONOCIMIENTO. La respuesta aprendida era "${registroExistente.respuesta.valor}" pero en esta ejecución se respondió "${respuestaSeleccionada}". No se modificó la base de conocimiento.`
+        );
+      }
+
+      if (
+        respuestaDinamica &&
+        respuestaAprendida !==
+          respuestaActual
+      ) {
+        console.log(
+          `[Conocimiento] FEMB-ORIGEN reutilizada como regla dinámica. Valor histórico: "${registroExistente.respuesta.valor}". Valor actual (-15 días): "${respuestaSeleccionada}".`
         );
       }
 
@@ -1793,6 +1826,18 @@ export class AprendizajeManual {
       ) ||
       textoNormalizado.includes(
         'FECHA DE EMBARQUE DE ORIGEN'
+      )
+    );
+  }
+
+  private esRespuestaDinamicaFecha(
+    pregunta: PreguntaDetectada
+  ): boolean {
+    return (
+      pregunta.tipoControl ===
+        'FECHA' &&
+      this.esPreguntaFechaEmbarqueOrigen(
+        pregunta.texto
       )
     );
   }

@@ -190,13 +190,45 @@ export class MatcherConocimiento {
     return actuales.every((actual, indice) => {
       const aprendida = aprendidas[indice];
 
-      return (
+      const mismaPregunta =
         this.normalizarPregunta(actual.pregunta) ===
-          this.normalizarPregunta(aprendida.pregunta) &&
+          this.normalizarPregunta(aprendida.pregunta);
+
+      if (!mismaPregunta) {
+        return false;
+      }
+
+      if (
+        this.esFechaDinamicaEmbarqueOrigen(
+          actual.pregunta
+        )
+      ) {
+        return true;
+      }
+
+      return (
         this.normalizarValor(actual.respuesta) ===
           this.normalizarValor(aprendida.respuesta)
       );
     });
+  }
+
+  private esFechaDinamicaEmbarqueOrigen(
+    pregunta: string,
+  ): boolean {
+    const normalizada =
+      this.normalizarPregunta(
+        pregunta
+      );
+
+    return (
+      normalizada.includes(
+        'FEMB-ORIGEN'
+      ) ||
+      normalizada.includes(
+        'FECHA DE EMBARQUE DE ORIGEN'
+      )
+    );
   }
 
   /**

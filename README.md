@@ -170,6 +170,8 @@ fecha actual - 15 días
 
 La respuesta se valida contra el valor real ingresado en DAI.
 
+La fecha se trata como una regla dinámica y no como un valor literal aprendido: al cambiar el día, el motor recalcula el valor y conserva la continuidad del camino sin generar un conflicto de conocimiento.
+
 ### Persistencia transaccional
 
 El conocimiento nuevo se mantiene temporalmente durante la ejecución y sólo se persiste cuando el recorrido queda validado.
