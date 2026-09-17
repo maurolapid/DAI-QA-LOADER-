@@ -1,0 +1,3364 @@
+{
+  "version": 2,
+  "registros": [
+    {
+      "id": "fd22acd8-55a3-4192-82ef-8636acc7cddb",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Tengan como destino el uso o consumo particular del importador, siempre que el mismo sea una persona humana.",
+          "Revistan para el importador el carácter de bienes de uso, en los terminos del punto c) del Artículo N° 2 de la Resolución General AFIP N° 2937."
+        ]
+      },
+      "respuesta": {
+        "valor": "Ninguna opción"
+      },
+      "fechaAprendizaje": "2026-09-16T16:59:16.057Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "21674e05-5a92-4ad2-95c4-0ea6750daf96",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Importación definitiva de bienes que revistan para el importador el carácter de bienes de uso. Res. gral. AFIP N° 2281.",
+          "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281.",
+          "Importación destinada a Uso o consumo particular, reservado únicamente para personas de existencia física. Res. Gral AFIP N° 2281."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+      },
+      "fechaAprendizaje": "2026-09-16T17:00:00.500Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "16e8317a-93cf-4dc9-a22f-bc5d7c4ae013",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Importacion con giro de divisas (PAGO ANTICIPADO). Divisas compradas en MLC",
+          "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC",
+          "Importacion con giro de divisas (OTROS MOTIVOS) Divisas compradas en MLC",
+          "Importacion con giro de divisas (Importacion pagada con divisas propias).",
+          "Importacion con giro de divisas. Divisas pagada por parte de un tercero.",
+          "Importacion con giro de divisas (PAGO A LA VISTA). Divisas compradas en MLC",
+          "Importaci?n (PAGADO DESDE CUENTA DEL EXTERIOR)",
+          "Importacion sin giro de divisas (ENVIO A TITULO NO ONEROSO)",
+          "Importacion sin giro de divisas (OTROS MOTIVOS)",
+          "Importacion con divisas giradas con otra declaracion previa."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+      },
+      "fechaAprendizaje": "2026-09-16T17:00:12.754Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "d82cf10c-e211-4461-ae5f-2a23eec77b13",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Se trata de una mercadería que contiene, bajo cualquier forma, mezclas de sustancias conteniendo sustancias químicas controladas conforme lo establecido en el Anexo XII de la Resolución Nº 3115/94 ANA y sus modificatorias. (En caso afirmativo deberá seleccionar la opción que identifique a la sustancia que se encuentre en mayor porcentaje en peso en la mezcla, conforme las listas de sustancias químicas enumeradas en la Ley 24534)",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:00:24.432Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "88515267-5793-437e-b2c9-038247be3678",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "La mercadería es una publicación , documento, soporte grabado, artículo o aparato en la que se describe o representa total o parcialmente el territorio Continental, Insular y Antártico de la República Argentina.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:00:34.278Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "2c2e1730-ee84-46ca-9c94-1944377e1782",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "DEBERA DECLARAR EL PAIS / TERRITORIO / LUGAR DONDE SE EMITIO LA FACTURA COMERCIAL, SELECCIONANDO PARA ELLO LA OPCION ORRESPONDIENTE DEL LISTADO QUE SEGUIDAMENTE LE SERA PRESENTADO.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-16T17:00:40.628Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "821e4381-8520-4d17-b3f1-9d89f44d6d93",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "BURKINA FASO",
+          "ARGELIA",
+          "BOTSWANA",
+          "BURUNDI",
+          "CAMERUN",
+          "REP. CENTROAFRICANA",
+          "CONGO",
+          "REP DEM CONGO EXZAIR",
+          "COSTA DE MARFIL",
+          "CHAD",
+          "BENIN",
+          "EGIPTO",
+          "GABON",
+          "GAMBIA",
+          "GHANA",
+          "GUINEA",
+          "GUINEA ECUATORIAL",
+          "KENYA",
+          "LESOTHO",
+          "LIBERIA",
+          "LIBIA",
+          "MADAGASCAR",
+          "MALAWI",
+          "MALI",
+          "MARRUECOS",
+          "REPUBLICA ARABE SAHARAUI DEMOCRATICA",
+          "MAURICIO,ISLAS",
+          "MAURITANIA",
+          "NIGER",
+          "NIGERIA",
+          "ZIMBABWE",
+          "RWANDA",
+          "SENEGAL",
+          "SIERRA LEONA",
+          "SOMALIA",
+          "SWAZILANDIA",
+          "TANZANIA",
+          "TOGO",
+          "TUNEZ",
+          "UGANDA",
+          "ZAMBIA",
+          "SANTA ELENA, ASCENSION Y TRISTAN DE ACUÑA",
+          "TERRITORIO BRITANICO DEL OCEANO INDICO",
+          "Islas del Territorio Británico del Océano Indico",
+          "Canarias",
+          "Ceuta y Melilla",
+          "Mayotte",
+          "Reunión",
+          "ANGOLA",
+          "CABO VERDE,ISLAS",
+          "MOZAMBIQUE",
+          "SEYCHELLES",
+          "DJIBOUTI",
+          "COMORAS",
+          "GUINEA BISSAU",
+          "STO.TOME Y PRINCIPE",
+          "NAMIBIA",
+          "SUDAFRICA",
+          "ERITREA",
+          "ETIOPIA",
+          "SUDAN",
+          "SUDAN DEL SUR",
+          "ARGENTINA",
+          "BARBADOS",
+          "BOLIVIA",
+          "BRASIL",
+          "CANADA",
+          "COLOMBIA",
+          "COSTA RICA",
+          "CUBA",
+          "CHILE",
+          "DOMINICANA,REP.",
+          "ECUADOR",
+          "EL SALVADOR",
+          "ESTADOS UNIDOS",
+          "Islas Ultramarinas de Estados Unidos",
+          "GUATEMALA",
+          "GUYANA",
+          "HAITI",
+          "HONDURAS",
+          "JAMAICA",
+          "MEXICO",
+          "NICARAGUA",
+          "PANAMA",
+          "PARAGUAY",
+          "PERU",
+          "PUERTO RICO(EST ASOC",
+          "TRINIDAD Y TOBAGO",
+          "URUGUAY",
+          "Régimen aplic.a las socied.finenc.(ley 11073 Rep.Orient.Uruguay)",
+          "VENEZUELA",
+          "Anguila",
+          "Bermudas",
+          "Islas Caiman",
+          "ISLAS TURCAS Y CAICOS",
+          "Islas Vírgenes Britanicas",
+          "Montserrat",
+          "Groenlandia",
+          "COLECTIVIDAD TERRITORIAL DE SAN PEDRO Y MIQUELON",
+          "GUAYANA FRANCESA",
+          "Martinica",
+          "Guadalupe",
+          "COLECTIVIDAD SAN MARTIN",
+          "COLECTIVIDAD SAN BARTOLOME",
+          "TERRIT. HOLANDESES",
+          "ISLAS VIRGENES DE LOS ESTADOS UNIDOS DE AMERICA",
+          "SURINAME",
+          "DOMINICA",
+          "SANTA LUCIA",
+          "S.VICENTE Y LAS GRAN",
+          "BELICE",
+          "ANTIGUA Y BARBUDA",
+          "S.CRISTOBAL Y NEVIS",
+          "BAHAMAS",
+          "GRENADA",
+          "ARUBA",
+          "BONAIRE, SAN EUSTATIUS y SABA",
+          "CURAZAO",
+          "SAN MARTIN",
+          "TIERRA DEL FUEGO AAE",
+          "ZF LA PLATA (BS AS)",
+          "ZF.JUSTO DARACT S LU",
+          "ZF RIO GALLEGOS S CR",
+          "ISLAS MALVINAS",
+          "Islas Georgias",
+          "Sandwich del Sur",
+          "Z.F.TUCUMAN",
+          "Z.F.CORDOBA",
+          "Z.F.MENDOZA",
+          "ZF GRAL PICO L PAMPA",
+          "Z.F.COMODO.RIVADAVIA",
+          "ZF IQUIQUE (CHILE)",
+          "ZF PUNTA ARENAS (CHI",
+          "Z.F.SALTA",
+          "Z.F.PASO D/L LIBRES",
+          "Z.F. PUERTO IGUAZU",
+          "SECTOR ANTARTICO ARG",
+          "ZF CORONEL ROSALES",
+          "ZF CONCEP.DEL URUG.",
+          "ZF VILLA CONSTITUCION",
+          "ZF COLON (PANAMA)",
+          "Z.F.STA CRUZ SIERRA",
+          "ZONA FRANCA PACIFICO",
+          "ZF COLONIA (URUGUAY)",
+          "ZF FLORIDA (URUGUAY)",
+          "ZF LIBERTAD (URUGUAY",
+          "ZFZONAMERICA.EXMONTV",
+          "ZF NVA HELVECIA (URU",
+          "ZF NVA PALMIRA (URUG",
+          "ZF RIO NEGRO URUGUAY",
+          "ZF RIVERA (URUGUAY)",
+          "ZF SAN JOSE (URUGUAY",
+          "ZF PUNTA PEREIRA URU",
+          "ZF PARQUE DE LAS CIENCIAS S.A - CANELONES URUGUAY",
+          "ZF MANAOS (BRASIL)",
+          "MAR TER ARG/ZONA E E",
+          "RIOS NAC ARG NAV INT",
+          "AFGANISTAN",
+          "ARABIA SAUDITA",
+          "BAHREIN",
+          "MYANMAR(EX-BIRMANIA)",
+          "BUTAN",
+          "CAMBODYA(EX-KAMPUCHE",
+          "SRI LANKA",
+          "COREA DEMOCRATICA",
+          "COREA REPUBLICANA",
+          "CHINA",
+          "FILIPINAS",
+          "TAIWAN",
+          "INDIA",
+          "INDONESIA",
+          "IRAQ",
+          "IRAN",
+          "Isla Qmesh",
+          "ISRAEL",
+          "JAPON",
+          "JORDANIA",
+          "QATAR",
+          "KUWAIT",
+          "LAO",
+          "LIBANO",
+          "MALASIA",
+          "Labuan",
+          "MALDIVES,ISLAS",
+          "OMAN",
+          "MONGOLIA",
+          "NEPAL",
+          "EMIRATOS ARABES,UNID",
+          "PAKISTAN",
+          "SINGAPUR",
+          "SIRIA",
+          "THAILANDIA",
+          "VIETNAM",
+          "HONG KONG R A E CHIN",
+          "MACAO (R A E CHINA)",
+          "BANGLADESH",
+          "BRUNEI",
+          "REP. DE YEMEN",
+          "ARMENIA",
+          "AZERBAIJAN",
+          "GEORGIA",
+          "KAZAJSTAN",
+          "KIRGUIZISTAN",
+          "TAYIKISTAN",
+          "TURKMENISTAN",
+          "UZBEKISTAN",
+          "ESTADO DE PALESTINA",
+          "TIMOR ORIENTAL",
+          "ALBANIA",
+          "ANDORRA",
+          "AUSTRIA",
+          "BELGICA",
+          "BULGARIA",
+          "DINAMARCA",
+          "Islas Feroe",
+          "ESPA#A",
+          "FINLANDIA",
+          "PROVINCIA AUTONOMA DE ALAND",
+          "FRANCIA",
+          "GRECIA",
+          "HUNGRIA",
+          "IRLANDA",
+          "ISLANDIA",
+          "ITALIA",
+          "Campione d'Italia",
+          "Trieste",
+          "LIECHTENSTEIN",
+          "LUXEMBURGO",
+          "Reg. Aplicable a Soc. Holding del Gran Ducado de Luxemburgo",
+          "MALTA",
+          "MONACO",
+          "NORUEGA",
+          "SVALBARD Y JAN MAYEN",
+          "Isla Bouvet",
+          "PAISES BAJOS",
+          "POLONIA",
+          "PORTUGAL",
+          "Islas Azores",
+          "Madeira",
+          "REINO UNIDO",
+          "Isla de great stark",
+          "Herm",
+          "Little Stark",
+          "Brechou",
+          "Jethou Lihou",
+          "RUMANIA",
+          "SAN MARINO",
+          "SUECIA",
+          "SUIZA",
+          "SANTA SEDE(VATICANO)",
+          "Gibraltar",
+          "BAILIAZGO DE GUERNSEY",
+          "BAILIAZGO DE JERSEY",
+          "ISLA DE MAN",
+          "CHIPRE",
+          "TURQUIA",
+          "REP. FED DE ALEMANIA",
+          "BIELORRUSIA",
+          "ESTONIA",
+          "LETONIA",
+          "LITUANIA",
+          "MOLDAVIA",
+          "RUSIA",
+          "UCRANIA",
+          "BOSNIA HERZEGOVINA",
+          "CROACIA",
+          "ESLOVAQUIA",
+          "ESLOVENIA",
+          "MACEDONIA",
+          "REP. CHECA",
+          "Zona Libre de Ostrava",
+          "MONTENEGRO",
+          "SERBIA",
+          "AUSTRALIA",
+          "NAURU",
+          "NUEVA ZELANDIA",
+          "VANATU",
+          "SAMOA OCCIDENTAL",
+          "TERRITORIO DE LA ISLA DE NAVIDAD",
+          "TERRITORIO DE LAS ISLAS COCOS (KEELING)",
+          "TERRITORIO DE LAS ISLAS NORFOLK",
+          "Islas del Mar de Coral",
+          "Macquarie",
+          "ISLAS PITCAIRN, HENDERSON, DUCIE Y OENO",
+          "Polinesia Francesa",
+          "TERRITORIO DE NUEVA CALEDONIA Y DEPENDENCIAS",
+          "TERRITORIO DE LAS ISLAS WALLIS Y FUTUNA",
+          "TERRITORIOS AUSTRALES FRANCESES",
+          "Islas Cook",
+          "Niue",
+          "Tokelau",
+          "TERRITORIO DE GUAM",
+          "TERRITORIO DE SAMOA AMERICANA",
+          "Midway",
+          "Wake",
+          "Johnston",
+          "Howland, Baker, Jarvis",
+          "Kingman Reef, Palmyra",
+          "Hawai (estado de Estados Unidos)",
+          "Islas Pacifico",
+          "FIJI, ISLAS",
+          "PAPUA NUEVA GUINEA",
+          "KIRIBATI, ISLAS",
+          "MICRONESIA,EST.FEDER",
+          "PALAU",
+          "TUVALU",
+          "SALOMON,ISLAS",
+          "TONGA",
+          "MARSHALL,ISLAS",
+          "MARIANAS,ISLAS",
+          "Mas de un pais"
+        ]
+      },
+      "respuesta": {
+        "valor": "CHINA"
+      },
+      "fechaAprendizaje": "2026-09-16T17:01:14.547Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "a0c0c38d-3f19-460b-993c-f8609480ca2e",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "CHINA"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "000001 MTU"
+        ]
+      },
+      "respuesta": {
+        "valor": "Ninguna opción"
+      },
+      "fechaAprendizaje": "2026-09-16T17:01:55.249Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "e4114e44-3dc7-4353-8702-8df17b02bf5e",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "MERCADERIAS QUE SE PRESENTAN ACONDICIONADAS CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02 Y SE APORTA COMO DOCUMENTACION COMPLEMENTARIA EL FORMULARIO DE DECLARACION DE EMBALAJES DE MADERA, MADERAS DE SOPORTE Y ACOMODACION-RES.SENASA Nº 19/02-INTERVENIDO POR EL SENASA, INDICANDO EXPRESAMENTE LA AUTORIZACION DE LIBERAR SIN INSPECCION POR PARTE DE DICHO ORGANISMO.",
+          "'La Declaracion Jurada SIG Embalajes se encuentra en tramite sin decision del SENASA o aun no ha sido gestionada'",
+          "MERCADERIAS QUE SE PRESENTAN ACONDICIONADAS CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA 19/02 Y EL FORMULARIO DE DECLARACION DE EMBALAJES DE MADERA, MADERAS DE SOPORTE Y ACOMODACION-RES.SENASA Nº 19/02-PERMANECE RETENIDO EN EL SENASA.",
+          "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+        ]
+      },
+      "respuesta": {
+        "valor": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+      },
+      "fechaAprendizaje": "2026-09-16T17:03:39.713Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "5b8a9e4f-1efd-41f9-b768-0b9976f418b0",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Importacion con giro de divisas (PAGO ANTICIPADO). Divisas compradas en MLC",
+          "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC",
+          "Importacion con giro de divisas (OTROS MOTIVOS) Divisas compradas en MLC",
+          "Importacion con giro de divisas (Importacion pagada con divisas propias).",
+          "Importacion con giro de divisas. Divisas pagada por parte de un tercero.",
+          "Importacion con giro de divisas (PAGO A LA VISTA). Divisas compradas en MLC",
+          "Importaci?n (PAGADO DESDE CUENTA DEL EXTERIOR)",
+          "Importacion sin giro de divisas (ENVIO A TITULO NO ONEROSO)",
+          "Importacion sin giro de divisas (OTROS MOTIVOS)",
+          "Importacion con divisas giradas con otra declaracion previa."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+      },
+      "fechaAprendizaje": "2026-09-16T17:03:49.383Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "5b005a59-0b48-46b0-8404-fe22e1243bc7",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "DIGITALIZACION POR PSAD.",
+          "DIGITALIZACION POR AUTOARCHIVO."
+        ]
+      },
+      "respuesta": {
+        "valor": "DIGITALIZACION POR PSAD."
+      },
+      "fechaAprendizaje": "2026-09-16T17:03:56.618Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "bce74edf-2644-4a1d-bfd6-c837d296f1fc",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "007 - BANCO DE GALICIA Y BUENOS AIRES S.A.",
+          "011 - BANCO DE LA NACION ARGENTINA",
+          "014 - BANCO DE LA PROVINCIA DE BUENOS AIRES",
+          "015 - INDUSTRIAL AND COMMERCIAL BANK OF CHINA",
+          "016 - CITIBANK N.A.",
+          "017 - BANCO BBVA ARGENTINA S.A.",
+          "020 - BANCO DE LA PROVINCIA DE CORDOBA S.A.",
+          "027 - BANCO SUPERVIELLE S.A.",
+          "029 - BANCO DE LA CIUDAD DE BUENOS AIRES",
+          "034 - BANCO PATAGONIA S.A.",
+          "044 - BANCO HIPOTECARIO S.A.",
+          "045 - BANCO DE SAN JUAN S.A.",
+          "065 - BANCO MUNICIPAL DE ROSARIO",
+          "072 - BANCO SANTANDER ARGENTINA S.A.",
+          "083 - BANCO DEL CHUBUT S.A.",
+          "086 - BANCO DE SANTA CRUZ S.A.",
+          "093 - BANCO DE LA PAMPA SA",
+          "094 - BANCO DE CORRIENTES S.A.",
+          "097 - BANCO PROVINCIA DEL NEUQUEN S.A.",
+          "131 - BANK OF CHINA LIMITED SUCURSAL BUENOS AI",
+          "147 - BIBANK S.A.",
+          "165 - JP MORGAN CHASE BANK, N A (SUC BS AS)",
+          "191 - BANCO CREDICOOP COOPERATIVO LIMITADO",
+          "198 - BANCO DE VALORES S.A.",
+          "20113 - CYC CAMBIOS SA",
+          "247 - BANCO ROELA S.A.",
+          "254 - BANCO MARIVA S.A.",
+          "266 - BNP PARIBAS",
+          "268 - BANCO PROVINCIA DE TIERRA DEL FUEGO",
+          "269 - BANCO DE LA REP. ORIENTAL DEL URUGUAY",
+          "277 - BANCO SAENZ S.A.",
+          "281 - BANCO MERIDIAN S.A.",
+          "285 - BANCO MACRO S.A.",
+          "299 - BANCO COMAFI SOCIEDAD ANONIMA",
+          "300 - BANCO DE INVERSION Y COMERCIO EXTERIOR",
+          "301 - BANCO PIANO S.A.",
+          "305 - BANCO JULIO SOCIEDAD ANONIMA",
+          "310 - BANCO DEL SOL S.A.",
+          "311 - NUEVO BANCO DEL CHACO S. A.",
+          "312 - BANCO VOII S.A.",
+          "315 - BANCO DE FORMOSA S.A.",
+          "319 - BANCO CMF S.A.",
+          "322 - BANCO INDUSTRIAL",
+          "330 - NUEVO BANCO DE SANTA FE SOCIEDAD ANONIMA",
+          "331 - BANCO CETELEM ARGENTINA S.A.",
+          "332 - BANCO DE SERVICIOS FIN CARREFOUR SAU",
+          "338 - BANCO DE SERVICIOS Y TRANSACCIONES SAU",
+          "341 - BANCO MASVENTAS S.A.",
+          "386 - NUEVO BANCO DE ENTRE R?OS S.A.",
+          "389 - BANCO COLUMBIA S.A.",
+          "426 - BANCO BICA S.A.",
+          "431 - BANCO COINAG S.A.",
+          "432 - BANCO DE COMERCIO S.A.",
+          "44077 - COMPA?IA FINANCIERA ARGENTINA S.A.",
+          "44088 - VOLKSWAGEN FINANCIAL SERVICES CIA.FIN.S.",
+          "44092 - FCA COMPA?IA FINANCIERA S.A.",
+          "44093 - GPAT COMPA?IA FINANCIERA S.A.U.",
+          "44094 - MERCEDES-BENZ COMPA??A FINANCIERA S.A.",
+          "44095 - ROMBO COMPA??A FINANCIERA S.A.",
+          "44096 - JOHN DEERE CREDIT COMPA?IA FINANCIERA SA",
+          "44098 - PSA FINANCE ARGENTINA C.F.S.A",
+          "44099 - TOYOTA COMPA??A FINANCIERA DE ARGENTINA",
+          "45072 - REBA COMPA?IA FINANCIERA S.A.",
+          "91352 - GARCIA NAVARRO Y CIA. S.A.",
+          "91363 - DAMINATO VIAJES Y CAMBIOS S.A.",
+          "91364 - CAMBIO ESTELAR S.A.",
+          "91375 - PASAMAR S.A.",
+          "91400 - TOURFE S.A.",
+          "91407 - EL DORADO S.A."
+        ]
+      },
+      "respuesta": {
+        "valor": "011 - BANCO DE LA NACION ARGENTINA"
+      },
+      "fechaAprendizaje": "2026-09-16T17:04:06.727Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "44bb5690-7e3b-4184-90fc-a7ef70c8e4b1",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "011 - BANCO DE LA NACION ARGENTINA"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:04:12.240Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "ab7a37a1-3f77-493b-9ede-10471d93d33f",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:40:06.817Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "c35ebaec-6de0-4046-a381-2b8ba301bab1",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Importacion con giro de divisas (PAGO ANTICIPADO). Divisas compradas en MLC",
+          "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC",
+          "Importacion con giro de divisas (OTROS MOTIVOS) Divisas compradas en MLC",
+          "Importacion con giro de divisas (Importacion pagada con divisas propias).",
+          "Importacion con giro de divisas. Divisas pagada por parte de un tercero.",
+          "Importacion con giro de divisas (PAGO A LA VISTA). Divisas compradas en MLC",
+          "Importaci?n (PAGADO DESDE CUENTA DEL EXTERIOR)",
+          "Importacion sin giro de divisas (ENVIO A TITULO NO ONEROSO)",
+          "Importacion sin giro de divisas (OTROS MOTIVOS)",
+          "Importacion con divisas giradas con otra declaracion previa."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+      },
+      "fechaAprendizaje": "2026-09-16T17:56:28.791Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "19fdae50-6ca0-42c7-8779-90391c220ff7",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "DIGITALIZACION POR PSAD.",
+          "DIGITALIZACION POR AUTOARCHIVO."
+        ]
+      },
+      "respuesta": {
+        "valor": "DIGITALIZACION POR PSAD."
+      },
+      "fechaAprendizaje": "2026-09-16T17:56:35.563Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "f51f0090-c413-4592-a50f-9e8b0b7313cd",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "007 - BANCO DE GALICIA Y BUENOS AIRES S.A.",
+          "011 - BANCO DE LA NACION ARGENTINA",
+          "014 - BANCO DE LA PROVINCIA DE BUENOS AIRES",
+          "015 - INDUSTRIAL AND COMMERCIAL BANK OF CHINA",
+          "016 - CITIBANK N.A.",
+          "017 - BANCO BBVA ARGENTINA S.A.",
+          "020 - BANCO DE LA PROVINCIA DE CORDOBA S.A.",
+          "027 - BANCO SUPERVIELLE S.A.",
+          "029 - BANCO DE LA CIUDAD DE BUENOS AIRES",
+          "034 - BANCO PATAGONIA S.A.",
+          "044 - BANCO HIPOTECARIO S.A.",
+          "045 - BANCO DE SAN JUAN S.A.",
+          "065 - BANCO MUNICIPAL DE ROSARIO",
+          "072 - BANCO SANTANDER ARGENTINA S.A.",
+          "083 - BANCO DEL CHUBUT S.A.",
+          "086 - BANCO DE SANTA CRUZ S.A.",
+          "093 - BANCO DE LA PAMPA SA",
+          "094 - BANCO DE CORRIENTES S.A.",
+          "097 - BANCO PROVINCIA DEL NEUQUEN S.A.",
+          "131 - BANK OF CHINA LIMITED SUCURSAL BUENOS AI",
+          "147 - BIBANK S.A.",
+          "165 - JP MORGAN CHASE BANK, N A (SUC BS AS)",
+          "191 - BANCO CREDICOOP COOPERATIVO LIMITADO",
+          "198 - BANCO DE VALORES S.A.",
+          "20113 - CYC CAMBIOS SA",
+          "247 - BANCO ROELA S.A.",
+          "254 - BANCO MARIVA S.A.",
+          "266 - BNP PARIBAS",
+          "268 - BANCO PROVINCIA DE TIERRA DEL FUEGO",
+          "269 - BANCO DE LA REP. ORIENTAL DEL URUGUAY",
+          "277 - BANCO SAENZ S.A.",
+          "281 - BANCO MERIDIAN S.A.",
+          "285 - BANCO MACRO S.A.",
+          "299 - BANCO COMAFI SOCIEDAD ANONIMA",
+          "300 - BANCO DE INVERSION Y COMERCIO EXTERIOR",
+          "301 - BANCO PIANO S.A.",
+          "305 - BANCO JULIO SOCIEDAD ANONIMA",
+          "310 - BANCO DEL SOL S.A.",
+          "311 - NUEVO BANCO DEL CHACO S. A.",
+          "312 - BANCO VOII S.A.",
+          "315 - BANCO DE FORMOSA S.A.",
+          "319 - BANCO CMF S.A.",
+          "322 - BANCO INDUSTRIAL",
+          "330 - NUEVO BANCO DE SANTA FE SOCIEDAD ANONIMA",
+          "331 - BANCO CETELEM ARGENTINA S.A.",
+          "332 - BANCO DE SERVICIOS FIN CARREFOUR SAU",
+          "338 - BANCO DE SERVICIOS Y TRANSACCIONES SAU",
+          "341 - BANCO MASVENTAS S.A.",
+          "386 - NUEVO BANCO DE ENTRE R?OS S.A.",
+          "389 - BANCO COLUMBIA S.A.",
+          "426 - BANCO BICA S.A.",
+          "431 - BANCO COINAG S.A.",
+          "432 - BANCO DE COMERCIO S.A.",
+          "44077 - COMPA?IA FINANCIERA ARGENTINA S.A.",
+          "44088 - VOLKSWAGEN FINANCIAL SERVICES CIA.FIN.S.",
+          "44092 - FCA COMPA?IA FINANCIERA S.A.",
+          "44093 - GPAT COMPA?IA FINANCIERA S.A.U.",
+          "44094 - MERCEDES-BENZ COMPA??A FINANCIERA S.A.",
+          "44095 - ROMBO COMPA??A FINANCIERA S.A.",
+          "44096 - JOHN DEERE CREDIT COMPA?IA FINANCIERA SA",
+          "44098 - PSA FINANCE ARGENTINA C.F.S.A",
+          "44099 - TOYOTA COMPA??A FINANCIERA DE ARGENTINA",
+          "45072 - REBA COMPA?IA FINANCIERA S.A.",
+          "91352 - GARCIA NAVARRO Y CIA. S.A.",
+          "91363 - DAMINATO VIAJES Y CAMBIOS S.A.",
+          "91364 - CAMBIO ESTELAR S.A.",
+          "91375 - PASAMAR S.A.",
+          "91400 - TOURFE S.A.",
+          "91407 - EL DORADO S.A."
+        ]
+      },
+      "respuesta": {
+        "valor": "011 - BANCO DE LA NACION ARGENTINA"
+      },
+      "fechaAprendizaje": "2026-09-16T17:56:41.631Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "8cbacd36-3033-4af4-9419-8b22f9df96b8",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "011 - BANCO DE LA NACION ARGENTINA"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:56:44.167Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "dd5a25f8-af79-4150-a6ff-03fb90211921",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de FEMB-ORIGEN :",
+        "tipoControl": "FECHA"
+      },
+      "respuesta": {
+        "valor": "01/09/2026"
+      },
+      "fechaAprendizaje": "2026-09-16T17:57:19.155Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "7eb34cc6-d618-4764-aaaf-050e6124622d",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de FEMB-ORIGEN :",
+            "respuesta": "01/09/2026"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "\"En el territorio aduanero con anterioridad a su importaci?n, o a su reembarco, con motivo de una compraventa, se ha efectuado transferencia o cesi?n del derecho a disponer jur?dicamente de la mercader?a (art. 3 RG AFIP N? 2793)\"",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:57:57.529Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "586d05e7-dfd9-4e1f-86cf-68be139a271a",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Su mercadería procede de una zona franca que no se encuentre en el Territorio de soberanía Nacional.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T17:58:09.201Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "bb447ef9-e51b-4c5a-aa8f-2c8140ed09a3",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "PSAD01 - LAKAUT S.A.",
+          "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A.",
+          "PSAD03 - BANK S.A.",
+          "PSAD04-DOCUMENTOS ADUANEROS S.A.",
+          "PSAD05 DIGEX",
+          "PSAD06 MODOC",
+          "PSAD QUALITAS",
+          "PSAD ADEA"
+        ]
+      },
+      "respuesta": {
+        "valor": "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A."
+      },
+      "fechaAprendizaje": "2026-09-16T17:58:19.913Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "9fe4957f-7187-4ea7-a1d9-98e79996f57a",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "No debo presentar la Declaración de Valor en Aduana (Formulario OM-1993/1 A) teniendo en cuenta que mi respuesta es negativa a cada una de las siguientes preguntas y no declaro Ajustes a Incluir y/o Deducir. 1)Hay descuentos no indicados? 2)El precio es revisable? 3)Existe resolución aduanera relativa a los ítems señalados en los puntos 5 a 9 ? 4)El embarque es escalonado? 5)El comprador y el vendedor están vinculados en los términos del artículo 15, párrafo 4 del acuerdo? 6)Existen restricciones para la cesión o utilización de las mercaderías por el comprador, distintas de las que: - impongan o exijan la ley o las autoridades de los Estados Partes del MERCOSUR? - Limiten la zona geográfica donde puedan revenderse las mercaderías? -no afecten sensiblemente al valor de las mercaderías? 7)Dependen la venta o el precio de condiciones o contraprestaciones cuyo valor no pueda determinarse con relación a las mercaderías a valorar? 8)Existen cánones y derechos de licencia relativos a las mercaderías importadas que el comprador este obligado a pagar, directa o indirectamente como condición de venta? 9)La venta esta condicionada por un acuerdo en los términos del cual, una parte del producto de cualquier reventa, cesión o utilización posterior de las mercaderías, revierta directa o indirectamente al vendedor? 10)Existen pagos indirectos? 11)Existen comisiones, excepto las de compra, corretajes y envases y embalajes? 12)Existen bienes y servicios suministrados por el comprador gratuitamente o a precio reducido utilizados en la producción y venta para la exportación de mercaderías importadas? 13)Existe un producto de cualquier reventa, cesión o utilización posterior que revierta al vendedor? 14)Existen intereses por financiación? 15)Existen gastos relativos a trabajos de construcción, instalación, montaje, mantenimiento o asistencia técnica realizados después de la importación siempre que se distingan del precio pagado o por pagar? 16)Existen derechos y demás tributos a pagar como consecuencia de la importación o de la venta de las mercaderías, siempre que se distingan del precio realmente pagado o por pagar? 17)Existen gastos de carga, descarga y manipulación ocasionados por el transporte de las mercaderías importadas hasta el punto o lugar de importación discriminados en la documentación complementaria? La presente tiene el carácter de Declaración Jurada del Importador y cualquier omisión de información o información distinta de la operación real que causen perjuicio fiscal o cambiario sera penalizada conforme a la legislación vigente en la materia."
+        ]
+      },
+      "respuesta": {
+        "valor": "No debo presentar la Declaración de Valor en Aduana (Formulario OM-1993/1 A) teniendo en cuenta que mi respuesta es negativa a cada una de las siguientes preguntas y no declaro Ajustes a Incluir y/o Deducir. 1)Hay descuentos no indicados? 2)El precio es revisable? 3)Existe resolución aduanera relativa a los ítems señalados en los puntos 5 a 9 ? 4)El embarque es escalonado? 5)El comprador y el vendedor están vinculados en los términos del artículo 15, párrafo 4 del acuerdo? 6)Existen restricciones para la cesión o utilización de las mercaderías por el comprador, distintas de las que: - impongan o exijan la ley o las autoridades de los Estados Partes del MERCOSUR? - Limiten la zona geográfica donde puedan revenderse las mercaderías? -no afecten sensiblemente al valor de las mercaderías? 7)Dependen la venta o el precio de condiciones o contraprestaciones cuyo valor no pueda determinarse con relación a las mercaderías a valorar? 8)Existen cánones y derechos de licencia relativos a las mercaderías importadas que el comprador este obligado a pagar, directa o indirectamente como condición de venta? 9)La venta esta condicionada por un acuerdo en los términos del cual, una parte del producto de cualquier reventa, cesión o utilización posterior de las mercaderías, revierta directa o indirectamente al vendedor? 10)Existen pagos indirectos? 11)Existen comisiones, excepto las de compra, corretajes y envases y embalajes? 12)Existen bienes y servicios suministrados por el comprador gratuitamente o a precio reducido utilizados en la producción y venta para la exportación de mercaderías importadas? 13)Existe un producto de cualquier reventa, cesión o utilización posterior que revierta al vendedor? 14)Existen intereses por financiación? 15)Existen gastos relativos a trabajos de construcción, instalación, montaje, mantenimiento o asistencia técnica realizados después de la importación siempre que se distingan del precio pagado o por pagar? 16)Existen derechos y demás tributos a pagar como consecuencia de la importación o de la venta de las mercaderías, siempre que se distingan del precio realmente pagado o por pagar? 17)Existen gastos de carga, descarga y manipulación ocasionados por el transporte de las mercaderías importadas hasta el punto o lugar de importación discriminados en la documentación complementaria? La presente tiene el carácter de Declaración Jurada del Importador y cualquier omisión de información o información distinta de la operación real que causen perjuicio fiscal o cambiario sera penalizada conforme a la legislación vigente en la materia."
+      },
+      "fechaAprendizaje": "2026-09-16T17:58:34.842Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "e0c0f998-fcc4-45fb-b73b-9ab6d0b75161",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Tengan como destino el uso o consumo particular del importador, siempre que el mismo sea una persona humana.",
+          "Revistan para el importador el carácter de bienes de uso, en los terminos del punto c) del Artículo N° 2 de la Resolución General AFIP N° 2937."
+        ]
+      },
+      "respuesta": {
+        "valor": "Ninguna opción"
+      },
+      "fechaAprendizaje": "2026-09-16T18:52:52.463Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "12accfa9-a096-4835-919c-dd99a3ce7090",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Importación definitiva de bienes que revistan para el importador el carácter de bienes de uso. Res. gral. AFIP N° 2281.",
+          "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281.",
+          "Importación destinada a Uso o consumo particular, reservado únicamente para personas de existencia física. Res. Gral AFIP N° 2281."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+      },
+      "fechaAprendizaje": "2026-09-16T18:53:03.395Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "f6f54bea-b12f-4e62-a04d-b5f6b26a9657",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "Importacion con giro de divisas (PAGO ANTICIPADO). Divisas compradas en MLC",
+          "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC",
+          "Importacion con giro de divisas (OTROS MOTIVOS) Divisas compradas en MLC",
+          "Importacion con giro de divisas (Importacion pagada con divisas propias).",
+          "Importacion con giro de divisas. Divisas pagada por parte de un tercero.",
+          "Importacion con giro de divisas (PAGO A LA VISTA). Divisas compradas en MLC",
+          "Importaci?n (PAGADO DESDE CUENTA DEL EXTERIOR)",
+          "Importacion sin giro de divisas (ENVIO A TITULO NO ONEROSO)",
+          "Importacion sin giro de divisas (OTROS MOTIVOS)",
+          "Importacion con divisas giradas con otra declaracion previa."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+      },
+      "fechaAprendizaje": "2026-09-16T18:53:10.977Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "5df9d569-80b3-4956-88df-f5ad1fc5873c",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "La mercadería contiene en su composición sustancias químicas de la Lista I del Anexo II del Decreto. Nro 593/19 , conforme la definición de producto dada en su Anexo III.",
+          "La mercaderia contiene sustancias quimicas de la Lista II del Dto. N? 593/2019, en mas de un 30% P/V, conforme la deficion de producto de su Anexo III",
+          "La mercaderia contiene sustancias quimicas de la Lista I y II del Dto. N? 593/2019, en mas de un 30% P/V, conforme la deficion de producto de su Anexo III",
+          "La mercaderia se encuentra exceptuada por encontrarse comprendida en el Anexo 4 del Manual de Procedimientos Administrativos del Registro Nacional de Precursores Quimicos"
+        ]
+      },
+      "respuesta": {
+        "valor": "La mercaderia se encuentra exceptuada por encontrarse comprendida en el Anexo 4 del Manual de Procedimientos Administrativos del Registro Nacional de Precursores Quimicos"
+      },
+      "fechaAprendizaje": "2026-09-16T18:53:28.398Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "c28e2a6e-1932-45f4-9a4a-396ae5987385",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importación destinada al mercado interno -Res. Gral. AFIP N° 2281."
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "La mercaderia se encuentra exceptuada por encontrarse comprendida en el Anexo 4 del Manual de Procedimientos Administrativos del Registro Nacional de Precursores Quimicos"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Producto de uso alimenticio o destinado a integrar un alimento como aditivo alimenticio.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:53:32.892Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "e105073c-0d1a-4216-aab0-256b02710107",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Se trata de una mercadería que contiene, bajo cualquier forma, mezclas de sustancias químicas de la Lista 3 de la Convención de Armas Químicas (Ley 24534), con una concentración de las mismas, individuales o sumadas, superior o igual al 30% en peso.(En caso afirmativo deberá seleccionar la opción que identifique a la sustancia que se encuentre en mayor porcentaje en peso en la mezcla, conforme las listas de sustancias químicas enumeradas en la Ley 24534.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:53:48.594Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "755c41ee-1293-4612-880c-fd7becdcc4e0",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Se trata de una mercadería que contiene, bajo cualquier forma, mezclas de sustancias conteniendo sustancias químicas controladas conforme lo establecido en el Anexo XII de la Resolución Nº 3115/94 ANA y sus modificatorias. (En caso afirmativo deberá seleccionar la opción que identifique a la sustancia que se encuentre en mayor porcentaje en peso en la mezcla, conforme las listas de sustancias químicas enumeradas en la Ley 24534)",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:54:18.639Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "e0a13b19-13d5-4f31-807a-b03bd1b41aae",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Se trata de mercaderia comprendida en el ANEXO de la Resolucion SENASA N° 532/11 que sera destinada para uso agropecuario.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:54:27.008Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "bc4a7496-33fb-4f05-be14-5a51885c7925",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "La mercadería es una publicación , documento, soporte grabado, artículo o aparato en la que se describe o representa total o parcialmente el territorio Continental, Insular y Antártico de la República Argentina.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:54:37.577Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "179ac2c4-e823-46e9-9b91-0d63d139d983",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "La mercaderia es o contiene alguna sustancia, mezcla o preparaciones incluida en el Anexo I de la Resolucion SGAyDS N 451/19",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:54:44.541Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "e2778273-365b-4123-b651-e42ddfe4dcad",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "DEBERA DECLARAR EL PAIS / TERRITORIO / LUGAR DONDE SE EMITIO LA FACTURA COMERCIAL, SELECCIONANDO PARA ELLO LA OPCION ORRESPONDIENTE DEL LISTADO QUE SEGUIDAMENTE LE SERA PRESENTADO.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-16T18:54:53.157Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "81b7a23b-de44-4411-b81f-9d5254be6c21",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "OTRA",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "BURKINA FASO",
+          "ARGELIA",
+          "BOTSWANA",
+          "BURUNDI",
+          "CAMERUN",
+          "REP. CENTROAFRICANA",
+          "CONGO",
+          "REP DEM CONGO EXZAIR",
+          "COSTA DE MARFIL",
+          "CHAD",
+          "BENIN",
+          "EGIPTO",
+          "GABON",
+          "GAMBIA",
+          "GHANA",
+          "GUINEA",
+          "GUINEA ECUATORIAL",
+          "KENYA",
+          "LESOTHO",
+          "LIBERIA",
+          "LIBIA",
+          "MADAGASCAR",
+          "MALAWI",
+          "MALI",
+          "MARRUECOS",
+          "REPUBLICA ARABE SAHARAUI DEMOCRATICA",
+          "MAURICIO,ISLAS",
+          "MAURITANIA",
+          "NIGER",
+          "NIGERIA",
+          "ZIMBABWE",
+          "RWANDA",
+          "SENEGAL",
+          "SIERRA LEONA",
+          "SOMALIA",
+          "SWAZILANDIA",
+          "TANZANIA",
+          "TOGO",
+          "TUNEZ",
+          "UGANDA",
+          "ZAMBIA",
+          "SANTA ELENA, ASCENSION Y TRISTAN DE ACUÑA",
+          "TERRITORIO BRITANICO DEL OCEANO INDICO",
+          "Islas del Territorio Británico del Océano Indico",
+          "Canarias",
+          "Ceuta y Melilla",
+          "Mayotte",
+          "Reunión",
+          "ANGOLA",
+          "CABO VERDE,ISLAS",
+          "MOZAMBIQUE",
+          "SEYCHELLES",
+          "DJIBOUTI",
+          "COMORAS",
+          "GUINEA BISSAU",
+          "STO.TOME Y PRINCIPE",
+          "NAMIBIA",
+          "SUDAFRICA",
+          "ERITREA",
+          "ETIOPIA",
+          "SUDAN",
+          "SUDAN DEL SUR",
+          "ARGENTINA",
+          "BARBADOS",
+          "BOLIVIA",
+          "BRASIL",
+          "CANADA",
+          "COLOMBIA",
+          "COSTA RICA",
+          "CUBA",
+          "CHILE",
+          "DOMINICANA,REP.",
+          "ECUADOR",
+          "EL SALVADOR",
+          "ESTADOS UNIDOS",
+          "Islas Ultramarinas de Estados Unidos",
+          "GUATEMALA",
+          "GUYANA",
+          "HAITI",
+          "HONDURAS",
+          "JAMAICA",
+          "MEXICO",
+          "NICARAGUA",
+          "PANAMA",
+          "PARAGUAY",
+          "PERU",
+          "PUERTO RICO(EST ASOC",
+          "TRINIDAD Y TOBAGO",
+          "URUGUAY",
+          "Régimen aplic.a las socied.finenc.(ley 11073 Rep.Orient.Uruguay)",
+          "VENEZUELA",
+          "Anguila",
+          "Bermudas",
+          "Islas Caiman",
+          "ISLAS TURCAS Y CAICOS",
+          "Islas Vírgenes Britanicas",
+          "Montserrat",
+          "Groenlandia",
+          "COLECTIVIDAD TERRITORIAL DE SAN PEDRO Y MIQUELON",
+          "GUAYANA FRANCESA",
+          "Martinica",
+          "Guadalupe",
+          "COLECTIVIDAD SAN MARTIN",
+          "COLECTIVIDAD SAN BARTOLOME",
+          "TERRIT. HOLANDESES",
+          "ISLAS VIRGENES DE LOS ESTADOS UNIDOS DE AMERICA",
+          "SURINAME",
+          "DOMINICA",
+          "SANTA LUCIA",
+          "S.VICENTE Y LAS GRAN",
+          "BELICE",
+          "ANTIGUA Y BARBUDA",
+          "S.CRISTOBAL Y NEVIS",
+          "BAHAMAS",
+          "GRENADA",
+          "ARUBA",
+          "BONAIRE, SAN EUSTATIUS y SABA",
+          "CURAZAO",
+          "SAN MARTIN",
+          "TIERRA DEL FUEGO AAE",
+          "ZF LA PLATA (BS AS)",
+          "ZF.JUSTO DARACT S LU",
+          "ZF RIO GALLEGOS S CR",
+          "ISLAS MALVINAS",
+          "Islas Georgias",
+          "Sandwich del Sur",
+          "Z.F.TUCUMAN",
+          "Z.F.CORDOBA",
+          "Z.F.MENDOZA",
+          "ZF GRAL PICO L PAMPA",
+          "Z.F.COMODO.RIVADAVIA",
+          "ZF IQUIQUE (CHILE)",
+          "ZF PUNTA ARENAS (CHI",
+          "Z.F.SALTA",
+          "Z.F.PASO D/L LIBRES",
+          "Z.F. PUERTO IGUAZU",
+          "SECTOR ANTARTICO ARG",
+          "ZF CORONEL ROSALES",
+          "ZF CONCEP.DEL URUG.",
+          "ZF VILLA CONSTITUCION",
+          "ZF COLON (PANAMA)",
+          "Z.F.STA CRUZ SIERRA",
+          "ZONA FRANCA PACIFICO",
+          "ZF COLONIA (URUGUAY)",
+          "ZF FLORIDA (URUGUAY)",
+          "ZF LIBERTAD (URUGUAY",
+          "ZFZONAMERICA.EXMONTV",
+          "ZF NVA HELVECIA (URU",
+          "ZF NVA PALMIRA (URUG",
+          "ZF RIO NEGRO URUGUAY",
+          "ZF RIVERA (URUGUAY)",
+          "ZF SAN JOSE (URUGUAY",
+          "ZF PUNTA PEREIRA URU",
+          "ZF PARQUE DE LAS CIENCIAS S.A - CANELONES URUGUAY",
+          "ZF MANAOS (BRASIL)",
+          "MAR TER ARG/ZONA E E",
+          "RIOS NAC ARG NAV INT",
+          "AFGANISTAN",
+          "ARABIA SAUDITA",
+          "BAHREIN",
+          "MYANMAR(EX-BIRMANIA)",
+          "BUTAN",
+          "CAMBODYA(EX-KAMPUCHE",
+          "SRI LANKA",
+          "COREA DEMOCRATICA",
+          "COREA REPUBLICANA",
+          "CHINA",
+          "FILIPINAS",
+          "TAIWAN",
+          "INDIA",
+          "INDONESIA",
+          "IRAQ",
+          "IRAN",
+          "Isla Qmesh",
+          "ISRAEL",
+          "JAPON",
+          "JORDANIA",
+          "QATAR",
+          "KUWAIT",
+          "LAO",
+          "LIBANO",
+          "MALASIA",
+          "Labuan",
+          "MALDIVES,ISLAS",
+          "OMAN",
+          "MONGOLIA",
+          "NEPAL",
+          "EMIRATOS ARABES,UNID",
+          "PAKISTAN",
+          "SINGAPUR",
+          "SIRIA",
+          "THAILANDIA",
+          "VIETNAM",
+          "HONG KONG R A E CHIN",
+          "MACAO (R A E CHINA)",
+          "BANGLADESH",
+          "BRUNEI",
+          "REP. DE YEMEN",
+          "ARMENIA",
+          "AZERBAIJAN",
+          "GEORGIA",
+          "KAZAJSTAN",
+          "KIRGUIZISTAN",
+          "TAYIKISTAN",
+          "TURKMENISTAN",
+          "UZBEKISTAN",
+          "ESTADO DE PALESTINA",
+          "TIMOR ORIENTAL",
+          "ALBANIA",
+          "ANDORRA",
+          "AUSTRIA",
+          "BELGICA",
+          "BULGARIA",
+          "DINAMARCA",
+          "Islas Feroe",
+          "ESPA#A",
+          "FINLANDIA",
+          "PROVINCIA AUTONOMA DE ALAND",
+          "FRANCIA",
+          "GRECIA",
+          "HUNGRIA",
+          "IRLANDA",
+          "ISLANDIA",
+          "ITALIA",
+          "Campione d'Italia",
+          "Trieste",
+          "LIECHTENSTEIN",
+          "LUXEMBURGO",
+          "Reg. Aplicable a Soc. Holding del Gran Ducado de Luxemburgo",
+          "MALTA",
+          "MONACO",
+          "NORUEGA",
+          "SVALBARD Y JAN MAYEN",
+          "Isla Bouvet",
+          "PAISES BAJOS",
+          "POLONIA",
+          "PORTUGAL",
+          "Islas Azores",
+          "Madeira",
+          "REINO UNIDO",
+          "Isla de great stark",
+          "Herm",
+          "Little Stark",
+          "Brechou",
+          "Jethou Lihou",
+          "RUMANIA",
+          "SAN MARINO",
+          "SUECIA",
+          "SUIZA",
+          "SANTA SEDE(VATICANO)",
+          "Gibraltar",
+          "BAILIAZGO DE GUERNSEY",
+          "BAILIAZGO DE JERSEY",
+          "ISLA DE MAN",
+          "CHIPRE",
+          "TURQUIA",
+          "REP. FED DE ALEMANIA",
+          "BIELORRUSIA",
+          "ESTONIA",
+          "LETONIA",
+          "LITUANIA",
+          "MOLDAVIA",
+          "RUSIA",
+          "UCRANIA",
+          "BOSNIA HERZEGOVINA",
+          "CROACIA",
+          "ESLOVAQUIA",
+          "ESLOVENIA",
+          "MACEDONIA",
+          "REP. CHECA",
+          "Zona Libre de Ostrava",
+          "MONTENEGRO",
+          "SERBIA",
+          "AUSTRALIA",
+          "NAURU",
+          "NUEVA ZELANDIA",
+          "VANATU",
+          "SAMOA OCCIDENTAL",
+          "TERRITORIO DE LA ISLA DE NAVIDAD",
+          "TERRITORIO DE LAS ISLAS COCOS (KEELING)",
+          "TERRITORIO DE LAS ISLAS NORFOLK",
+          "Islas del Mar de Coral",
+          "Macquarie",
+          "ISLAS PITCAIRN, HENDERSON, DUCIE Y OENO",
+          "Polinesia Francesa",
+          "TERRITORIO DE NUEVA CALEDONIA Y DEPENDENCIAS",
+          "TERRITORIO DE LAS ISLAS WALLIS Y FUTUNA",
+          "TERRITORIOS AUSTRALES FRANCESES",
+          "Islas Cook",
+          "Niue",
+          "Tokelau",
+          "TERRITORIO DE GUAM",
+          "TERRITORIO DE SAMOA AMERICANA",
+          "Midway",
+          "Wake",
+          "Johnston",
+          "Howland, Baker, Jarvis",
+          "Kingman Reef, Palmyra",
+          "Hawai (estado de Estados Unidos)",
+          "Islas Pacifico",
+          "FIJI, ISLAS",
+          "PAPUA NUEVA GUINEA",
+          "KIRIBATI, ISLAS",
+          "MICRONESIA,EST.FEDER",
+          "PALAU",
+          "TUVALU",
+          "SALOMON,ISLAS",
+          "TONGA",
+          "MARSHALL,ISLAS",
+          "MARIANAS,ISLAS",
+          "Mas de un pais"
+        ]
+      },
+      "respuesta": {
+        "valor": "CHAD"
+      },
+      "fechaAprendizaje": "2026-09-16T18:55:13.294Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "04a38292-f463-4d08-a0e9-68956e2e9b5e",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "MERCADERIAS QUE SE PRESENTAN ACONDICIONADAS CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02 Y SE APORTA COMO DOCUMENTACION COMPLEMENTARIA EL FORMULARIO DE DECLARACION DE EMBALAJES DE MADERA, MADERAS DE SOPORTE Y ACOMODACION-RES.SENASA Nº 19/02-INTERVENIDO POR EL SENASA, INDICANDO EXPRESAMENTE LA AUTORIZACION DE LIBERAR SIN INSPECCION POR PARTE DE DICHO ORGANISMO.",
+          "'La Declaracion Jurada SIG Embalajes se encuentra en tramite sin decision del SENASA o aun no ha sido gestionada'",
+          "MERCADERIAS QUE SE PRESENTAN ACONDICIONADAS CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA 19/02 Y EL FORMULARIO DE DECLARACION DE EMBALAJES DE MADERA, MADERAS DE SOPORTE Y ACOMODACION-RES.SENASA Nº 19/02-PERMANECE RETENIDO EN EL SENASA.",
+          "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+        ]
+      },
+      "respuesta": {
+        "valor": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+      },
+      "fechaAprendizaje": "2026-09-16T18:56:27.129Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "c2f64267-7749-490e-9a15-c1467d64fa17",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Importacion con giro de divisas (PAGO ANTICIPADO). Divisas compradas en MLC",
+          "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC",
+          "Importacion con giro de divisas (OTROS MOTIVOS) Divisas compradas en MLC",
+          "Importacion con giro de divisas (Importacion pagada con divisas propias).",
+          "Importacion con giro de divisas. Divisas pagada por parte de un tercero.",
+          "Importacion con giro de divisas (PAGO A LA VISTA). Divisas compradas en MLC",
+          "Importaci?n (PAGADO DESDE CUENTA DEL EXTERIOR)",
+          "Importacion sin giro de divisas (ENVIO A TITULO NO ONEROSO)",
+          "Importacion sin giro de divisas (OTROS MOTIVOS)",
+          "Importacion con divisas giradas con otra declaracion previa."
+        ]
+      },
+      "respuesta": {
+        "valor": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+      },
+      "fechaAprendizaje": "2026-09-16T18:56:38.882Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "07e07235-68ec-460c-a1f9-bb9a39a279c0",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "DIGITALIZACION POR PSAD.",
+          "DIGITALIZACION POR AUTOARCHIVO."
+        ]
+      },
+      "respuesta": {
+        "valor": "DIGITALIZACION POR PSAD."
+      },
+      "fechaAprendizaje": "2026-09-16T18:56:51.273Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "ad2b2f3c-6956-4153-9d11-4e5ad6648458",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "007 - BANCO DE GALICIA Y BUENOS AIRES S.A.",
+          "011 - BANCO DE LA NACION ARGENTINA",
+          "014 - BANCO DE LA PROVINCIA DE BUENOS AIRES",
+          "015 - INDUSTRIAL AND COMMERCIAL BANK OF CHINA",
+          "016 - CITIBANK N.A.",
+          "017 - BANCO BBVA ARGENTINA S.A.",
+          "020 - BANCO DE LA PROVINCIA DE CORDOBA S.A.",
+          "027 - BANCO SUPERVIELLE S.A.",
+          "029 - BANCO DE LA CIUDAD DE BUENOS AIRES",
+          "034 - BANCO PATAGONIA S.A.",
+          "044 - BANCO HIPOTECARIO S.A.",
+          "045 - BANCO DE SAN JUAN S.A.",
+          "065 - BANCO MUNICIPAL DE ROSARIO",
+          "072 - BANCO SANTANDER ARGENTINA S.A.",
+          "083 - BANCO DEL CHUBUT S.A.",
+          "086 - BANCO DE SANTA CRUZ S.A.",
+          "093 - BANCO DE LA PAMPA SA",
+          "094 - BANCO DE CORRIENTES S.A.",
+          "097 - BANCO PROVINCIA DEL NEUQUEN S.A.",
+          "131 - BANK OF CHINA LIMITED SUCURSAL BUENOS AI",
+          "147 - BIBANK S.A.",
+          "165 - JP MORGAN CHASE BANK, N A (SUC BS AS)",
+          "191 - BANCO CREDICOOP COOPERATIVO LIMITADO",
+          "198 - BANCO DE VALORES S.A.",
+          "20113 - CYC CAMBIOS SA",
+          "247 - BANCO ROELA S.A.",
+          "254 - BANCO MARIVA S.A.",
+          "266 - BNP PARIBAS",
+          "268 - BANCO PROVINCIA DE TIERRA DEL FUEGO",
+          "269 - BANCO DE LA REP. ORIENTAL DEL URUGUAY",
+          "277 - BANCO SAENZ S.A.",
+          "281 - BANCO MERIDIAN S.A.",
+          "285 - BANCO MACRO S.A.",
+          "299 - BANCO COMAFI SOCIEDAD ANONIMA",
+          "300 - BANCO DE INVERSION Y COMERCIO EXTERIOR",
+          "301 - BANCO PIANO S.A.",
+          "305 - BANCO JULIO SOCIEDAD ANONIMA",
+          "310 - BANCO DEL SOL S.A.",
+          "311 - NUEVO BANCO DEL CHACO S. A.",
+          "312 - BANCO VOII S.A.",
+          "315 - BANCO DE FORMOSA S.A.",
+          "319 - BANCO CMF S.A.",
+          "322 - BANCO INDUSTRIAL",
+          "330 - NUEVO BANCO DE SANTA FE SOCIEDAD ANONIMA",
+          "331 - BANCO CETELEM ARGENTINA S.A.",
+          "332 - BANCO DE SERVICIOS FIN CARREFOUR SAU",
+          "338 - BANCO DE SERVICIOS Y TRANSACCIONES SAU",
+          "341 - BANCO MASVENTAS S.A.",
+          "386 - NUEVO BANCO DE ENTRE R?OS S.A.",
+          "389 - BANCO COLUMBIA S.A.",
+          "426 - BANCO BICA S.A.",
+          "431 - BANCO COINAG S.A.",
+          "432 - BANCO DE COMERCIO S.A.",
+          "44077 - COMPA?IA FINANCIERA ARGENTINA S.A.",
+          "44088 - VOLKSWAGEN FINANCIAL SERVICES CIA.FIN.S.",
+          "44092 - FCA COMPA?IA FINANCIERA S.A.",
+          "44093 - GPAT COMPA?IA FINANCIERA S.A.U.",
+          "44094 - MERCEDES-BENZ COMPA??A FINANCIERA S.A.",
+          "44095 - ROMBO COMPA??A FINANCIERA S.A.",
+          "44096 - JOHN DEERE CREDIT COMPA?IA FINANCIERA SA",
+          "44098 - PSA FINANCE ARGENTINA C.F.S.A",
+          "44099 - TOYOTA COMPA??A FINANCIERA DE ARGENTINA",
+          "45072 - REBA COMPA?IA FINANCIERA S.A.",
+          "91352 - GARCIA NAVARRO Y CIA. S.A.",
+          "91363 - DAMINATO VIAJES Y CAMBIOS S.A.",
+          "91364 - CAMBIO ESTELAR S.A.",
+          "91375 - PASAMAR S.A.",
+          "91400 - TOURFE S.A.",
+          "91407 - EL DORADO S.A."
+        ]
+      },
+      "respuesta": {
+        "valor": "011 - BANCO DE LA NACION ARGENTINA"
+      },
+      "fechaAprendizaje": "2026-09-16T18:56:59.827Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "5ba869a1-fb6e-4c6b-bdc6-c12a3b6a1305",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "MERCADERIAS QUE NO SE PRESENTA ACONDICIONADA CON ELEMENTOS DESCRIPTOS EN EL ANEXO I DE LA RESOLUCION SENASA Nº 19/02."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "Importacion con giro de divisas (PAGO DIFERIDO) Divisas compradas en MLC"
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          },
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "011 - BANCO DE LA NACION ARGENTINA"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:57:06.310Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "6b2f1e64-e2f6-4abb-8442-a60cdbcca0be",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:57:13.383Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "4b66cdd8-e952-4fa0-97b7-44383d778fe1",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de FEMB-ORIGEN :",
+        "tipoControl": "FECHA"
+      },
+      "respuesta": {
+        "valor": "01/09/2026"
+      },
+      "fechaAprendizaje": "2026-09-16T18:57:47.777Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "d8a3c7ef-b08c-433e-8101-32928c71f0bf",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de FEMB-ORIGEN :",
+            "respuesta": "01/09/2026"
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "\"En el territorio aduanero con anterioridad a su importaci?n, o a su reembarco, con motivo de una compraventa, se ha efectuado transferencia o cesi?n del derecho a disponer jur?dicamente de la mercader?a (art. 3 RG AFIP N? 2793)\"",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:57:50.867Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "c5491365-046b-49f2-b694-64e5e7ac2df6",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "Su mercadería procede de una zona franca que no se encuentre en el Territorio de soberanía Nacional.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-16T18:58:07.174Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "4bf8c9c9-2886-4101-96a2-5e3e1b8eeadd",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "PSAD01 - LAKAUT S.A.",
+          "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A.",
+          "PSAD03 - BANK S.A.",
+          "PSAD04-DOCUMENTOS ADUANEROS S.A.",
+          "PSAD05 DIGEX",
+          "PSAD06 MODOC",
+          "PSAD QUALITAS",
+          "PSAD ADEA"
+        ]
+      },
+      "respuesta": {
+        "valor": "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A."
+      },
+      "fechaAprendizaje": "2026-09-16T18:58:26.092Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "ab21b6cd-eb0d-4521-8dc6-4aadb51c9e8b",
+      "contexto": {
+        "subregimen": "IC04",
+        "posicionArancelaria": "3812.39.29.990C",
+        "etapa": "PRESUPUESTO",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A."
+          }
+        ],
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no"
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "No debo presentar la Declaración de Valor en Aduana (Formulario OM-1993/1 A) teniendo en cuenta que mi respuesta es negativa a cada una de las siguientes preguntas y no declaro Ajustes a Incluir y/o Deducir. 1)Hay descuentos no indicados? 2)El precio es revisable? 3)Existe resolución aduanera relativa a los ítems señalados en los puntos 5 a 9 ? 4)El embarque es escalonado? 5)El comprador y el vendedor están vinculados en los términos del artículo 15, párrafo 4 del acuerdo? 6)Existen restricciones para la cesión o utilización de las mercaderías por el comprador, distintas de las que: - impongan o exijan la ley o las autoridades de los Estados Partes del MERCOSUR? - Limiten la zona geográfica donde puedan revenderse las mercaderías? -no afecten sensiblemente al valor de las mercaderías? 7)Dependen la venta o el precio de condiciones o contraprestaciones cuyo valor no pueda determinarse con relación a las mercaderías a valorar? 8)Existen cánones y derechos de licencia relativos a las mercaderías importadas que el comprador este obligado a pagar, directa o indirectamente como condición de venta? 9)La venta esta condicionada por un acuerdo en los términos del cual, una parte del producto de cualquier reventa, cesión o utilización posterior de las mercaderías, revierta directa o indirectamente al vendedor? 10)Existen pagos indirectos? 11)Existen comisiones, excepto las de compra, corretajes y envases y embalajes? 12)Existen bienes y servicios suministrados por el comprador gratuitamente o a precio reducido utilizados en la producción y venta para la exportación de mercaderías importadas? 13)Existe un producto de cualquier reventa, cesión o utilización posterior que revierta al vendedor? 14)Existen intereses por financiación? 15)Existen gastos relativos a trabajos de construcción, instalación, montaje, mantenimiento o asistencia técnica realizados después de la importación siempre que se distingan del precio pagado o por pagar? 16)Existen derechos y demás tributos a pagar como consecuencia de la importación o de la venta de las mercaderías, siempre que se distingan del precio realmente pagado o por pagar? 17)Existen gastos de carga, descarga y manipulación ocasionados por el transporte de las mercaderías importadas hasta el punto o lugar de importación discriminados en la documentación complementaria? La presente tiene el carácter de Declaración Jurada del Importador y cualquier omisión de información o información distinta de la operación real que causen perjuicio fiscal o cambiario sera penalizada conforme a la legislación vigente en la materia."
+        ]
+      },
+      "respuesta": {
+        "valor": "No debo presentar la Declaración de Valor en Aduana (Formulario OM-1993/1 A) teniendo en cuenta que mi respuesta es negativa a cada una de las siguientes preguntas y no declaro Ajustes a Incluir y/o Deducir. 1)Hay descuentos no indicados? 2)El precio es revisable? 3)Existe resolución aduanera relativa a los ítems señalados en los puntos 5 a 9 ? 4)El embarque es escalonado? 5)El comprador y el vendedor están vinculados en los términos del artículo 15, párrafo 4 del acuerdo? 6)Existen restricciones para la cesión o utilización de las mercaderías por el comprador, distintas de las que: - impongan o exijan la ley o las autoridades de los Estados Partes del MERCOSUR? - Limiten la zona geográfica donde puedan revenderse las mercaderías? -no afecten sensiblemente al valor de las mercaderías? 7)Dependen la venta o el precio de condiciones o contraprestaciones cuyo valor no pueda determinarse con relación a las mercaderías a valorar? 8)Existen cánones y derechos de licencia relativos a las mercaderías importadas que el comprador este obligado a pagar, directa o indirectamente como condición de venta? 9)La venta esta condicionada por un acuerdo en los términos del cual, una parte del producto de cualquier reventa, cesión o utilización posterior de las mercaderías, revierta directa o indirectamente al vendedor? 10)Existen pagos indirectos? 11)Existen comisiones, excepto las de compra, corretajes y envases y embalajes? 12)Existen bienes y servicios suministrados por el comprador gratuitamente o a precio reducido utilizados en la producción y venta para la exportación de mercaderías importadas? 13)Existe un producto de cualquier reventa, cesión o utilización posterior que revierta al vendedor? 14)Existen intereses por financiación? 15)Existen gastos relativos a trabajos de construcción, instalación, montaje, mantenimiento o asistencia técnica realizados después de la importación siempre que se distingan del precio pagado o por pagar? 16)Existen derechos y demás tributos a pagar como consecuencia de la importación o de la venta de las mercaderías, siempre que se distingan del precio realmente pagado o por pagar? 17)Existen gastos de carga, descarga y manipulación ocasionados por el transporte de las mercaderías importadas hasta el punto o lugar de importación discriminados en la documentación complementaria? La presente tiene el carácter de Declaración Jurada del Importador y cualquier omisión de información o información distinta de la operación real que causen perjuicio fiscal o cambiario sera penalizada conforme a la legislación vigente en la materia."
+      },
+      "fechaAprendizaje": "2026-09-16T18:58:41.268Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "45a4c684-e399-476e-851b-85342dde230f",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "el arancel ha detectado el uso de un dato complementario no especificado en el despacho ingrese por favor el valor de comisionalext :",
+        "tipoControl": "TEXTO"
+      },
+      "respuesta": {
+        "valor": "0"
+      },
+      "fechaAprendizaje": "2026-09-17T00:53:55.109Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "9b0afc2c-33b3-48aa-b5bd-c13e1b6489b6",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "el arancel ha detectado el uso de un dato complementario no especificado en el despacho ingrese por favor el valor de comisionalext :",
+            "respuesta": "0"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "Se trata de una mercadería que contiene, bajo cualquier forma, mezclas de sustancias conteniendo sustancias químicas controladas conforme lo establecido en el Anexo XII de la Resolución Nº 3115/94 ANA y sus modificatorias. (En caso afirmativo deberá seleccionar la opción que identifique a la sustancia que se encuentre en mayor porcentaje en peso en la mezcla, conforme las listas de sustancias químicas enumeradas en la Ley 24534)",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:54:32.275Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "72360fa6-29a6-4153-ac1d-53990054aeae",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Declaró AJUSTES a DEDUCIR a nivel de CARATULA.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:54:38.230Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "6a9d0308-5203-4525-a3e9-127f7c10945b",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Declaró AJUSTES a INCLUIR a nivel de CARATULA.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:54:44.101Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "4ff3b43e-51c9-48b9-8bcd-e8cc4d0caffb",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Se trata de mercadería de primera calidad/sin defectos.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T00:54:50.282Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "205363d4-48c8-475e-b907-2699ef164530",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Se trata de mercaderia alcanzada por el Anexo A,B, C, D o E del Decreto N 603/92 y sus normas modificatorias.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:55:15.629Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "55822701-b113-442c-87f2-e7c0e2e062f8",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "La mercadería contiene platino, paladio, rodio, iridio, osmio o rutenio como insumo, subproducto o manufactura en los términos de la Res. 294/95 MEOSP.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:55:21.689Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "1c8323b0-7f50-4a8c-87da-1dfe25357037",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Se trata de mercadería constituída por oro, ya sea como insumo, subproducto o manufactura conforme lo establece la R.653/95 MEOSP.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:55:27.599Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "6c0eb8cb-9b3b-4871-a7ed-315c4b7ab95b",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "La mercadería es una publicación , documento, soporte grabado, artículo o aparato en la que se describe o representa total o parcialmente el territorio Continental, Insular y Antártico de la República Argentina.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:55:45.163Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "75be0d29-0b1f-4a9e-83f3-0c1e3bacf382",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Se trata de una exportacion entre empresas vinculadas en los terminos del punto 1.2.2. de las normas sobre Grandes exposiciones al riesgo de credito del BCRA?",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:05.777Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "2d928e87-93b8-4166-83ce-035451457676",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "?Existe vinculacion entre comprador y vendedor en el sentido que dispone el CA Art. 742?",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:17.451Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "080720a5-5d8d-4046-a857-f6a368c98c88",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "el arancel ha detectado el uso de un dato complementario no especificado en el despacho ingrese por favor el valor de dato-comprador :",
+        "tipoControl": "TEXTO"
+      },
+      "respuesta": {
+        "valor": "TST"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:32.829Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "94a87110-3a11-4299-aeac-8a42c4180dd4",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "el arancel ha detectado el uso de un dato complementario no especificado en el despacho ingrese por favor el valor de dato-comprador :",
+            "respuesta": "TST"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "EFECTUARA EL PAGO DEL DERECHO DE EXPORTACION SEGUN LO ESTIPULADO EN EL Art. 54 INC. a del Dto.1001/82.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:35.382Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "faa5caa1-d85e-49df-97a0-b4caaeb1dd26",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "DEBERA DECLARAR EL PAIS / TERRITORIO / LUGAR AL QUE DIRIGE LA FACTURA COMERCIAL, SELECCIONANDO PARA ELLO LA OPCION CORRESPONDIENTE DEL LISTADO QUE SEGUIDAMENTE LE SERA PRESENTADO.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:40.808Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "a0b701de-770b-4840-a6e5-4fc822064dc7",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "BURKINA FASO",
+          "ARGELIA",
+          "BOTSWANA",
+          "BURUNDI",
+          "CAMERUN",
+          "REP. CENTROAFRICANA",
+          "CONGO",
+          "REP DEM CONGO EXZAIR",
+          "COSTA DE MARFIL",
+          "CHAD",
+          "BENIN",
+          "EGIPTO",
+          "GABON",
+          "GAMBIA",
+          "GHANA",
+          "GUINEA",
+          "GUINEA ECUATORIAL",
+          "KENYA",
+          "LESOTHO",
+          "LIBERIA",
+          "LIBIA",
+          "MADAGASCAR",
+          "MALAWI",
+          "MALI",
+          "MARRUECOS",
+          "REPUBLICA ARABE SAHARAUI DEMOCRATICA",
+          "MAURICIO,ISLAS",
+          "MAURITANIA",
+          "NIGER",
+          "NIGERIA",
+          "ZIMBABWE",
+          "RWANDA",
+          "SENEGAL",
+          "SIERRA LEONA",
+          "SOMALIA",
+          "SWAZILANDIA",
+          "TANZANIA",
+          "TOGO",
+          "TUNEZ",
+          "UGANDA",
+          "ZAMBIA",
+          "SANTA ELENA, ASCENSION Y TRISTAN DE ACUÑA",
+          "TERRITORIO BRITANICO DEL OCEANO INDICO",
+          "Islas del Territorio Británico del Océano Indico",
+          "Canarias",
+          "Ceuta y Melilla",
+          "Mayotte",
+          "Reunión",
+          "ANGOLA",
+          "CABO VERDE,ISLAS",
+          "MOZAMBIQUE",
+          "SEYCHELLES",
+          "DJIBOUTI",
+          "COMORAS",
+          "GUINEA BISSAU",
+          "STO.TOME Y PRINCIPE",
+          "NAMIBIA",
+          "SUDAFRICA",
+          "ERITREA",
+          "ETIOPIA",
+          "SUDAN",
+          "SUDAN DEL SUR",
+          "ARGENTINA",
+          "BARBADOS",
+          "BOLIVIA",
+          "BRASIL",
+          "CANADA",
+          "COLOMBIA",
+          "COSTA RICA",
+          "CUBA",
+          "CHILE",
+          "DOMINICANA,REP.",
+          "ECUADOR",
+          "EL SALVADOR",
+          "ESTADOS UNIDOS",
+          "Islas Ultramarinas de Estados Unidos",
+          "GUATEMALA",
+          "GUYANA",
+          "HAITI",
+          "HONDURAS",
+          "JAMAICA",
+          "MEXICO",
+          "NICARAGUA",
+          "PANAMA",
+          "PARAGUAY",
+          "PERU",
+          "PUERTO RICO(EST ASOC",
+          "TRINIDAD Y TOBAGO",
+          "URUGUAY",
+          "Régimen aplic.a las socied.finenc.(ley 11073 Rep.Orient.Uruguay)",
+          "VENEZUELA",
+          "Anguila",
+          "Bermudas",
+          "Islas Caiman",
+          "ISLAS TURCAS Y CAICOS",
+          "Islas Vírgenes Britanicas",
+          "Montserrat",
+          "Groenlandia",
+          "COLECTIVIDAD TERRITORIAL DE SAN PEDRO Y MIQUELON",
+          "GUAYANA FRANCESA",
+          "Martinica",
+          "Guadalupe",
+          "COLECTIVIDAD SAN MARTIN",
+          "COLECTIVIDAD SAN BARTOLOME",
+          "TERRIT. HOLANDESES",
+          "ISLAS VIRGENES DE LOS ESTADOS UNIDOS DE AMERICA",
+          "SURINAME",
+          "DOMINICA",
+          "SANTA LUCIA",
+          "S.VICENTE Y LAS GRAN",
+          "BELICE",
+          "ANTIGUA Y BARBUDA",
+          "S.CRISTOBAL Y NEVIS",
+          "BAHAMAS",
+          "GRENADA",
+          "ARUBA",
+          "BONAIRE, SAN EUSTATIUS y SABA",
+          "CURAZAO",
+          "SAN MARTIN",
+          "TIERRA DEL FUEGO AAE",
+          "ZF LA PLATA (BS AS)",
+          "ZF.JUSTO DARACT S LU",
+          "ZF RIO GALLEGOS S CR",
+          "ISLAS MALVINAS",
+          "Islas Georgias",
+          "Sandwich del Sur",
+          "Z.F.TUCUMAN",
+          "Z.F.CORDOBA",
+          "Z.F.MENDOZA",
+          "ZF GRAL PICO L PAMPA",
+          "Z.F.COMODO.RIVADAVIA",
+          "ZF IQUIQUE (CHILE)",
+          "ZF PUNTA ARENAS (CHI",
+          "Z.F.SALTA",
+          "Z.F.PASO D/L LIBRES",
+          "Z.F. PUERTO IGUAZU",
+          "SECTOR ANTARTICO ARG",
+          "ZF CORONEL ROSALES",
+          "ZF CONCEP.DEL URUG.",
+          "ZF VILLA CONSTITUCION",
+          "ZF COLON (PANAMA)",
+          "Z.F.STA CRUZ SIERRA",
+          "ZONA FRANCA PACIFICO",
+          "ZF COLONIA (URUGUAY)",
+          "ZF FLORIDA (URUGUAY)",
+          "ZF LIBERTAD (URUGUAY",
+          "ZFZONAMERICA.EXMONTV",
+          "ZF NVA HELVECIA (URU",
+          "ZF NVA PALMIRA (URUG",
+          "ZF RIO NEGRO URUGUAY",
+          "ZF RIVERA (URUGUAY)",
+          "ZF SAN JOSE (URUGUAY",
+          "ZF PUNTA PEREIRA URU",
+          "ZF PARQUE DE LAS CIENCIAS S.A - CANELONES URUGUAY",
+          "ZF MANAOS (BRASIL)",
+          "MAR TER ARG/ZONA E E",
+          "RIOS NAC ARG NAV INT",
+          "AFGANISTAN",
+          "ARABIA SAUDITA",
+          "BAHREIN",
+          "MYANMAR(EX-BIRMANIA)",
+          "BUTAN",
+          "CAMBODYA(EX-KAMPUCHE",
+          "SRI LANKA",
+          "COREA DEMOCRATICA",
+          "COREA REPUBLICANA",
+          "CHINA",
+          "FILIPINAS",
+          "TAIWAN",
+          "INDIA",
+          "INDONESIA",
+          "IRAQ",
+          "IRAN",
+          "Isla Qmesh",
+          "ISRAEL",
+          "JAPON",
+          "JORDANIA",
+          "QATAR",
+          "KUWAIT",
+          "LAO",
+          "LIBANO",
+          "MALASIA",
+          "Labuan",
+          "MALDIVES,ISLAS",
+          "OMAN",
+          "MONGOLIA",
+          "NEPAL",
+          "EMIRATOS ARABES,UNID",
+          "PAKISTAN",
+          "SINGAPUR",
+          "SIRIA",
+          "THAILANDIA",
+          "VIETNAM",
+          "HONG KONG R A E CHIN",
+          "MACAO (R A E CHINA)",
+          "BANGLADESH",
+          "BRUNEI",
+          "REP. DE YEMEN",
+          "ARMENIA",
+          "AZERBAIJAN",
+          "GEORGIA",
+          "KAZAJSTAN",
+          "KIRGUIZISTAN",
+          "TAYIKISTAN",
+          "TURKMENISTAN",
+          "UZBEKISTAN",
+          "ESTADO DE PALESTINA",
+          "TIMOR ORIENTAL",
+          "ALBANIA",
+          "ANDORRA",
+          "AUSTRIA",
+          "BELGICA",
+          "BULGARIA",
+          "DINAMARCA",
+          "Islas Feroe",
+          "ESPA#A",
+          "FINLANDIA",
+          "PROVINCIA AUTONOMA DE ALAND",
+          "FRANCIA",
+          "GRECIA",
+          "HUNGRIA",
+          "IRLANDA",
+          "ISLANDIA",
+          "ITALIA",
+          "Campione d'Italia",
+          "Trieste",
+          "LIECHTENSTEIN",
+          "LUXEMBURGO",
+          "Reg. Aplicable a Soc. Holding del Gran Ducado de Luxemburgo",
+          "MALTA",
+          "MONACO",
+          "NORUEGA",
+          "SVALBARD Y JAN MAYEN",
+          "Isla Bouvet",
+          "PAISES BAJOS",
+          "POLONIA",
+          "PORTUGAL",
+          "Islas Azores",
+          "Madeira",
+          "REINO UNIDO",
+          "Isla de great stark",
+          "Herm",
+          "Little Stark",
+          "Brechou",
+          "Jethou Lihou",
+          "RUMANIA",
+          "SAN MARINO",
+          "SUECIA",
+          "SUIZA",
+          "SANTA SEDE(VATICANO)",
+          "Gibraltar",
+          "BAILIAZGO DE GUERNSEY",
+          "BAILIAZGO DE JERSEY",
+          "ISLA DE MAN",
+          "CHIPRE",
+          "TURQUIA",
+          "REP. FED DE ALEMANIA",
+          "BIELORRUSIA",
+          "ESTONIA",
+          "LETONIA",
+          "LITUANIA",
+          "MOLDAVIA",
+          "RUSIA",
+          "UCRANIA",
+          "BOSNIA HERZEGOVINA",
+          "CROACIA",
+          "ESLOVAQUIA",
+          "ESLOVENIA",
+          "MACEDONIA",
+          "REP. CHECA",
+          "Zona Libre de Ostrava",
+          "MONTENEGRO",
+          "SERBIA",
+          "AUSTRALIA",
+          "NAURU",
+          "NUEVA ZELANDIA",
+          "VANATU",
+          "SAMOA OCCIDENTAL",
+          "TERRITORIO DE LA ISLA DE NAVIDAD",
+          "TERRITORIO DE LAS ISLAS COCOS (KEELING)",
+          "TERRITORIO DE LAS ISLAS NORFOLK",
+          "Islas del Mar de Coral",
+          "Macquarie",
+          "ISLAS PITCAIRN, HENDERSON, DUCIE Y OENO",
+          "Polinesia Francesa",
+          "TERRITORIO DE NUEVA CALEDONIA Y DEPENDENCIAS",
+          "TERRITORIO DE LAS ISLAS WALLIS Y FUTUNA",
+          "TERRITORIOS AUSTRALES FRANCESES",
+          "Islas Cook",
+          "Niue",
+          "Tokelau",
+          "TERRITORIO DE GUAM",
+          "TERRITORIO DE SAMOA AMERICANA",
+          "Midway",
+          "Wake",
+          "Johnston",
+          "Howland, Baker, Jarvis",
+          "Kingman Reef, Palmyra",
+          "Hawai (estado de Estados Unidos)",
+          "Islas Pacifico",
+          "FIJI, ISLAS",
+          "PAPUA NUEVA GUINEA",
+          "KIRIBATI, ISLAS",
+          "MICRONESIA,EST.FEDER",
+          "PALAU",
+          "TUVALU",
+          "SALOMON,ISLAS",
+          "TONGA",
+          "MARSHALL,ISLAS",
+          "MARIANAS,ISLAS",
+          "Mas de un pais"
+        ]
+      },
+      "respuesta": {
+        "valor": "GHANA"
+      },
+      "fechaAprendizaje": "2026-09-17T00:56:57.328Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "76c14c91-bd76-41a0-bcd6-bbbbff0f7380",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "GHANA"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "000001 MTU"
+        ]
+      },
+      "respuesta": {
+        "valor": "Ninguna opción"
+      },
+      "fechaAprendizaje": "2026-09-17T00:57:05.285Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "7031d4bf-8a48-43a0-a853-8f64633ca377",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "OTRA",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "GHANA"
+          },
+          {
+            "pregunta": "Seleccion de una opción",
+            "respuesta": "Ninguna opción"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "Seleccion de una opción",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "EL PLAZO DE ESPERA PARA EL PAGO DE LOS DERECHOS DE EXPORTACION SERA UNICAMENTE 15 DIAS CORRIDOS A PARTIR DEL LIBRAMIENTO/CUMPLIDO."
+        ]
+      },
+      "respuesta": {
+        "valor": "EL PLAZO DE ESPERA PARA EL PAGO DE LOS DERECHOS DE EXPORTACION SERA UNICAMENTE 15 DIAS CORRIDOS A PARTIR DEL LIBRAMIENTO/CUMPLIDO."
+      },
+      "fechaAprendizaje": "2026-09-17T00:57:19.002Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "6ee883f3-5cc8-429e-a44c-d4c3feac3cbf",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "DIGITALIZACION POR PSAD.",
+          "DIGITALIZACION POR AUTOARCHIVO."
+        ]
+      },
+      "respuesta": {
+        "valor": "DIGITALIZACION POR PSAD."
+      },
+      "fechaAprendizaje": "2026-09-17T01:52:20.666Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "5cb71a2e-3813-40f2-8561-d62a4f77175f",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "DIGITALIZACION POR PSAD."
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T01:53:17.267Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "ff8d2012-8ccd-43d5-ac2e-cdf1bea498b1",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "Ninguna opción",
+          "No debo presentar la Declaración de los Elementos relativos al Valor de Exportación (Form OM 1993/2 SIM) teniendo en cuenta que no declaro Ajustes a Incluir y/o Deducir y mi respuesta es negativa a cada una de las siguientes preguntas: Respecto de la TRANSACCIÓN: a)Existe alguna otra prestacion efectiva que el comprador realice ademas del pago del precio de la mercaderia? b)Existen relaciones comerciales, financieras o de otra clase en el sentido de lo dispuesto en el Art. 742 inc. b) del C.A.? c)En el caso de que la respuesta al punto b) sea afirmativa, tales relaciones inciden en los precios declarados? d)Existe reversión del producto que proceda de las reventas o de otros actos de disposición o, incluso, de la utilización de que fuere objeto posteriormente la mercadería en el sentido de lo dispuesto en el Art. 742 inc. c) del C.A.? e)La venta se encuentra sujeta a un convenio o contrato? f)Este envío es parte de una venta mayor convenida? g)Existen comisiones al exterior? Respecto del PRECIO: a)Incluye derechos y demás tributos a la exportación? b)Incluye intereses por financiación? c)Existen cobros indirectos percibidos o a percibir? d)Incluye descuentos por nivel o cantidad? e)Incluye descuentos por pago anticipado? f)Incluye descuentos y bonificaciones no admisibles? g)Incluye derechos de utilizar patentes, dibujos, modelos, marcas de fábrica o comercio? (C.A. Art. 743) h)Incluye insumos importados? La presente tiene el carácter de declaración jurada y cualquier omisión de información o información distinta a la operación real que causen perjuicio fiscal o cambiario será penalizada conforme a la legislación vigente en la materia."
+        ]
+      },
+      "respuesta": {
+        "valor": "No debo presentar la Declaración de los Elementos relativos al Valor de Exportación (Form OM 1993/2 SIM) teniendo en cuenta que no declaro Ajustes a Incluir y/o Deducir y mi respuesta es negativa a cada una de las siguientes preguntas: Respecto de la TRANSACCIÓN: a)Existe alguna otra prestacion efectiva que el comprador realice ademas del pago del precio de la mercaderia? b)Existen relaciones comerciales, financieras o de otra clase en el sentido de lo dispuesto en el Art. 742 inc. b) del C.A.? c)En el caso de que la respuesta al punto b) sea afirmativa, tales relaciones inciden en los precios declarados? d)Existe reversión del producto que proceda de las reventas o de otros actos de disposición o, incluso, de la utilización de que fuere objeto posteriormente la mercadería en el sentido de lo dispuesto en el Art. 742 inc. c) del C.A.? e)La venta se encuentra sujeta a un convenio o contrato? f)Este envío es parte de una venta mayor convenida? g)Existen comisiones al exterior? Respecto del PRECIO: a)Incluye derechos y demás tributos a la exportación? b)Incluye intereses por financiación? c)Existen cobros indirectos percibidos o a percibir? d)Incluye descuentos por nivel o cantidad? e)Incluye descuentos por pago anticipado? f)Incluye descuentos y bonificaciones no admisibles? g)Incluye derechos de utilizar patentes, dibujos, modelos, marcas de fábrica o comercio? (C.A. Art. 743) h)Incluye insumos importados? La presente tiene el carácter de declaración jurada y cualquier omisión de información o información distinta a la operación real que causen perjuicio fiscal o cambiario será penalizada conforme a la legislación vigente en la materia."
+      },
+      "fechaAprendizaje": "2026-09-17T05:00:23.311Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "fe0ad167-4fee-4df3-96da-eebd24e88f1a",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "No debo presentar la Declaración de los Elementos relativos al Valor de Exportación (Form OM 1993/2 SIM) teniendo en cuenta que no declaro Ajustes a Incluir y/o Deducir y mi respuesta es negativa a cada una de las siguientes preguntas: Respecto de la TRANSACCIÓN: a)Existe alguna otra prestacion efectiva que el comprador realice ademas del pago del precio de la mercaderia? b)Existen relaciones comerciales, financieras o de otra clase en el sentido de lo dispuesto en el Art. 742 inc. b) del C.A.? c)En el caso de que la respuesta al punto b) sea afirmativa, tales relaciones inciden en los precios declarados? d)Existe reversión del producto que proceda de las reventas o de otros actos de disposición o, incluso, de la utilización de que fuere objeto posteriormente la mercadería en el sentido de lo dispuesto en el Art. 742 inc. c) del C.A.? e)La venta se encuentra sujeta a un convenio o contrato? f)Este envío es parte de una venta mayor convenida? g)Existen comisiones al exterior? Respecto del PRECIO: a)Incluye derechos y demás tributos a la exportación? b)Incluye intereses por financiación? c)Existen cobros indirectos percibidos o a percibir? d)Incluye descuentos por nivel o cantidad? e)Incluye descuentos por pago anticipado? f)Incluye descuentos y bonificaciones no admisibles? g)Incluye derechos de utilizar patentes, dibujos, modelos, marcas de fábrica o comercio? (C.A. Art. 743) h)Incluye insumos importados? La presente tiene el carácter de declaración jurada y cualquier omisión de información o información distinta a la operación real que causen perjuicio fiscal o cambiario será penalizada conforme a la legislación vigente en la materia."
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "El exportador se compromete a ingresar al pais las divisas por el contravalor de la presente exportacion de bienes, en las condiciones y plazos establecidos por la Comunicacion \"A\" 6844 y complementarias del B.C.R.A..",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T05:00:32.863Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "4665c05f-b8bf-4820-bfcc-ea9877b3c75e",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Designe un banco para el control obligatorio de liquidacion de divisas de exportacion prevista en la Comunicacion \"A\" Nro. 6788 (B.C.R.A.)",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T05:00:39.982Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "672245ee-5fc6-45d8-ae79-de861ed2cd1f",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "007 - BANCO DE GALICIA Y BUENOS AIRES S.A.",
+          "011 - BANCO DE LA NACION ARGENTINA",
+          "014 - BANCO DE LA PROVINCIA DE BUENOS AIRES",
+          "015 - INDUSTRIAL AND COMMERCIAL BANK OF CHINA",
+          "016 - CITIBANK N.A.",
+          "017 - BANCO BBVA ARGENTINA S.A.",
+          "020 - BANCO DE LA PROVINCIA DE CORDOBA S.A.",
+          "027 - BANCO SUPERVIELLE S.A.",
+          "029 - BANCO DE LA CIUDAD DE BUENOS AIRES",
+          "034 - BANCO PATAGONIA S.A.",
+          "044 - BANCO HIPOTECARIO S.A.",
+          "045 - BANCO DE SAN JUAN S.A.",
+          "065 - BANCO MUNICIPAL DE ROSARIO",
+          "072 - BANCO SANTANDER ARGENTINA S.A.",
+          "083 - BANCO DEL CHUBUT S.A.",
+          "086 - BANCO DE SANTA CRUZ S.A.",
+          "093 - BANCO DE LA PAMPA SA",
+          "094 - BANCO DE CORRIENTES S.A.",
+          "097 - BANCO PROVINCIA DEL NEUQUEN S.A.",
+          "131 - BANK OF CHINA LIMITED SUCURSAL BUENOS AI",
+          "147 - BIBANK S.A.",
+          "165 - JP MORGAN CHASE BANK, N A (SUC BS AS)",
+          "191 - BANCO CREDICOOP COOPERATIVO LIMITADO",
+          "198 - BANCO DE VALORES S.A.",
+          "20113 - CYC CAMBIOS SA",
+          "247 - BANCO ROELA S.A.",
+          "254 - BANCO MARIVA S.A.",
+          "266 - BNP PARIBAS",
+          "268 - BANCO PROVINCIA DE TIERRA DEL FUEGO",
+          "269 - BANCO DE LA REP. ORIENTAL DEL URUGUAY",
+          "277 - BANCO SAENZ S.A.",
+          "281 - BANCO MERIDIAN S.A.",
+          "285 - BANCO MACRO S.A.",
+          "299 - BANCO COMAFI SOCIEDAD ANONIMA",
+          "300 - BANCO DE INVERSION Y COMERCIO EXTERIOR",
+          "301 - BANCO PIANO S.A.",
+          "305 - BANCO JULIO SOCIEDAD ANONIMA",
+          "310 - BANCO DEL SOL S.A.",
+          "311 - NUEVO BANCO DEL CHACO S. A.",
+          "312 - BANCO VOII S.A.",
+          "315 - BANCO DE FORMOSA S.A.",
+          "319 - BANCO CMF S.A.",
+          "322 - BANCO INDUSTRIAL",
+          "330 - NUEVO BANCO DE SANTA FE SOCIEDAD ANONIMA",
+          "331 - BANCO CETELEM ARGENTINA S.A.",
+          "332 - BANCO DE SERVICIOS FIN CARREFOUR SAU",
+          "338 - BANCO DE SERVICIOS Y TRANSACCIONES SAU",
+          "341 - BANCO MASVENTAS S.A.",
+          "386 - NUEVO BANCO DE ENTRE R?OS S.A.",
+          "389 - BANCO COLUMBIA S.A.",
+          "426 - BANCO BICA S.A.",
+          "431 - BANCO COINAG S.A.",
+          "432 - BANCO DE COMERCIO S.A.",
+          "44077 - COMPA?IA FINANCIERA ARGENTINA S.A.",
+          "44088 - VOLKSWAGEN FINANCIAL SERVICES CIA.FIN.S.",
+          "44092 - FCA COMPA?IA FINANCIERA S.A.",
+          "44093 - GPAT COMPA?IA FINANCIERA S.A.U.",
+          "44094 - MERCEDES-BENZ COMPA??A FINANCIERA S.A.",
+          "44095 - ROMBO COMPA??A FINANCIERA S.A.",
+          "44096 - JOHN DEERE CREDIT COMPA?IA FINANCIERA SA",
+          "44098 - PSA FINANCE ARGENTINA C.F.S.A",
+          "44099 - TOYOTA COMPA??A FINANCIERA DE ARGENTINA",
+          "45072 - REBA COMPA?IA FINANCIERA S.A.",
+          "91352 - GARCIA NAVARRO Y CIA. S.A.",
+          "91363 - DAMINATO VIAJES Y CAMBIOS S.A.",
+          "91364 - CAMBIO ESTELAR S.A.",
+          "91375 - PASAMAR S.A.",
+          "91400 - TOURFE S.A.",
+          "91407 - EL DORADO S.A."
+        ]
+      },
+      "respuesta": {
+        "valor": "011 - BANCO DE LA NACION ARGENTINA"
+      },
+      "fechaAprendizaje": "2026-09-17T05:00:53.037Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "942fcf25-9683-49aa-a4af-a3ef4fea75e4",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "RADIO_SIN_TEXTO",
+            "respuesta": "011 - BANCO DE LA NACION ARGENTINA"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "\"En la presente declaración de exportación, resulta involucrada mercaderia de propiedad del exportador y de uno o mas terceros\".",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T05:00:58.698Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "3a2bf32c-8cc9-471b-bbe7-aaada50d450c",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "La presente destinacion es efectuada desde una zona franca ARGENTINA acompañando a un ZFTR",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T05:01:06.922Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "41ea62ca-3ebe-4c17-a1f8-43d056c060e6",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Seleccioná una opción para continuar a la siguiente pregunta.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T05:01:13.223Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "b25ef5c3-67bb-4a29-ad4b-934fa9e2ff68",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "\"Efectuo pago previo y desea solicitar el credito por el saldo de los importes en pesos pagados de mas en concepto de derechos de exportacion en la presente destinacion - R.G. AFIP 3360\".",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "SÍ"
+      },
+      "fechaAprendizaje": "2026-09-17T05:01:31.704Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "3e150593-4808-41ab-9006-229e81762d23",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "Esta destinación se cursara según lo dispuesto por el Art.329 del Codigo Aduanero.",
+        "tipoControl": "SI_NO",
+        "opciones": [
+          "NO",
+          "SÍ"
+        ]
+      },
+      "respuesta": {
+        "valor": "NO"
+      },
+      "fechaAprendizaje": "2026-09-17T05:01:41.625Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "96d21ff5-8f49-448a-b4f8-bd2f273734cc",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": []
+      },
+      "pregunta": {
+        "texto": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de LUGAR-ART736CA :",
+        "tipoControl": "TEXTO"
+      },
+      "respuesta": {
+        "valor": "TSA"
+      },
+      "fechaAprendizaje": "2026-09-17T05:02:00.592Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "2375658e-7aef-415c-9046-45a85c247a94",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de LUGAR-ART736CA :",
+            "respuesta": "TSA"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de GTOSANT736CA :",
+        "tipoControl": "TEXTO"
+      },
+      "respuesta": {
+        "valor": "0"
+      },
+      "fechaAprendizaje": "2026-09-17T05:02:14.615Z",
+      "cantidadUsos": 0
+    },
+    {
+      "id": "459942cc-8aee-4c33-af6c-c19ee1af01ad",
+      "contexto": {
+        "subregimen": "EC01",
+        "posicionArancelaria": "7318.15.00.620M",
+        "etapa": "PRESUPUESTO",
+        "perfilId": "docs-no__ventajas-no__cancelaciones-no",
+        "numeroItem": 1,
+        "respuestasPrevias": [
+          {
+            "pregunta": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de LUGAR-ART736CA :",
+            "respuesta": "TSA"
+          },
+          {
+            "pregunta": "El arancel ha detectado el uso de un dato complementario no especificado en el despacho Ingrese por favor el valor de GTOSANT736CA :",
+            "respuesta": "0"
+          }
+        ]
+      },
+      "pregunta": {
+        "texto": "RADIO_SIN_TEXTO",
+        "tipoControl": "RADIO",
+        "opciones": [
+          "PSAD01 - LAKAUT S.A.",
+          "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A.",
+          "PSAD03 - BANK S.A.",
+          "PSAD04-DOCUMENTOS ADUANEROS S.A.",
+          "PSAD05 DIGEX",
+          "PSAD06 MODOC",
+          "PSAD QUALITAS",
+          "PSAD ADEA"
+        ]
+      },
+      "respuesta": {
+        "valor": "PSAD02 - BOX CUSTODIA DE ARCHIVOS S.A."
+      },
+      "fechaAprendizaje": "2026-09-17T05:02:39.785Z",
+      "cantidadUsos": 0
+    }
+  ]
+}
