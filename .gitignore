@@ -1,6 +1,14 @@
-﻿node_modules/
-# Screenshots generados automáticamente durante errores de ejecución
+node_modules/
+
+# Evidencias generadas durante errores de ejecución
 screenshots/error-*.png
 screenshots/error-IC04-*.png
 screenshots/error-EC01-*.png
+screenshots/error-LEARNING-*.png
+
+# Estado temporal de ejecución
 runtime/
+
+# Conocimiento local generado por el Learning Engine
+data/aprendizaje/conocimiento.json
+data/aprendizaje/operaciones-aprendidas.json

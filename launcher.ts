@@ -12,6 +12,9 @@ import { listarOperacionesPendientes } from './src/utils/operaciones-pendientes'
 import { ejecutarEC01HastaItems } from './src/flows/ec01-hasta-items';
 import { generarItems } from './src/utils/generador-items';
 
+import { RepositorioOperacionesAprendidas } from './src/learning/repositorio-operaciones-aprendidas';
+import { ejecutarOperacionAprendizaje } from './src/learning/ejecutor-operacion-aprendizaje';
+import type { PerfilEscenarioAprendido } from './src/learning/tipos-operacion-aprendida';
 type Ambiente = {
   id: string;
   nombre: string;
@@ -189,13 +192,160 @@ function obtenerSiguienteNumeroOficializacion(): string {
   );
 }
 
+
+function extraerDatosClaveAprendizaje(
+  data: any
+): Record<string, string> {
+  const resultado:
+    Record<string, string> =
+      {};
+
+  const visitar = (
+    valor: unknown,
+    ruta: string
+  ) => {
+    if (
+      valor === null ||
+      valor === undefined
+    ) {
+      return;
+    }
+
+    if (
+      typeof valor ===
+      'string' ||
+      typeof valor ===
+      'number' ||
+      typeof valor ===
+      'boolean'
+    ) {
+      if (
+        /(pais|origen|procedencia|destino|condicion.*venta|moneda)/i.test(
+          ruta
+        )
+      ) {
+        resultado[
+          ruta
+        ] =
+          String(
+            valor
+          );
+      }
+
+      return;
+    }
+
+    if (
+      Array.isArray(
+        valor
+      )
+    ) {
+      valor.forEach(
+        (
+          item,
+          indice
+        ) =>
+          visitar(
+            item,
+            `${ruta}[${indice}]`
+          )
+      );
+
+      return;
+    }
+
+    if (
+      typeof valor ===
+      'object'
+    ) {
+      Object.entries(
+        valor as
+          Record<
+            string,
+            unknown
+          >
+      )
+        .forEach(
+          ([
+            clave,
+            contenido
+          ]) =>
+            visitar(
+              contenido,
+              ruta
+                ? `${ruta}.${clave}`
+                : clave
+            )
+        );
+    }
+  };
+
+  visitar(
+    data,
+    ''
+  );
+
+  return resultado;
+}
+
+function crearIdOperacionAprendida(
+  subregimen:
+    'IC04' | 'EC01',
+  posicion:
+    string
+): string {
+  const marca =
+    new Date()
+      .toISOString()
+      .replace(
+        /[-:TZ.]/g,
+        ''
+      )
+      .slice(
+        0,
+        14
+      );
+
+  return `${subregimen}-${posicion.replace(/[^A-Z0-9]/gi, '')}-${marca}`;
+}
+
+function crearIdPerfilEscenario(
+  perfil: PerfilEscenarioAprendido
+): string {
+  return [
+    `docs-${perfil.documentos ? 'si' : 'no'}`,
+    `ventajas-${perfil.ventajas ? 'si' : 'no'}`,
+    `cancelaciones-${perfil.cancelaciones ? 'si' : 'no'}`
+  ].join('__');
+}
+
+function crearNombrePerfilEscenario(
+  perfil: PerfilEscenarioAprendido
+): string {
+  const partes = [
+    perfil.documentos
+      ? 'Con Documentos'
+      : 'Sin Documentos'
+  ];
+
+  if (perfil.ventajas) {
+    partes.push('Con Ventajas');
+  }
+
+  if (perfil.cancelaciones) {
+    partes.push('Con Cancelaciones');
+  }
+
+  return partes.join(' + ');
+}
+
 function banner() {
   console.log(
     '=========================================='
   );
 
   console.log(
-    '          DAI QA LOADER v1.5.0'
+    '          DAI QA LOADER v2.0.0'
   );
 
   console.log(
@@ -488,6 +638,38 @@ async function seleccionarCantidadItems(
   return CANTIDADES_ITEMS[index];
 }
 
+const CANTIDADES_ITEMS_LEARNING = [
+  1,
+  2,
+  5,
+  9,
+  15,
+  30,
+  50,
+  90,
+  150,
+  200,
+  300,
+  350
+] as const;
+
+async function seleccionarCantidadItemsLearning(): Promise<number> {
+  const index =
+    await askOption(
+      'Cantidad de Items',
+      CANTIDADES_ITEMS_LEARNING.map(
+        cantidad =>
+          cantidad === 350
+            ? 'FULL LOAD | 350 items'
+            : String(cantidad)
+      )
+    );
+
+  return CANTIDADES_ITEMS_LEARNING[
+    index
+  ];
+}
+
 async function solicitarFobTotal(
   titulo: string
 ): Promise<string> {
@@ -518,10 +700,225 @@ async function solicitarFobTotal(
   return valor.toFixed(2);
 }
 
+function formatearPosicion(
+  posicion: PosicionArancelaria
+): string {
+  return `${posicion.codigo} - ${posicion.descripcion}${
+    posicion.nota ? ` (${posicion.nota})` : ''
+  }`;
+}
+
+function obtenerCodigosConConocimiento(
+  subregimen?: 'IC04' | 'EC01'
+): Set<string> {
+  if (!subregimen) {
+    return new Set<string>();
+  }
+
+  const fullPath = path.join(
+    root,
+    'data/aprendizaje/conocimiento.json'
+  );
+
+  if (!fs.existsSync(fullPath)) {
+    return new Set<string>();
+  }
+
+  try {
+    const content = fs
+      .readFileSync(fullPath, 'utf-8')
+      .replace(/^\uFEFF/, '');
+
+    if (!content.trim()) {
+      return new Set<string>();
+    }
+
+    const base = JSON.parse(content) as {
+      registros?: Array<{
+        contexto?: {
+          subregimen?: string;
+          posicionArancelaria?: string;
+        };
+      }>;
+    };
+
+    const codigos = new Set<string>();
+
+    for (const registro of base.registros ?? []) {
+      const contexto = registro.contexto;
+
+      if (
+        contexto?.subregimen?.trim().toUpperCase() === subregimen &&
+        contexto.posicionArancelaria?.trim()
+      ) {
+        codigos.add(
+          contexto.posicionArancelaria.trim().toUpperCase()
+        );
+      }
+    }
+
+    return codigos;
+  } catch {
+    return new Set<string>();
+  }
+}
+
+async function seleccionarPosicionCatalogo(
+  posiciones: PosicionArancelaria[],
+  titulo: string,
+  subregimen?: 'IC04' | 'EC01'
+): Promise<PosicionArancelaria> {
+  const codigosConConocimiento =
+    obtenerCodigosConConocimiento(subregimen);
+
+  const posicionesConConocimiento =
+    posiciones.filter(
+      posicion =>
+        codigosConConocimiento.has(
+          posicion.codigo.trim().toUpperCase()
+        )
+    );
+
+  while (true) {
+    console.log('');
+    console.log('==========================================');
+    console.log(`       ${titulo.toUpperCase()}`);
+    console.log('==========================================');
+
+    const opciones = [
+      'Buscar por código o descripción',
+      posicionesConConocimiento.length > 0
+        ? `Ver posiciones con conocimiento (${posicionesConConocimiento.length})`
+        : 'Ver posiciones con conocimiento (sin registros)',
+      'Ver catálogo completo',
+      'Ingresar código exacto'
+    ];
+
+    const accionIndex = await askOption(
+      '¿Cómo querés seleccionar la posición?',
+      opciones
+    );
+
+    if (accionIndex === 0) {
+      const busqueda = (
+        await rl.question(
+          'Ingrese código o texto de búsqueda: '
+        )
+      )
+        .trim()
+        .toUpperCase();
+
+      if (!busqueda) {
+        console.log(
+          'La búsqueda no puede quedar vacía.'
+        );
+        continue;
+      }
+
+      const coincidencias = posiciones.filter(
+        posicion =>
+          posicion.codigo
+            .toUpperCase()
+            .includes(busqueda) ||
+          posicion.descripcion
+            .toUpperCase()
+            .includes(busqueda) ||
+          (posicion.nota ?? '')
+            .toUpperCase()
+            .includes(busqueda)
+      );
+
+      if (coincidencias.length === 0) {
+        console.log(
+          `No se encontraron posiciones para "${busqueda}".`
+        );
+        continue;
+      }
+
+      if (coincidencias.length === 1) {
+        console.log(
+          `Posición seleccionada: ${formatearPosicion(coincidencias[0])}`
+        );
+        console.log('');
+        return coincidencias[0];
+      }
+
+      if (coincidencias.length > 15) {
+        console.log(
+          `Se encontraron ${coincidencias.length} coincidencias. Refiná la búsqueda para mostrar como máximo 15.`
+        );
+        continue;
+      }
+
+      const index = await askOption(
+        `Coincidencias (${coincidencias.length})`,
+        coincidencias.map(formatearPosicion)
+      );
+
+      return coincidencias[index];
+    }
+
+    if (accionIndex === 1) {
+      if (posicionesConConocimiento.length === 0) {
+        console.log(
+          `No hay posiciones con conocimiento disponible${subregimen ? ` para ${subregimen}` : ''}.`
+        );
+        continue;
+      }
+
+      const index = await askOption(
+        `Posiciones con conocimiento${subregimen ? ` - ${subregimen}` : ''}`,
+        posicionesConConocimiento.map(
+          posicion => `✓ ${formatearPosicion(posicion)}`
+        )
+      );
+
+      return posicionesConConocimiento[index];
+    }
+
+    if (accionIndex === 2) {
+      const index = await askOption(
+        `Catálogo completo (${posiciones.length})`,
+        posiciones.map(formatearPosicion)
+      );
+
+      return posiciones[index];
+    }
+
+    const codigo = (
+      await rl.question(
+        'Ingrese código exacto de posición arancelaria: '
+      )
+    )
+      .trim()
+      .toUpperCase();
+
+    const encontrada = posiciones.find(
+      posicion =>
+        posicion.codigo.trim().toUpperCase() === codigo
+    );
+
+    if (!encontrada) {
+      console.log(
+        `La posición ${codigo || '(vacía)'} no existe en config/posiciones-arancelarias.json.`
+      );
+      continue;
+    }
+
+    console.log(
+      `Posición seleccionada: ${formatearPosicion(encontrada)}`
+    );
+    console.log('');
+
+    return encontrada;
+  }
+}
+
 async function seleccionarPosicionesParaItems(
   cantidadItems: number,
   posiciones: PosicionArancelaria[],
-  titulo: string
+  titulo: string,
+  subregimen?: 'IC04' | 'EC01'
 ): Promise<PosicionArancelaria[]> {
   if (posiciones.length === 0) {
     throw new Error(
@@ -530,17 +927,14 @@ async function seleccionarPosicionesParaItems(
   }
 
   if (cantidadItems === 1) {
-    const posicionIndex = await askOption(
-      'Seleccione la posición arancelaria',
-      posiciones.map(
-        posicion =>
-          `${posicion.codigo} - ${posicion.descripcion}${
-            posicion.nota ? ` (${posicion.nota})` : ''
-          }`
-      )
-    );
+    const seleccionada =
+      await seleccionarPosicionCatalogo(
+        posiciones,
+        'Posición arancelaria',
+        subregimen
+      );
 
-    return [posiciones[posicionIndex]];
+    return [seleccionada];
   }
 
   const tipoDistribucionIndex = await askOption(
@@ -554,17 +948,14 @@ async function seleccionarPosicionesParaItems(
   );
 
   if (tipoDistribucionIndex === 0) {
-    const posicionIndex = await askOption(
-      'Seleccione la posición arancelaria',
-      posiciones.map(
-        posicion =>
-          `${posicion.codigo} - ${posicion.descripcion}${
-            posicion.nota ? ` (${posicion.nota})` : ''
-          }`
-      )
-    );
+    const seleccionada =
+      await seleccionarPosicionCatalogo(
+        posiciones,
+        'Posición para todos los items',
+        subregimen
+      );
 
-    return [posiciones[posicionIndex]];
+    return [seleccionada];
   }
 
   const maximoPosiciones = Math.min(
@@ -631,18 +1022,12 @@ async function seleccionarPosicionesParaItems(
     numero <= cantidadPosiciones;
     numero++
   ) {
-    const posicionIndex = await askOption(
-      `Seleccione posición ${numero} de ${cantidadPosiciones}`,
-      disponibles.map(
-        posicion =>
-          `${posicion.codigo} - ${posicion.descripcion}${
-            posicion.nota ? ` (${posicion.nota})` : ''
-          }`
-      )
-    );
-
     const seleccionada =
-      disponibles[posicionIndex];
+      await seleccionarPosicionCatalogo(
+        disponibles,
+        `Posición ${numero} de ${cantidadPosiciones}`,
+        subregimen
+      );
 
     seleccionadas.push(seleccionada);
 
@@ -1276,12 +1661,16 @@ async function main() {
       'Tipo de flujo',
       [
         'Operaciones',
-        'Oficialización'
+        'Oficialización',
+        'Learning Engine'
       ]
     );
 
   const esOficializacion =
     tipoFlujoIndex === 1;
+
+  const esLearningEngine =
+    tipoFlujoIndex === 2;
 
   // ==========================================
   // MODO DE EJECUCION
@@ -1291,7 +1680,8 @@ async function main() {
     ModoEjecucion = 'individual';
 
   if (
-    !esOficializacion
+    !esOficializacion &&
+    !esLearningEngine
   ) {
     const modoEjecucionIndex =
       await askOption(
@@ -1306,6 +1696,817 @@ async function main() {
       modoEjecucionIndex === 0
         ? 'individual'
         : 'paralelo';
+  }
+
+  // ==========================================
+  // LEARNING ENGINE
+  // ==========================================
+
+  if (
+    esLearningEngine
+  ) {
+    console.log('');
+
+    const learningEngineIndex =
+      await askOption(
+        'Learning Engine',
+        [
+          'Nueva ejecución de aprendizaje',
+          'Ejecutar operación aprendida',
+          'Aprender nuevo camino de una operación'
+        ]
+      );
+
+    const ejecutarConfiguracionAprendizaje =
+      async (
+        subregimenAprendizaje:
+          'IC04' | 'EC01',
+        fobTotal:
+          string,
+        cantidadItems:
+          number,
+        posicionesSeleccionadas:
+          PosicionArancelaria[],
+        modoSolicitado:
+          ModoSufijos,
+        facturas:
+          'Si' | 'No',
+        navegador:
+          Navegador,
+        nombreOperacion?:
+          string,
+        perfilEscenario:
+          PerfilEscenarioAprendido = {
+            documentos: false,
+            ventajas: false,
+            cancelaciones: false
+          },
+        aprenderNuevoPerfil:
+          boolean = false
+      ) => {
+        validarSufijosAutomaticos(
+          posicionesSeleccionadas,
+          modoSolicitado,
+          sufijosPorPosicion
+        );
+
+        const data =
+          readJson<any>(
+            `data/${subregimenAprendizaje}/feliz.json`
+          );
+
+        data.esOficializacion =
+          false;
+
+        data.perfilOficializacion =
+          null;
+
+        data.flujoPreguntasOficializacion =
+          null;
+
+        data.caratula.fobTotal =
+          fobTotal;
+
+        data.items =
+          construirItemsPlanificados(
+            data.item,
+            cantidadItems,
+            posicionesSeleccionadas,
+            fobTotal,
+            modoSolicitado,
+            sufijosPorPosicion
+          );
+
+        data.item =
+          data.items[0];
+
+        if (
+          data.caratula?.facturas
+        ) {
+          data.caratula
+            .facturas
+            .presencia =
+              facturas;
+        }
+
+        const stamp =
+          new Date()
+            .toISOString()
+            .replace(
+              /[-:TZ.]/g,
+              ''
+            )
+            .slice(
+              0,
+              14
+            );
+
+        data.interno =
+          `Learning Engine ${subregimenAprendizaje} ${stamp}`;
+
+        data.referencia =
+          `LE-${stamp}`;
+
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          '   PLAN - EJECUCIÓN DE APRENDIZAJE'
+        );
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          `Ambiente:     ${ambienteNombre}`
+        );
+        console.log(
+          `Subrégimen:   ${subregimenAprendizaje}`
+        );
+        console.log(
+          `Navegador:    ${navegador}`
+        );
+        console.log(
+          `Items:        ${cantidadItems}`
+        );
+        console.log(
+          `Posiciones:   ${posicionesSeleccionadas.map(posicion => posicion.codigo).join(', ')}`
+        );
+        console.log(
+          `FOB Total:    ${fobTotal}`
+        );
+        console.log(
+          `Modo sufijos: ${modoSolicitado}`
+        );
+        console.log(
+          `Facturas:     ${facturas === 'Si' ? 'Con facturas' : 'Sin facturas'}`
+        );
+        console.log(
+          'Objetivo:     aprender recorrido completo hasta Presupuesto'
+        );
+        console.log(
+          '=========================================='
+        );
+
+        const confirmacion =
+          await rl.question(
+            'Presione ENTER para iniciar o escriba N para cancelar: '
+          );
+
+        if (
+          confirmacion
+            .trim()
+            .toUpperCase() ===
+          'N'
+        ) {
+          console.log(
+            'Ejecución cancelada.'
+          );
+
+          return;
+        }
+
+        const resultado =
+          await ejecutarOperacionAprendizaje(
+            baseUrl,
+            data,
+            subregimenAprendizaje,
+            navegador,
+            {
+              esperarIntervencionManual:
+                async (
+                  mensaje
+                ) => {
+                  console.log('');
+                  console.log(
+                    '------------------------------------------'
+                  );
+                  console.log(
+                    mensaje
+                  );
+                  console.log(
+                    '------------------------------------------'
+                  );
+
+                  await rl.question(
+                    'Presione ENTER para continuar: '
+                  );
+                },
+
+              ...crearInteraccionTransporte(),
+
+              confirmarFinPresupuesto:
+                async () => {
+                  console.log('');
+                  console.log(
+                    '=========================================='
+                  );
+                  console.log(
+                    ' VALIDACIÓN FINAL DE PRESUPUESTO'
+                  );
+                  console.log(
+                    '=========================================='
+                  );
+                  console.log(
+                    'El motor no ve un modal de preguntas en este momento.'
+                  );
+                  console.log(
+                    'Confirmá sólo si DAI terminó REALMENTE todas las preguntas de Presupuesto.'
+                  );
+                  console.log('');
+
+                  const finIndex =
+                    await askOption(
+                      '¿Presupuesto terminó completamente?',
+                      [
+                        'Sí - finalizar y guardar aprendizaje',
+                        'No - seguir observando'
+                      ]
+                    );
+
+                  return finIndex === 0;
+                },
+
+              decidirRespuestaHeredada:
+                async (
+                  pregunta,
+                  respuestaAprendida
+                ) => {
+                  console.log('');
+                  console.log(
+                    '[Conocimiento] Existe una respuesta compatible aprendida en otro perfil.'
+                  );
+                  console.log(
+                    `Pregunta: ${pregunta.texto}`
+                  );
+                  console.log(
+                    `Respuesta heredada: ${respuestaAprendida}`
+                  );
+                  console.log('');
+
+                  const decisionIndex =
+                    await askOption(
+                      '¿Cómo querés responder en este nuevo perfil?',
+                      [
+                        'Reutilizar respuesta heredada',
+                        'Elegir una respuesta diferente manualmente'
+                      ]
+                    );
+
+                  return decisionIndex === 0
+                    ? 'reutilizar'
+                    : 'cambiar';
+                }
+            },
+            crearIdPerfilEscenario(
+              perfilEscenario
+            ),
+            aprenderNuevoPerfil
+          );
+
+        if (
+          !resultado
+            .llegoAPresupuesto
+        ) {
+          throw new Error(
+            'La ejecución terminó sin alcanzar Presupuesto. No se guardará como operación aprendida.'
+          );
+        }
+
+        if (
+          aprenderNuevoPerfil &&
+          !resultado.huboCambiosAprendizaje
+        ) {
+          console.log('');
+          console.log(
+            '[Learning] El perfil nuevo no produjo respuestas nuevas o diferentes. No se guardará un camino duplicado.'
+          );
+          return;
+        }
+
+        const repositorio =
+          new RepositorioOperacionesAprendidas();
+
+        const normalizarPosicion =
+          (valor: string) =>
+            valor
+              .replace(
+                /[^A-Z0-9]/gi,
+                ''
+              )
+              .toLocaleUpperCase(
+                'es-AR'
+              );
+
+        const firmaItems =
+          data.items
+            .map(
+              (item: any) =>
+                normalizarPosicion(
+                  String(
+                    item.posicionArancelaria
+                  )
+                )
+            )
+            .join('|');
+
+        const operacionExistente =
+          repositorio
+            .obtenerOperaciones()
+            .filter(
+              operacion =>
+                operacion.subregimen ===
+                  subregimenAprendizaje &&
+                operacion.contexto.items
+                  .map(
+                    item =>
+                      normalizarPosicion(
+                        item.posicionArancelaria
+                      )
+                  )
+                  .join('|') ===
+                    firmaItems
+            )
+            .sort(
+              (a, b) =>
+                Date.parse(
+                  b.actualizadaEn
+                ) -
+                Date.parse(
+                  a.actualizadaEn
+                )
+            )[0];
+
+        const id =
+          operacionExistente?.id ??
+            crearIdOperacionAprendida(
+              subregimenAprendizaje,
+              cantidadItems === 1
+                ? data.items[0]
+                    .posicionArancelaria
+                : `${data.items[0].posicionArancelaria}-${cantidadItems}ITEMS`
+            );
+
+        const ahora =
+          new Date()
+            .toISOString();
+
+        const perfilId =
+          crearIdPerfilEscenario(
+            perfilEscenario
+          );
+
+        const caminoExistente =
+          operacionExistente
+            ?.caminos
+            .find(
+              camino =>
+                camino.id === perfilId
+            );
+
+        const caminoActualizado = {
+          id: perfilId,
+          nombre:
+            crearNombrePerfilEscenario(
+              perfilEscenario
+            ),
+          perfil:
+            perfilEscenario,
+          parametros: {
+            fobTotal,
+            modoSufijos:
+              modoSolicitado,
+            facturas
+          },
+          recorrido:
+            resultado.recorrido,
+          creadaEn:
+            caminoExistente
+              ?.creadaEn ??
+            ahora,
+          actualizadaEn:
+            ahora
+        };
+
+        const caminos = [
+          ...(
+            operacionExistente
+              ?.caminos ??
+            []
+          ).filter(
+            camino =>
+              camino.id !== perfilId
+          ),
+          caminoActualizado
+        ];
+
+        repositorio.guardar({
+          id,
+          nombre:
+            nombreOperacion ??
+            operacionExistente?.nombre ??
+            (
+              cantidadItems === 1
+                ? `${subregimenAprendizaje} - ${data.items[0].posicionArancelaria}`
+                : `${subregimenAprendizaje} - ${cantidadItems} items`
+            ),
+          subregimen:
+            subregimenAprendizaje,
+          estado:
+            'APRENDIDA',
+          contexto: {
+            ambienteNombre,
+            datosClave:
+              extraerDatosClaveAprendizaje(
+                data
+              ),
+            items:
+              data.items.map(
+                (
+                  item: any,
+                  index: number
+                ) => ({
+                  numeroItem:
+                    index + 1,
+                  posicionArancelaria:
+                    String(
+                      item.posicionArancelaria
+                    )
+                })
+              )
+          },
+          caminos,
+          creadaEn:
+            operacionExistente
+              ?.creadaEn ??
+            ahora,
+          actualizadaEn:
+            ahora
+        });
+
+        console.log('');
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          operacionExistente
+            ? '✔ OPERACIÓN APRENDIDA ACTUALIZADA'
+            : '✔ OPERACIÓN APRENDIDA GUARDADA'
+        );
+        console.log(
+          '=========================================='
+        );
+        console.log(
+          `ID:         ${id}`
+        );
+        console.log(
+          `Subrégimen: ${subregimenAprendizaje}`
+        );
+        console.log(
+          `Items:      ${cantidadItems}`
+        );
+        console.log(
+          `Posiciones: ${posicionesSeleccionadas.map(posicion => posicion.codigo).join(', ')}`
+        );
+        console.log(
+          `Recorrido:  ${resultado.recorrido.join(' -> ')}`
+        );
+      };
+
+    if (
+      learningEngineIndex ===
+      0
+    ) {
+      const subregimenIndex =
+        await askOption(
+          'Subrégimen de aprendizaje',
+          [
+            'IC04',
+            'EC01'
+          ]
+        );
+
+      const subregimenAprendizaje:
+        'IC04' | 'EC01' =
+          subregimenIndex === 0
+            ? 'IC04'
+            : 'EC01';
+
+      await askOption(
+        'Subitems',
+        [
+          'NO | FIJO - próximamente'
+        ]
+      );
+
+      const cantidadItems =
+        await seleccionarCantidadItemsLearning();
+
+      const navegador =
+        await seleccionarNavegador(
+          'Navegador'
+        );
+
+      const fobTotal =
+        await solicitarFobTotal(
+          'Ingrese FOB total de Carátula'
+        );
+
+      const posicionesSeleccionadas =
+        await seleccionarPosicionesParaItems(
+          cantidadItems,
+          posiciones,
+          'Distribución de posiciones arancelarias',
+          subregimenAprendizaje
+        );
+
+      const modoSufijosIndex =
+        await askOption(
+          'Modo de carga de sufijos',
+          [
+            'Automatico',
+            'Asistido'
+          ]
+        );
+
+      const modoSolicitado:
+        ModoSufijos =
+          modoSufijosIndex ===
+            0
+            ? 'automatico'
+            : 'asistido';
+
+      const facturasIndex =
+        await askOption(
+          'Facturas',
+          [
+            'Con facturas',
+            'Sin facturas'
+          ]
+        );
+
+      await ejecutarConfiguracionAprendizaje(
+        subregimenAprendizaje,
+        fobTotal,
+        cantidadItems,
+        posicionesSeleccionadas,
+        modoSolicitado,
+        facturasIndex === 0
+          ? 'Si'
+          : 'No',
+        navegador
+      );
+
+      return;
+    }
+
+    const repositorio =
+      new RepositorioOperacionesAprendidas();
+
+    const operaciones =
+      repositorio
+        .obtenerOperaciones()
+        .filter(
+          operacion =>
+            operacion.estado ===
+              'APRENDIDA'
+        );
+
+    if (
+      operaciones.length ===
+      0
+    ) {
+      console.log('');
+      console.log(
+        'Todavía no hay operaciones aprendidas completas.'
+      );
+
+      return;
+    }
+
+    const operacionIndex =
+      await askOption(
+        'Operaciones aprendidas',
+        operaciones.map(
+          operacion => {
+            const posicionesOperacion =
+              operacion.contexto.items
+                .map(
+                  item =>
+                    item.posicionArancelaria
+                );
+
+            const resumenPosiciones =
+              Array.from(
+                new Set(
+                  posicionesOperacion
+                )
+              )
+                .slice(0, 3)
+                .join(', ');
+
+            const sufijoPosiciones =
+              new Set(
+                posicionesOperacion
+              ).size > 3
+                ? ', ...'
+                : '';
+
+            const caminosAprendidos =
+              operacion.caminos.length > 0
+                ? operacion.caminos
+                    .map(
+                      camino =>
+                        camino.nombre
+                    )
+                    .join(', ')
+                : 'SIN CAMINOS APRENDIDOS';
+
+            return `${operacion.nombre} | ${operacion.subregimen} | Items: ${operacion.contexto.items.length} | Posiciones: ${resumenPosiciones || 'SIN_POSICION'}${sufijoPosiciones} | Caminos: ${caminosAprendidos}`;
+          }
+        )
+      );
+
+    const operacion =
+      operaciones[
+        operacionIndex
+      ];
+
+    const posicionesOperacion =
+      operacion.contexto.items
+        .map(
+          item =>
+            posiciones.find(
+              actual =>
+                actual.codigo ===
+                  item.posicionArancelaria
+            )
+        );
+
+    const itemSinPosicion =
+      operacion.contexto.items.find(
+        (
+          _item,
+          index
+        ) =>
+          !posicionesOperacion[index]
+      );
+
+    if (
+      itemSinPosicion
+    ) {
+      throw new Error(
+        `La posición aprendida ${itemSinPosicion.posicionArancelaria} ya no existe en config/posiciones-arancelarias.json`
+      );
+    }
+
+    const opcionesDocumentos =
+      [
+        {
+          nombre: 'Sin Documentos',
+          perfil: {
+            documentos: false,
+            ventajas: false,
+            cancelaciones: false
+          } satisfies PerfilEscenarioAprendido
+        },
+        {
+          nombre: 'Con Documentos',
+          perfil: {
+            documentos: true,
+            ventajas: false,
+            cancelaciones: false
+          } satisfies PerfilEscenarioAprendido
+        }
+      ];
+
+    let aprenderNuevoPerfil =
+      learningEngineIndex === 2;
+
+    let caminoSeleccionado =
+      operacion.caminos[0];
+
+    let perfilEscenario:
+      PerfilEscenarioAprendido;
+
+    if (
+      aprenderNuevoPerfil
+    ) {
+      const opcionesNuevas =
+        opcionesDocumentos.filter(
+          opcion =>
+            !operacion.caminos.some(
+              camino =>
+                camino.id ===
+                  crearIdPerfilEscenario(
+                    opcion.perfil
+                  )
+            )
+        );
+
+      if (
+        opcionesNuevas.length === 0
+      ) {
+        console.log('');
+        console.log(
+          '[Learning] Esta operación ya tiene aprendidos todos los caminos actualmente habilitados.'
+        );
+        return;
+      }
+
+      const nuevoCaminoIndex =
+        opcionesNuevas.length === 1
+          ? 0
+          : await askOption(
+              'Seleccioná el nuevo camino a aprender',
+              opcionesNuevas.map(
+                opcion =>
+                  opcion.nombre
+              )
+            );
+
+      perfilEscenario =
+        opcionesNuevas[
+          nuevoCaminoIndex
+        ].perfil;
+
+      console.log('');
+      console.log(
+        `[Learning] Nuevo camino a aprender: ${crearNombrePerfilEscenario(perfilEscenario)}`
+      );
+    } else {
+      if (
+        operacion.caminos.length === 0
+      ) {
+        throw new Error(
+          'La operación aprendida no contiene ningún camino utilizable.'
+        );
+      }
+
+      const caminoIndex =
+        operacion.caminos.length === 1
+          ? 0
+          : await askOption(
+              'Caminos aprendidos',
+              operacion.caminos.map(
+                camino =>
+                  camino.nombre
+              )
+            );
+
+      caminoSeleccionado =
+        operacion.caminos[
+          caminoIndex
+        ];
+
+      perfilEscenario =
+        caminoSeleccionado.perfil;
+
+      if (
+        operacion.caminos.length === 1
+      ) {
+        console.log('');
+        console.log(
+          `[Learning] Único camino aprendido seleccionado automáticamente: ${caminoSeleccionado.nombre}`
+        );
+      }
+    }
+
+    const caminoBase =
+      caminoSeleccionado;
+
+    if (!caminoBase) {
+      throw new Error(
+        'La operación aprendida no contiene ningún camino utilizable.'
+      );
+    }
+
+    const navegador =
+      await seleccionarNavegador(
+        aprenderNuevoPerfil
+          ? 'Navegador para aprender el nuevo camino'
+          : 'Navegador para operación aprendida'
+      );
+
+    console.log('');
+    console.log(
+      'La operación utilizará el conocimiento actual. Si DAI presenta una pregunta nueva, el Learning Engine volverá a modo aprendizaje para esa pregunta.'
+    );
+
+    await ejecutarConfiguracionAprendizaje(
+      operacion.subregimen,
+      caminoBase.parametros.fobTotal,
+      operacion.contexto.items.length,
+      posicionesOperacion as PosicionArancelaria[],
+      caminoBase.parametros.modoSufijos,
+      caminoBase.parametros.facturas,
+      navegador,
+      operacion.nombre,
+      perfilEscenario,
+      aprenderNuevoPerfil
+    );
+
+    return;
   }
 
   // ==========================================
@@ -2073,7 +3274,8 @@ async function main() {
       await seleccionarPosicionesParaItems(
         cantidadItems,
         posiciones,
-        'Distribución de posiciones arancelarias'
+        'Distribución de posiciones arancelarias',
+        subregimen
       );
 
     const modoSufijosIndex =
@@ -2397,7 +3599,8 @@ async function main() {
     await seleccionarPosicionesParaItems(
       cantidadItemsIC04,
       posiciones,
-      'Distribución de posiciones IC04'
+      'Distribución de posiciones IC04',
+      'IC04'
     );
 
   const modoSufijosIC04Index =
@@ -2445,7 +3648,8 @@ async function main() {
     await seleccionarPosicionesParaItems(
       cantidadItemsEC01,
       posiciones,
-      'Distribución de posiciones EC01'
+      'Distribución de posiciones EC01',
+      'EC01'
     );
 
   const modoSufijosEC01Index =
