@@ -12,6 +12,7 @@ import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaPage } from '../pages/CaratulaPage';
 import { ItemPage } from '../pages/ItemPage';
+import { AprendizajeManual } from '../learning/aprendizaje-manual';
 
 export type NavegadorEjecucion =
   | 'chrome'
@@ -365,6 +366,68 @@ export async function ejecutarIC04HastaPaso2(
           `✔ [IC04/${navegador}] CARGAR ITEMS ejecutado correctamente`
         );
       }
+    }
+
+    console.log('');
+    console.log(
+      '=========================================='
+    );
+    console.log(
+      `LEARNING ENGINE - IC04`
+    );
+    console.log(
+      '=========================================='
+    );
+
+    if (
+      items.length === 1
+    ) {
+      const itemAprendizaje =
+        items[0];
+
+      console.log(
+        `Subrégimen: IC04`
+      );
+      console.log(
+        `Posición: ${itemAprendizaje.posicionArancelaria}`
+      );
+      console.log(
+        'Modo: híbrido (conocida = automática / desconocida = manual + aprendizaje)'
+      );
+
+      const aprendizajeManual =
+        new AprendizajeManual(
+          page
+        );
+
+      const resultadoAprendizaje =
+        await aprendizajeManual
+          .capturarRecorridoManual({
+            subregimen:
+              'IC04',
+            posicionArancelaria:
+              itemAprendizaje
+                .posicionArancelaria,
+            etapa:
+              'PREGUNTAS_ITEM',
+            numeroItem:
+              1
+          });
+
+      console.log('');
+      console.log(
+        `✔ [IC04/${navegador}] Learning Engine finalizado. Preguntas procesadas: ${resultadoAprendizaje.pasos.length}`
+      );
+    } else {
+      console.log(
+        `⚠ [IC04/${navegador}] Learning Engine omitido en esta primera integración multi-item.`
+      );
+      console.log(
+        'Motivo: todavía no asociamos de forma segura cada pregunta del modal con la posición de cada Item.'
+      );
+      console.log(
+        `Items detectados: ${items.length}`
+      );
     }
 
     console.log('');

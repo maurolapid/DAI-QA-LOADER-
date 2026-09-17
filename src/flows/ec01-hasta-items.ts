@@ -16,6 +16,8 @@ import { HomePage } from '../pages/HomePage';
 import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 import { ItemsEC01Page } from '../pages/ItemsEC01Page';
+import { AprendizajeManual } from '../learning/aprendizaje-manual';
+import { DocumentoAPresentarPage } from '../pages/DocumentoAPresentarPage';
 import { OficializacionHerreroPage } from '../pages/OficializacionHerreroPage';
 import { OficializacionRussoPage } from '../pages/OficializacionRussoPage';
 
@@ -488,8 +490,78 @@ export async function ejecutarEC01HastaItems(
       );
     }
 
+    console.log('');
     console.log(
-      `[EC01/${navegador}] La ejecución quedó esperando las preguntas.`
+      '=========================================='
+    );
+    console.log(
+      'LEARNING ENGINE - EC01'
+    );
+    console.log(
+      '=========================================='
+    );
+
+    if (
+      items.length === 1
+    ) {
+      const itemAprendizaje =
+        items[0];
+
+      console.log(
+        'Subrégimen: EC01'
+      );
+      console.log(
+        `Posición: ${itemAprendizaje.posicionArancelaria}`
+      );
+      console.log(
+        'Modo: híbrido (conocida = automática / desconocida = manual + aprendizaje)'
+      );
+
+      const aprendizajeManual =
+        new AprendizajeManual(
+          page
+        );
+
+      const resultadoAprendizaje =
+        await aprendizajeManual
+          .capturarRecorridoManual({
+            subregimen:
+              'EC01',
+            posicionArancelaria:
+              itemAprendizaje
+                .posicionArancelaria,
+            etapa:
+              'PREGUNTAS_ITEM',
+            numeroItem:
+              1
+          });
+
+      console.log('');
+      console.log(
+        `✔ [EC01/${navegador}] Learning Engine finalizado. Preguntas procesadas: ${resultadoAprendizaje.pasos.length}`
+      );
+
+      const documentoAPresentarPage =
+        new DocumentoAPresentarPage(
+          page
+        );
+
+      await documentoAPresentarPage
+        .procesarSiAparece();
+    } else {
+      console.log(
+        `⚠ [EC01/${navegador}] Learning Engine omitido en esta primera integración multi-item.`
+      );
+      console.log(
+        'Motivo: todavía no asociamos de forma segura cada pregunta del modal con la posición de cada Item.'
+      );
+      console.log(
+        `Items detectados: ${items.length}`
+      );
+    }
+
+    console.log(
+      `[EC01/${navegador}] Ejecución normal finalizada después del Learning Engine.`
     );
 
     console.log(
