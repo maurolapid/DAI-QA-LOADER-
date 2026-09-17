@@ -699,7 +699,8 @@ export class AprendizajeManual {
 
         const respuestaDinamica =
           this.esRespuestaDinamicaFecha(
-            paso.pregunta
+            paso.pregunta,
+            resultado.registro.pregunta
           );
 
         if (
@@ -776,7 +777,8 @@ export class AprendizajeManual {
 
       const respuestaDinamica =
         this.esRespuestaDinamicaFecha(
-          preguntaActual
+          preguntaActual,
+          registroExistente.pregunta
         );
 
       if (
@@ -1831,13 +1833,18 @@ export class AprendizajeManual {
   }
 
   private esRespuestaDinamicaFecha(
-    pregunta: PreguntaDetectada
+    preguntaActual: PreguntaDetectada,
+    preguntaAprendida?: PreguntaDetectada
   ): boolean {
     return (
-      pregunta.tipoControl ===
-        'FECHA' &&
       this.esPreguntaFechaEmbarqueOrigen(
-        pregunta.texto
+        preguntaActual.texto
+      ) ||
+      (
+        preguntaAprendida !== undefined &&
+        this.esPreguntaFechaEmbarqueOrigen(
+          preguntaAprendida.texto
+        )
       )
     );
   }
