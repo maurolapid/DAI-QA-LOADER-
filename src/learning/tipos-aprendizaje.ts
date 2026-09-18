@@ -82,6 +82,12 @@ export interface PreguntaDetectada {
 
 export interface RespuestaAprendida {
   valor: string;
+
+  /**
+   * Indica que DAI debe propagar esta respuesta a los ítems siguientes.
+   * Los registros históricos sin esta propiedad equivalen a false.
+   */
+  repetirEnItemsSiguientes?: boolean;
 }
 
 export interface RegistroConocimiento {

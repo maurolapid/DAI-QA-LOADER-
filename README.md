@@ -216,6 +216,20 @@ Ventajas y Cancelaciones quedan preparadas en el modelo para incorporarse paulat
 
 El Learning Engine nunca debe guardar silenciosamente una operación incompleta.
 
+### Repetición de respuestas entre ítems
+
+Cuando una pregunta RADIO ofrece la casilla **Repetir la misma respuesta en los
+Items siguientes**, la decisión del usuario forma parte del conocimiento:
+
+- En una pregunta desconocida, el usuario puede marcarla antes de confirmar.
+- El observador guarda la respuesta y el estado final de la casilla.
+- En ejecuciones conocidas, el Loader selecciona la respuesta, reproduce la
+  casilla y recién entonces confirma.
+- Los conocimientos anteriores que no contienen esta propiedad se interpretan
+  como **No repetir**, manteniendo compatibilidad con la base existente.
+- Si DAI aplica la propagación y omite preguntas en los ítems siguientes, el
+  recorrido continúa con las preguntas que efectivamente se presenten.
+
 ## Navegación dinámica
 
 El motor detecta y registra etapas como:

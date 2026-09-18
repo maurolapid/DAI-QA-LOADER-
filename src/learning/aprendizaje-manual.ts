@@ -17,7 +17,7 @@ import type {
 } from './tipos-aprendizaje';
 
 export const APRENDIZAJE_MANUAL_VERSION =
-  'v21-transaccional-fecha';
+  'v22-repeticion-items';
 
 export type DatosContextoAprendizajeManual =
   Omit<
@@ -40,6 +40,7 @@ export type PasoAprendizajeManual = {
   numero: number;
   pregunta: PreguntaDetectada;
   respuestaSeleccionada: string;
+  repetirEnItemsSiguientes?: boolean;
 };
 
 export type ResultadoAprendizajeManual = {
@@ -245,6 +246,12 @@ export class AprendizajeManual {
       let respuestaSeleccionada:
         string;
 
+      let repetirEnItemsSiguientes =
+        registroConocido
+          ?.respuesta
+          .repetirEnItemsSiguientes ??
+        false;
+
       if (
         registroConocido
       ) {
@@ -297,7 +304,8 @@ export class AprendizajeManual {
           await this
             .responderRadioAutomaticamente(
               respuestaSeleccionada,
-              preguntaActual
+              preguntaActual,
+              repetirEnItemsSiguientes
             );
 
           console.log(
@@ -372,7 +380,8 @@ export class AprendizajeManual {
             this.clonarPregunta(
               preguntaActual
             ),
-          respuestaSeleccionada
+          respuestaSeleccionada,
+          repetirEnItemsSiguientes
         });
       } else {
         huboConocimientoNuevo =
@@ -548,6 +557,36 @@ export class AprendizajeManual {
               : 60 * 1000
           );
 
+      if (
+        !registroConocido &&
+        preguntaActual.tipoControl ===
+          'RADIO'
+      ) {
+        repetirEnItemsSiguientes =
+          await this
+            .leerRepeticionConfirmadaRadio(
+              preguntaActual,
+              respuestaSeleccionada
+            );
+
+        const pasoRadio =
+          pasos[
+            pasos.length - 1
+          ];
+
+        if (
+          pasoRadio
+        ) {
+          pasoRadio
+            .repetirEnItemsSiguientes =
+              repetirEnItemsSiguientes;
+        }
+
+        console.log(
+          `[Aprendizaje] Repetir respuesta en ítems siguientes: ${repetirEnItemsSiguientes ? 'SÍ' : 'NO'}.`
+        );
+      }
+
       /*
        * El conocimiento se persiste recién después de comprobar que DAI
        * aceptó la respuesta y avanzó (o cerró el modal). Así evitamos guardar
@@ -558,6 +597,7 @@ export class AprendizajeManual {
           contextoActual,
           preguntaActual,
           respuestaSeleccionada,
+          repetirEnItemsSiguientes,
           registroConocido,
           persistirConocimiento,
           registrosPendientes
@@ -729,6 +769,8 @@ export class AprendizajeManual {
           contextoPaso,
           paso.pregunta,
           paso.respuestaSeleccionada,
+          paso.repetirEnItemsSiguientes ??
+            false,
           undefined,
           persistirConocimiento,
           registrosPendientes
@@ -754,6 +796,7 @@ export class AprendizajeManual {
     contextoActual: ContextoPregunta,
     preguntaActual: PreguntaDetectada,
     respuestaSeleccionada: string,
+    repetirEnItemsSiguientes: boolean,
     registroExistente?: RegistroConocimiento,
     persistirConocimiento:
       boolean = true,
@@ -851,7 +894,8 @@ export class AprendizajeManual {
         },
         respuesta: {
           valor:
-            respuestaSeleccionada
+            respuestaSeleccionada,
+          repetirEnItemsSiguientes
         },
         fechaAprendizaje:
           new Date()
@@ -1487,12 +1531,12 @@ export class AprendizajeManual {
   private async instalarObservadorClickRadio(): Promise<void> {
     const script = String.raw`
       (() => {
-        if (window.__daiLearningRadioInstalledV10) {
+        if (window.__daiLearningRadioInstalledV11) {
           window.__daiLearningRadio = null;
           return;
         }
 
-        window.__daiLearningRadioInstalledV10 = true;
+        window.__daiLearningRadioInstalledV11 = true;
         window.__daiLearningRadio = null;
 
         const normalizar = (valor) =>
@@ -1522,6 +1566,34 @@ export class AprendizajeManual {
           }
 
           return null;
+        };
+
+        const obtenerRepeticionItems = (dialog) => {
+          const checkboxes = Array.from(
+            dialog.querySelectorAll('input[type="checkbox"]')
+          );
+
+          const checkbox = checkboxes.find((input) => {
+            const labelCercano = input.closest('label');
+            const labelPorFor = input.id
+              ? dialog.querySelector(
+                  'label[for="' + CSS.escape(input.id) + '"]'
+                )
+              : null;
+            const contenedor =
+              labelCercano ||
+              labelPorFor ||
+              input.parentElement?.parentElement;
+            const texto = normalizar(
+              contenedor?.textContent
+            ).toLocaleUpperCase('es-AR');
+
+            return texto.includes(
+              'REPETIR LA MISMA RESPUESTA EN'
+            );
+          });
+
+          return Boolean(checkbox?.checked);
         };
 
         const capturarRadio = (event) => {
@@ -1554,6 +1626,8 @@ export class AprendizajeManual {
             respuesta,
             pregunta: obtenerPregunta(radioGroup),
             origen: 'RADIO',
+            repetirEnItemsSiguientes:
+              obtenerRepeticionItems(dialog),
             timestamp: Date.now()
           };
         };
@@ -1599,6 +1673,8 @@ export class AprendizajeManual {
               respuesta,
               pregunta: obtenerPregunta(radioGroup),
               origen: 'CONFIRMAR',
+              repetirEnItemsSiguientes:
+                obtenerRepeticionItems(dialog),
               timestamp: Date.now()
             };
 
@@ -1624,6 +1700,7 @@ export class AprendizajeManual {
     respuesta: string;
     pregunta: string;
     origen: 'RADIO' | 'CONFIRMAR';
+    repetirEnItemsSiguientes: boolean;
   } | null> {
     const resultado =
       await this.page.evaluate(
@@ -1647,7 +1724,9 @@ export class AprendizajeManual {
             origen:
               evento.origen === 'CONFIRMAR'
                 ? 'CONFIRMAR'
-                : 'RADIO'
+                : 'RADIO',
+            repetirEnItemsSiguientes:
+              evento.repetirEnItemsSiguientes === true
           };
         })()`
       );
@@ -1665,6 +1744,7 @@ export class AprendizajeManual {
         respuesta?: unknown;
         pregunta?: unknown;
         origen?: unknown;
+        repetirEnItemsSiguientes?: unknown;
       };
 
     if (
@@ -1691,8 +1771,46 @@ export class AprendizajeManual {
         evento.origen ===
           'CONFIRMAR'
           ? 'CONFIRMAR'
-          : 'RADIO'
+          : 'RADIO',
+      repetirEnItemsSiguientes:
+        evento.repetirEnItemsSiguientes ===
+          true
     };
+  }
+
+  private async leerRepeticionConfirmadaRadio(
+    preguntaActual: PreguntaDetectada,
+    respuestaSeleccionada: string
+  ): Promise<boolean> {
+    const evento =
+      await this
+        .leerEventoClickRadio();
+
+    if (
+      !evento ||
+      evento.origen !==
+        'CONFIRMAR'
+    ) {
+      return false;
+    }
+
+    if (
+      !this.coincidePreguntaCapturada(
+        evento.pregunta,
+        preguntaActual.texto
+      ) ||
+      this.normalizarTexto(
+        evento.respuesta
+      ) !==
+        this.normalizarTexto(
+          respuestaSeleccionada
+        )
+    ) {
+      return false;
+    }
+
+    return evento
+      .repetirEnItemsSiguientes;
   }
 
   private async limpiarEventoClickRadio(): Promise<void> {
@@ -1906,7 +2024,8 @@ export class AprendizajeManual {
 
   private async responderRadioAutomaticamente(
     respuesta: string,
-    preguntaActual: PreguntaDetectada
+    preguntaActual: PreguntaDetectada,
+    repetirEnItemsSiguientes: boolean
   ): Promise<void> {
     const dialogo =
       await this
@@ -2004,6 +2123,12 @@ export class AprendizajeManual {
       `[Conocimiento] RADIO seleccionada y verificada automáticamente: ${respuesta}`
     );
 
+    await this
+      .aplicarRepeticionItems(
+        dialogo,
+        repetirEnItemsSiguientes
+      );
+
     const confirmada =
       await this
         .intentarConfirmarSeleccionRadio();
@@ -2019,6 +2144,69 @@ export class AprendizajeManual {
         '[Conocimiento] La RADIO no requiere un botón visible de Confirmar selección; se observará la transición de DAI.'
       );
     }
+  }
+
+  private async aplicarRepeticionItems(
+    dialogo: Locator,
+    repetirEnItemsSiguientes: boolean
+  ): Promise<void> {
+    const checkbox =
+      dialogo.getByRole(
+        'checkbox',
+        {
+          name:
+            /Repetir la misma respuesta en/i
+        }
+      )
+        .first();
+
+    if (
+      !await checkbox
+        .isVisible()
+        .catch(
+          () => false
+        )
+    ) {
+      if (
+        repetirEnItemsSiguientes
+      ) {
+        console.log(
+          '[Conocimiento] La respuesta indica repetición, pero DAI no mostró la casilla para esta pregunta.'
+        );
+      }
+
+      return;
+    }
+
+    if (
+      repetirEnItemsSiguientes
+    ) {
+      await checkbox.check({
+        timeout: 30000
+      });
+    } else if (
+      await checkbox.isChecked()
+    ) {
+      await checkbox.uncheck({
+        timeout: 30000
+      });
+    }
+
+    const estadoAplicado =
+      await checkbox.isChecked();
+
+    if (
+      estadoAplicado !==
+        repetirEnItemsSiguientes
+    ) {
+      throw new Error(
+        'Learning Engine: DAI no reflejó correctamente la preferencia de repetir la respuesta en los ítems siguientes.'
+      );
+    }
+
+    console.log(
+      `[Conocimiento] Repetir respuesta en ítems siguientes: ${repetirEnItemsSiguientes ? 'SÍ' : 'NO'}.`
+    );
   }
 
   private async responderSiNoAutomaticamente(
@@ -2089,7 +2277,7 @@ export class AprendizajeManual {
         'button',
         {
           name:
-            /Confirmar selección/i
+            /Confirmar (selección|cambio)/i
         }
       );
 
