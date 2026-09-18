@@ -1991,7 +1991,9 @@ async function main() {
 
         if (
           aprenderNuevoPerfil &&
-          !resultado.huboCambiosAprendizaje
+          !resultado.huboCambiosAprendizaje &&
+          resultado.conDocumentosDetectado ===
+            perfilEscenario.documentos
         ) {
           console.log('');
           console.log(
@@ -2067,10 +2069,39 @@ async function main() {
           new Date()
             .toISOString();
 
+        const perfilEscenarioDetectado:
+          PerfilEscenarioAprendido = {
+            ...perfilEscenario,
+            documentos:
+              resultado
+                .conDocumentosDetectado
+          };
+
+        if (
+          perfilEscenarioDetectado.documentos !==
+            perfilEscenario.documentos
+        ) {
+          console.log('');
+          console.log(
+            `[Learning] El perfil solicitado indicaba ${perfilEscenario.documentos ? 'Con Documentos' : 'Sin Documentos'}, pero DAI mostró ${perfilEscenarioDetectado.documentos ? 'Documentos a presentar' : 'ningún documento a presentar'}. Se guardará el resultado observado.`
+          );
+        }
+
         const perfilId =
+          crearIdPerfilEscenario(
+            perfilEscenarioDetectado
+          );
+
+        const perfilIdSolicitado =
           crearIdPerfilEscenario(
             perfilEscenario
           );
+
+        const reclasificarCaminoSeleccionado =
+          nombreOperacion !== undefined &&
+          !aprenderNuevoPerfil &&
+          perfilIdSolicitado !==
+            perfilId;
 
         const caminoExistente =
           operacionExistente
@@ -2084,10 +2115,10 @@ async function main() {
           id: perfilId,
           nombre:
             crearNombrePerfilEscenario(
-              perfilEscenario
+              perfilEscenarioDetectado
             ),
           perfil:
-            perfilEscenario,
+            perfilEscenarioDetectado,
           parametros: {
             fobTotal,
             modoSufijos:
@@ -2111,10 +2142,23 @@ async function main() {
             []
           ).filter(
             camino =>
-              camino.id !== perfilId
+              camino.id !== perfilId &&
+              (
+                !reclasificarCaminoSeleccionado ||
+                camino.id !==
+                  perfilIdSolicitado
+              )
           ),
           caminoActualizado
         ];
+
+        if (
+          reclasificarCaminoSeleccionado
+        ) {
+          console.log(
+            `[Learning] Camino reclasificado automáticamente: ${crearNombrePerfilEscenario(perfilEscenario)} -> ${crearNombrePerfilEscenario(perfilEscenarioDetectado)}.`
+          );
+        }
 
         repositorio.guardar({
           id,

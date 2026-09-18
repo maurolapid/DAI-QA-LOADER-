@@ -282,6 +282,12 @@ Cuando IC04 o EC01 muestran el modal **Documentos a presentar**, el Loader:
 
 La implementación se encuentra en **src/pages/DocumentoAPresentarPage.ts**.
 
+Al finalizar Presupuesto, el Learning Engine verifica el resultado real mostrado
+por DAI. Si existe una sección visible **Documentos a presentar** con filas de
+documentos, el camino se guarda automáticamente como **Con Documentos**; si la
+sección no existe, se guarda como **Sin Documentos**. La clasificación observada
+prevalece sobre la intención seleccionada al comenzar la ejecución.
+
 ## Oficialización
 
 Se mantienen los perfiles:

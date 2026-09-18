@@ -66,6 +66,7 @@ export interface ResultadoEjecucionAprendizaje {
   llegoAPresupuesto: boolean;
   recorrido: EtapaOperacionAprendida[];
   huboCambiosAprendizaje: boolean;
+  conDocumentosDetectado: boolean;
 }
 
 type EtapaDetectada = {
@@ -515,6 +516,55 @@ async function detectarEtapa(
     etapaAprendizaje:
       'OTRA'
   };
+}
+
+async function detectarDocumentosEnPresupuesto(
+  page: Page
+): Promise<boolean> {
+  return page.evaluate(`(() => {
+    const normalizar = (valor) =>
+      String(valor || '')
+        .normalize('NFD')
+        .replace(/[\\u0300-\\u036f]/g, '')
+        .replace(/\\s+/g, ' ')
+        .trim()
+        .toUpperCase();
+
+    const visible = (elemento) => {
+      const estilo = window.getComputedStyle(elemento);
+      const rectangulo = elemento.getBoundingClientRect();
+
+      return (
+        estilo.display !== 'none' &&
+        estilo.visibility !== 'hidden' &&
+        rectangulo.width > 0 &&
+        rectangulo.height > 0
+      );
+    };
+
+    const titulos = Array.from(
+      document.querySelectorAll('div, span, h1, h2, h3, h4, h5, h6')
+    ).filter((elemento) =>
+      normalizar(elemento.textContent) === 'DOCUMENTOS A PRESENTAR' &&
+      visible(elemento) &&
+      !elemento.closest('[role="dialog"]')
+    );
+
+    return titulos.some((titulo) => {
+      const formulario = titulo.closest('form');
+
+      if (!formulario) {
+        return false;
+      }
+
+      return Boolean(
+        formulario.querySelector('[class*="documentRow"]') ||
+        formulario.querySelector(
+          'input[name^="documentos."][name$=".presencia"], input[name^="documentos."][name$=".referencia"]'
+        )
+      );
+    });
+  })()`);
 }
 
 async function clickSiguienteEtapaConocida(
@@ -1866,6 +1916,13 @@ export async function ejecutarOperacionAprendizaje(
         huboCambiosIniciales
       );
 
+    const conDocumentosDetectado =
+      resultadoRecorrido
+        .llegoAPresupuesto &&
+      await detectarDocumentosEnPresupuesto(
+        page
+      );
+
     console.log('');
     console.log(
       '=========================================='
@@ -1891,6 +1948,9 @@ export async function ejecutarOperacionAprendizaje(
     console.log(
       `Presupuesto alcanzado: ${resultadoRecorrido.llegoAPresupuesto ? 'SÍ' : 'NO'}`
     );
+    console.log(
+      `Documentos a presentar detectados: ${conDocumentosDetectado ? 'SÍ' : 'NO'}`
+    );
 
     await browser.close();
 
@@ -1905,7 +1965,8 @@ export async function ejecutarOperacionAprendizaje(
       recorrido,
       huboCambiosAprendizaje:
         resultadoRecorrido
-          .huboCambiosAprendizaje
+          .huboCambiosAprendizaje,
+      conDocumentosDetectado
     };
   } catch (error) {
     console.error('');
