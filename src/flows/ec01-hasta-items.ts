@@ -17,7 +17,13 @@ import { RegistroPage } from '../pages/RegistroPage';
 import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 import { ItemsEC01Page } from '../pages/ItemsEC01Page';
 import { AprendizajeManual } from '../learning/aprendizaje-manual';
-import { DocumentoAPresentarPage } from '../pages/DocumentoAPresentarPage';
+import {
+  DocumentoAPresentarPage
+} from '../pages/DocumentoAPresentarPage';
+
+import type {
+  SolicitarReferenciaDocumento
+} from '../pages/DocumentoAPresentarPage';
 import { OficializacionHerreroPage } from '../pages/OficializacionHerreroPage';
 import { OficializacionRussoPage } from '../pages/OficializacionRussoPage';
 
@@ -174,7 +180,9 @@ export async function ejecutarEC01HastaItems(
   baseUrl: string,
   data: any,
   navegador:
-    NavegadorEjecucion = 'chrome'
+    NavegadorEjecucion = 'chrome',
+  solicitarReferenciaDocumento:
+    SolicitarReferenciaDocumento
 ) {
   const browser =
     await iniciarNavegador(
@@ -543,7 +551,8 @@ export async function ejecutarEC01HastaItems(
 
       const documentoAPresentarPage =
         new DocumentoAPresentarPage(
-          page
+          page,
+          solicitarReferenciaDocumento
         );
 
       await documentoAPresentarPage

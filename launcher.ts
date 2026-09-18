@@ -421,6 +421,20 @@ async function solicitarTextoObligatorio(
   return normalizado;
 }
 
+async function solicitarReferenciaDocumento(
+  documento: string,
+  indice: number
+): Promise<string> {
+  const etiqueta =
+    documento
+      ? `Ingresá la referencia para ${documento}`
+      : `Ingresá la referencia para el documento ${indice + 1}`;
+
+  return rl.question(
+    `${etiqueta}: `
+  );
+}
+
 function crearInteraccionTransporte() {
   return {
     solicitarPuerto:
@@ -434,6 +448,8 @@ function crearInteraccionTransporte() {
         solicitarTextoObligatorio(
           'Ingrese documento de transporte'
         ),
+
+    solicitarReferenciaDocumento,
 
     decidirTrasRechazo:
       async () => {
@@ -2678,7 +2694,8 @@ async function main() {
       await ejecutarEC01HastaItems(
         baseUrl,
         config.data,
-        config.navegador
+        config.navegador,
+        solicitarReferenciaDocumento
       );
 
       return;
@@ -2815,7 +2832,8 @@ async function main() {
             ejecutarEC01HastaItems(
               baseUrl,
               config.data,
-              config.navegador
+              config.navegador,
+              solicitarReferenciaDocumento
             )
         )
       );
@@ -3529,7 +3547,8 @@ async function main() {
       await ejecutarEC01HastaItems(
         baseUrl,
         data,
-        navegador
+        navegador,
+        solicitarReferenciaDocumento
       );
     }
 
@@ -3950,7 +3969,8 @@ async function main() {
       ejecutarEC01HastaItems(
         baseUrl,
         dataEC01,
-        navegadorEC01
+        navegadorEC01,
+        solicitarReferenciaDocumento
       )
     ]);
 

@@ -12,9 +12,16 @@ interface DocumentoDetectado {
   inputReferencia: Locator;
 }
 
+export type SolicitarReferenciaDocumento = (
+  documento: string,
+  indice: number
+) => Promise<string>;
+
 export class DocumentoAPresentarPage {
   constructor(
-    private readonly page: Page
+    private readonly page: Page,
+    private readonly solicitarReferencia:
+      SolicitarReferenciaDocumento
   ) {}
 
   async estaVisible(): Promise<boolean> {
@@ -221,15 +228,11 @@ export class DocumentoAPresentarPage {
     indice: number
   ): Promise<string> {
     while (true) {
-      const mensaje =
-        documento
-          ? `Ingresá la referencia para ${documento}: `
-          : `Ingresá la referencia para el documento ${indice + 1}: `;
-
       const respuesta =
         (
-          await this.preguntarConsola(
-            mensaje
+          await this.solicitarReferencia(
+            documento,
+            indice
           )
         ).trim();
 
@@ -241,116 +244,6 @@ export class DocumentoAPresentarPage {
         '[Documentos] La referencia no puede quedar vacía.'
       );
     }
-  }
-
-  private preguntarConsola(
-    mensaje: string
-  ): Promise<string> {
-    /*
-     * No creamos un segundo readline.Interface.
-     * El Launcher mantiene su propia interfaz sobre stdin; abrir otra interfaz
-     * sobre el mismo TTY provoca el eco visual duplicado de cada carácter.
-     *
-     * Acá hacemos una lectura puntual de stdin en modo raw y restauramos el
-     * estado anterior al terminar, sin registrar un segundo consumidor readline.
-     */
-    return new Promise((resolve, reject) => {
-      const entrada = process.stdin;
-      const salida = process.stdout;
-
-      let respuesta = '';
-      const eraRaw =
-        Boolean(
-          entrada.isTTY &&
-          (entrada as NodeJS.ReadStream).isRaw
-        );
-
-      const limpiar = (): void => {
-        entrada.off('data', onData);
-
-        if (entrada.isTTY) {
-          (entrada as NodeJS.ReadStream)
-            .setRawMode(eraRaw);
-        }
-
-        entrada.pause();
-      };
-
-      const finalizar = (): void => {
-        salida.write('\n');
-        limpiar();
-        resolve(respuesta);
-      };
-
-      const onData = (
-        chunk: Buffer | string
-      ): void => {
-        const texto =
-          chunk.toString();
-
-        for (const caracter of texto) {
-          if (
-            caracter === '\r' ||
-            caracter === '\n'
-          ) {
-            finalizar();
-            return;
-          }
-
-          if (
-            caracter === '\u0003'
-          ) {
-            limpiar();
-            reject(
-              new Error(
-                'Entrada cancelada por el usuario.'
-              )
-            );
-            return;
-          }
-
-          if (
-            caracter === '\u007f' ||
-            caracter === '\b'
-          ) {
-            if (respuesta.length > 0) {
-              respuesta =
-                respuesta.slice(0, -1);
-
-              salida.write('\b \b');
-            }
-
-            continue;
-          }
-
-          if (
-            caracter >= ' ' &&
-            caracter !== '\u007f'
-          ) {
-            respuesta +=
-              caracter;
-
-            salida.write(
-              caracter
-            );
-          }
-        }
-      };
-
-      salida.write(mensaje);
-
-      entrada.resume();
-
-      if (entrada.isTTY) {
-        (entrada as NodeJS.ReadStream)
-          .setRawMode(true);
-      }
-
-      entrada.on(
-        'data',
-        onData
-      );
-    });
   }
 
   private async esperarBotonHabilitado(

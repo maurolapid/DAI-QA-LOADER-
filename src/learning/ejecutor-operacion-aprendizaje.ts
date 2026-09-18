@@ -45,6 +45,11 @@ export interface InteraccionAprendizaje {
 
   solicitarDocumento: () => Promise<string>;
 
+  solicitarReferenciaDocumento: (
+    documento: string,
+    indice: number
+  ) => Promise<string>;
+
   decidirTrasRechazo: () => Promise<
     'reintentar' | 'guardar'
   >;
@@ -1021,7 +1026,9 @@ async function recorrerHastaPresupuesto(
 
   const documentoAPresentarPage =
     new DocumentoAPresentarPage(
-      page
+      page,
+      interaccion
+        .solicitarReferenciaDocumento
     );
 
   while (
