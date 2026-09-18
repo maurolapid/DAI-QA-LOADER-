@@ -271,13 +271,14 @@ Si DAI rechaza el documento, el usuario puede reintentar o guardar la operación
 
 ## Documentos a presentar
 
-Cuando EC01 muestra el modal **Documentos a presentar**, el Loader:
+Cuando IC04 o EC01 muestran el modal **Documentos a presentar**, el Loader:
 
 - Detecta todos los documentos solicitados dinámicamente.
 - Muestra código, descripción, entrega y presencia.
 - Solicita por consola una referencia no vacía para cada documento.
 - Verifica el valor realmente ingresado en DAI.
 - Continúa únicamente cuando el botón correspondiente queda habilitado.
+- Retoma automáticamente el recorrido del Learning Engine después de cerrar el modal.
 
 La implementación se encuentra en **src/pages/DocumentoAPresentarPage.ts**.
 

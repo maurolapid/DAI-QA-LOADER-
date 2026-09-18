@@ -17,6 +17,14 @@ export class DocumentoAPresentarPage {
     private readonly page: Page
   ) {}
 
+  async estaVisible(): Promise<boolean> {
+    return this.obtenerDialogo()
+      .isVisible()
+      .catch(
+        () => false
+      );
+  }
+
   async procesarSiAparece(
     timeoutMs = 5000
   ): Promise<boolean> {
@@ -107,9 +115,11 @@ export class DocumentoAPresentarPage {
       dialogo.getByRole(
         'button',
         {
-          name: /^CONTINUAR$/i
+          name:
+            /^(CONTINUAR|GUARDAR|ACEPTAR)$/i
         }
-      );
+      )
+        .first();
 
     await botonContinuar.waitFor({
       state: 'visible',
@@ -145,13 +155,9 @@ export class DocumentoAPresentarPage {
     return this.page
       .getByRole('dialog')
       .filter({
-        has:
-          this.page.getByRole(
-            'heading',
-            {
-              name: /^Documentos a presentar$/i
-            }
-          )
+        has: this.page.locator(
+          'input[name^="documentos."][name$=".referencia"]'
+        )
       })
       .first();
   }

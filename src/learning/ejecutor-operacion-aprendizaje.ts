@@ -17,6 +17,7 @@ import { CaratulaEC01Page } from '../pages/CaratulaEC01Page';
 import { ItemPage } from '../pages/ItemPage';
 import { ItemsEC01Page } from '../pages/ItemsEC01Page';
 import { DocumentoTransporteIC04Page } from '../pages/DocumentoTransporteIC04Page';
+import { DocumentoAPresentarPage } from '../pages/DocumentoAPresentarPage';
 import { BultosPage } from '../pages/BultosPage';
 import { AprendizajeManual } from './aprendizaje-manual';
 
@@ -642,6 +643,27 @@ async function clickSiguienteEtapaConocida(
         return etapa;
       }
 
+      const modalDocumentosVisible =
+        await page
+          .locator(
+            'input[name^="documentos."][name$=".referencia"]'
+          )
+          .first()
+          .isVisible()
+          .catch(
+            () => false
+          );
+
+      if (
+        modalDocumentosVisible
+      ) {
+        console.log(
+          `[Learning/Ruta] Navegación confirmada por aparición de Documentos a presentar: ${etapa}`
+        );
+
+        return etapa;
+      }
+
       const etapaDespues =
         await detectarEtapa(
           page
@@ -997,12 +1019,35 @@ async function recorrerHastaPresupuesto(
       return false;
     };
 
+  const documentoAPresentarPage =
+    new DocumentoAPresentarPage(
+      page
+    );
+
   while (
     true
   ) {
     await page.waitForTimeout(
       500
     );
+
+    if (
+      await documentoAPresentarPage
+        .estaVisible() &&
+      await documentoAPresentarPage
+        .procesarSiAparece(
+          300
+        )
+    ) {
+      intervencionesManuales =
+        0;
+
+      console.log(
+        '[Learning/Ruta] Documentos a presentar completados. Se retoma la detección automática del recorrido.'
+      );
+
+      continue;
+    }
 
     if (
       await cerrarModalTransicionSiAparece(
