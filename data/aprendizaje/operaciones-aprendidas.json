@@ -2,59 +2,6 @@
   "version": 2,
   "operaciones": [
     {
-      "id": "IC04-38123929990C-20260916185858",
-      "nombre": "IC04 - 3812.39.29.990C",
-      "subregimen": "IC04",
-      "estado": "APRENDIDA",
-      "contexto": {
-        "ambienteNombre": "QA",
-        "datosClave": {
-          "caratula.monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
-          "caratula.condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
-          "item.origenOpcion": "- CHINA",
-          "item.paisProcedenciaOpcion": "- CHINA",
-          "items[0].origenOpcion": "- CHINA",
-          "items[0].paisProcedenciaOpcion": "- CHINA"
-        },
-        "items": [
-          {
-            "numeroItem": 1,
-            "posicionArancelaria": "3812.39.29.990C"
-          }
-        ]
-      },
-      "caminos": [
-        {
-          "id": "docs-no__ventajas-no__cancelaciones-no",
-          "nombre": "Sin Documentos",
-          "perfil": {
-            "documentos": false,
-            "ventajas": false,
-            "cancelaciones": false
-          },
-          "parametros": {
-            "fobTotal": "1500.00",
-            "modoSufijos": "automatico",
-            "facturas": "Si"
-          },
-          "recorrido": [
-            "REGISTRO",
-            "CARATULA",
-            "ITEMS",
-            "PREGUNTAS_ITEM",
-            "OTRA",
-            "PAC_ROM",
-            "DOCUMENTO_TRANSPORTE",
-            "PRESUPUESTO"
-          ],
-          "creadaEn": "2026-09-16T18:58:58.819Z",
-          "actualizadaEn": "2026-09-16T21:37:29.306Z"
-        }
-      ],
-      "creadaEn": "2026-09-16T18:58:58.819Z",
-      "actualizadaEn": "2026-09-16T21:37:29.306Z"
-    },
-    {
       "id": "IC04-73181500620M-20260916180305",
       "nombre": "IC04 - 7318.15.00.620M",
       "subregimen": "IC04",
@@ -155,11 +102,164 @@
             "PRESUPUESTO"
           ],
           "creadaEn": "2026-09-17T05:02:59.339Z",
-          "actualizadaEn": "2026-09-17T05:02:59.339Z"
+          "actualizadaEn": "2026-09-18T14:04:44.696Z"
         }
       ],
       "creadaEn": "2026-09-17T05:02:59.339Z",
-      "actualizadaEn": "2026-09-17T05:02:59.339Z"
+      "actualizadaEn": "2026-09-18T14:04:44.696Z"
+    },
+    {
+      "id": "IC04-38123929990C-20260916185858",
+      "nombre": "IC04 - 3812.39.29.990C",
+      "subregimen": "IC04",
+      "estado": "APRENDIDA",
+      "contexto": {
+        "ambienteNombre": "QA",
+        "datosClave": {
+          "caratula.monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
+          "caratula.condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
+          "item.origenOpcion": "- CHINA",
+          "item.paisProcedenciaOpcion": "- CHINA",
+          "items[0].origenOpcion": "- CHINA",
+          "items[0].paisProcedenciaOpcion": "- CHINA"
+        },
+        "items": [
+          {
+            "numeroItem": 1,
+            "posicionArancelaria": "3812.39.29.990C"
+          }
+        ]
+      },
+      "caminos": [
+        {
+          "id": "docs-no__ventajas-no__cancelaciones-no",
+          "nombre": "Sin Documentos",
+          "perfil": {
+            "documentos": false,
+            "ventajas": false,
+            "cancelaciones": false
+          },
+          "parametros": {
+            "fobTotal": "1500.00",
+            "modoSufijos": "automatico",
+            "facturas": "Si"
+          },
+          "recorrido": [
+            "REGISTRO",
+            "CARATULA",
+            "ITEMS",
+            "PREGUNTAS_ITEM",
+            "OTRA",
+            "DOCUMENTO_TRANSPORTE",
+            "PRESUPUESTO"
+          ],
+          "creadaEn": "2026-09-16T18:58:58.819Z",
+          "actualizadaEn": "2026-09-18T14:17:49.124Z"
+        }
+      ],
+      "creadaEn": "2026-09-16T18:58:58.819Z",
+      "actualizadaEn": "2026-09-18T14:17:49.124Z"
+    },
+    {
+      "id": "IC04-38123929990C5ITEMS-20260918153206",
+      "nombre": "IC04 - 5 items",
+      "subregimen": "IC04",
+      "estado": "APRENDIDA",
+      "contexto": {
+        "ambienteNombre": "QA",
+        "datosClave": {
+          "caratula.monedaOpcion": "DOL - DOLAR ESTADOUNIDENSE",
+          "caratula.condicionVentaOpcion": "FOB - LIBRE PUESTA A BORDO",
+          "item.origenOpcion": "- CHINA",
+          "item.paisProcedenciaOpcion": "- CHINA",
+          "items[0].origenOpcion": "- CHINA",
+          "items[0].paisProcedenciaOpcion": "- CHINA",
+          "items[1].origenOpcion": "- CHINA",
+          "items[1].paisProcedenciaOpcion": "- CHINA",
+          "items[2].origenOpcion": "- CHINA",
+          "items[2].paisProcedenciaOpcion": "- CHINA",
+          "items[3].origenOpcion": "- CHINA",
+          "items[3].paisProcedenciaOpcion": "- CHINA",
+          "items[4].origenOpcion": "- CHINA",
+          "items[4].paisProcedenciaOpcion": "- CHINA"
+        },
+        "items": [
+          {
+            "numeroItem": 1,
+            "posicionArancelaria": "3812.39.29.990C"
+          },
+          {
+            "numeroItem": 2,
+            "posicionArancelaria": "3812.39.29.990C"
+          },
+          {
+            "numeroItem": 3,
+            "posicionArancelaria": "3812.39.29.990C"
+          },
+          {
+            "numeroItem": 4,
+            "posicionArancelaria": "3812.39.29.990C"
+          },
+          {
+            "numeroItem": 5,
+            "posicionArancelaria": "3812.39.29.990C"
+          }
+        ]
+      },
+      "caminos": [
+        {
+          "id": "docs-no__ventajas-no__cancelaciones-no",
+          "nombre": "Sin Documentos",
+          "perfil": {
+            "documentos": false,
+            "ventajas": false,
+            "cancelaciones": false
+          },
+          "parametros": {
+            "fobTotal": "15000.00",
+            "modoSufijos": "automatico",
+            "facturas": "Si"
+          },
+          "recorrido": [
+            "REGISTRO",
+            "CARATULA",
+            "ITEMS",
+            "PREGUNTAS_ITEM",
+            "OTRA",
+            "DOCUMENTO_TRANSPORTE",
+            "PRESUPUESTO"
+          ],
+          "creadaEn": "2026-09-18T15:32:06.293Z",
+          "actualizadaEn": "2026-09-18T15:32:06.293Z"
+        },
+        {
+          "id": "docs-si__ventajas-no__cancelaciones-no",
+          "nombre": "Con Documentos",
+          "perfil": {
+            "documentos": true,
+            "ventajas": false,
+            "cancelaciones": false
+          },
+          "parametros": {
+            "fobTotal": "15000.00",
+            "modoSufijos": "automatico",
+            "facturas": "Si"
+          },
+          "recorrido": [
+            "REGISTRO",
+            "CARATULA",
+            "ITEMS",
+            "PREGUNTAS_ITEM",
+            "OTRA",
+            "DOCUMENTO_TRANSPORTE",
+            "PRESUPUESTO"
+          ],
+          "creadaEn": "2026-09-18T16:50:50.311Z",
+          "actualizadaEn": "2026-09-19T05:25:09.744Z"
+        }
+      ],
+      "creadaEn": "2026-09-18T15:32:06.293Z",
+      "actualizadaEn": "2026-09-19T05:25:09.744Z"
     }
   ]
 }
